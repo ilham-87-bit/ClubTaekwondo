@@ -3,6 +3,7 @@ package com.clubtaekwondo.club.controller;
 import com.clubtaekwondo.club.mail.MailConstructor;
 import com.clubtaekwondo.club.model.Role;
 import com.clubtaekwondo.club.model.Token;
+import com.clubtaekwondo.club.model.TokenType;
 import com.clubtaekwondo.club.model.User;
 import com.clubtaekwondo.club.repository.UserRepository;
 import com.clubtaekwondo.club.repository.UserRoleRepository;
@@ -20,13 +21,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Optional;
 
 @Controller
 public class LoginController {
@@ -83,21 +85,21 @@ public class LoginController {
         return "redirect:/index";
     }
 
-    @GetMapping(value = "/addAdmin")
-    public String addAdmin(Model model) {
-        User user = new User();
-        user.setEmail("admin@takewando.com");
-//        user.setLogin("admin");
-        user.setPassword(encoder.encode("admin"));
-        try {
-            userService.save(user, Role.ADMIN);
-        } catch (IllegalArgumentException ex) {
-            model.addAttribute("error", ex.getMessage());
-            System.out.println(ex.getMessage());
-        }
-
-        return ("indexAdmin");
-    }
+//    @GetMapping(value = "/addAdmin")
+//    public String addAdmin(Model model) {
+//        User user = new User();
+//        user.setEmail("admin@takewando.com");
+////        user.setLogin("admin");
+//        user.setPassword(encoder.encode("admin"));
+//        try {
+//            userService.save(user, Role.ADMIN);
+//        } catch (IllegalArgumentException ex) {
+//            model.addAttribute("error", ex.getMessage());
+//            System.out.println(ex.getMessage());
+//        }
+//
+//        return ("indexAdmin");
+//    }
 
     @GetMapping("/inscription")
     public String inscriptionGet() {
@@ -127,29 +129,100 @@ public class LoginController {
             Token token = new Token();
             token.setToken(tokenString);
             token.setUser(user);
-
+            token.setType(TokenType.NEW_ACCOUNT);
             token = tokenService.save(token);
-
-
-            String s = urlFromMethod(token.getToken(), user.getEmail());
+            String s = urlFromMethod(token.getToken(), user.getEmail(), "activate");
             SimpleMailMessage mailMessage = mailConstructor.constructResetTokenEmail(s, user);
 
             mailSender.send(mailMessage);
 
         } catch (Exception e) {
-            result.rejectValue("email", "email", "le e-mail exicte déja");
+            result.rejectValue("email", "email", "le e-mail existe déja");
             return "inscription";
         }
-        Object authentication = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (authentication instanceof User) {
 
-            user = (User) authentication;
-            if (user.getUserRole().getRole().equals(Role.ADMIN.getAlea())) {
-                return "redirect:indexAdmin";
-            }
-        }
         return "redirect:index";
 
+    }
+
+    @GetMapping("/forgetPassword")
+    public String forgetPasswordGet() {
+
+        return ("forgetPassword");
+    }
+
+    @PostMapping("/forgetPassword")
+    public String forgetPasswordPost(@ModelAttribute("user") @Valid User user) {
+        User persisted = userService.findByLogin(user.getEmail());
+        if (persisted != null) {
+            String tokenString = generateNewToken();
+            // create a new Token in the database
+
+            Token token = new Token();
+            token.setToken(tokenString);
+            token.setUser(persisted);
+            token.setType(TokenType.FORGET_PASSWORD);
+            token = tokenService.save(token);
+
+
+            String s = MvcUriComponentsBuilder.fromMethodName(LoginController.class,
+                    "resetPassword", token.getToken(), user.getEmail(), null).build().toString();
+            SimpleMailMessage mailMessage = mailConstructor.constructResetPasswordEmail(s, user);
+
+            mailSender.send(mailMessage);
+            System.out.println("Sent Mail" + mailMessage.getText());
+        }
+        return "redirect:index";
+    }
+
+    @GetMapping("resetPassword/{login}/{token}")
+
+    public String resetPassword(@PathVariable String token, @PathVariable String login, Model model) {
+
+        User user = userService.findByLogin(login);
+        if (user != null && user.getTokens() != null) {
+
+            Optional<Token> first = user.getTokens().stream()
+                    .filter(tok -> tok.getType() == TokenType.FORGET_PASSWORD)
+                    .filter(tok -> tok.getToken().equals(token))
+                    .findFirst();
+            if (first.isPresent()) {
+
+                User temp = new User();
+                temp.setTokens(new ArrayList<>());
+                temp.getTokens().add(first.get());
+                temp.setEmail(user.getEmail());
+                model.addAttribute("user", temp);
+
+                return "resetPassword";
+            }
+        }
+        System.out.println("Token or mail are not correct ");
+        //TODO complete the validation
+        return "redirect:/index";
+    }
+
+    @PostMapping("resetPassword")
+    public String resetPasswordPost(@ModelAttribute User user, Model model) {
+
+        User persited = userService.findByLogin(user.getEmail());
+        String token = user.getTokens() != null && user.getTokens().size() == 1 ? user.getTokens().get(0).getToken() : "ND";
+        if (persited != null && persited.getTokens() != null) {
+
+            Optional<Token> first = persited.getTokens().stream()
+                    .filter(tok -> tok.getType() == TokenType.FORGET_PASSWORD)
+                    .filter(tok -> tok.getToken().equals(token))
+                    .findFirst();
+            if (first.isPresent()) {
+
+                persited.setPassword(encoder.encode(user.getPassword()));
+                userService.save(persited);
+                // TODO : Remove all tokens
+                System.out.println("Password has been modified ");
+            }
+        }
+        //TODO complete the validation
+        return "redirect:/index";
     }
 
     @GetMapping("activate/{login}/{token}")
@@ -157,17 +230,17 @@ public class LoginController {
     public String activate(@PathVariable String token, @PathVariable String login) {
 
         User user = userService.findByLogin(login);
-        if (user != null && !user.isActive() && user.getTokens() != null && !user.getTokens().isEmpty()) {
+        if (user != null && !user.isActive() && user.getTokens() != null) {
 
-            for (Token tok : user.getTokens()) {
-                if (tok.getToken() != null && tok.getToken().equals(token)) {
-                    user.setActive(true);
-
-                    userService.save(user);
-                    System.out.println("The account has been activated ");
-                    break;
-                }
-
+            Optional<Token> first = user.getTokens().stream()
+                    .filter(tok -> tok.getType() == TokenType.NEW_ACCOUNT)
+                    .filter(tok -> tok.getToken().equals(token))
+                    .findFirst();
+            if (first.isPresent()) {
+                user.setActive(true);
+                userService.save(user);
+                // TODO : Remove all tokens
+                System.out.println("The account has been activated ");
             }
         }
         if (user == null || !user.isActive()) {
@@ -178,9 +251,9 @@ public class LoginController {
     }
 
 
-    private String urlFromMethod(String token, String login) {
+    private String urlFromMethod(String token, String login, String method) {
         return MvcUriComponentsBuilder.fromMethodName(LoginController.class,
-                "activate", token, login).build().toString();
+                method, token, login).build().toString();
 
     }
 

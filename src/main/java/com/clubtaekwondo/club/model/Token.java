@@ -14,10 +14,13 @@ public class Token {
     @Column(name = "id")
     private Long id;
 
-    private  String token  ;
+    private String token;
+
+    @Enumerated(EnumType.STRING)
+    private TokenType type;
 
     @ManyToOne
-    @JoinColumn(name =  "id_utilisateur")
+    @JoinColumn(name = "id_utilisateur")
     private User user;
 
     public Long getId() {
@@ -42,5 +45,13 @@ public class Token {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public TokenType getType() {
+        return type;
+    }
+
+    public void setType(TokenType type) {
+        this.type = type;
     }
 }

@@ -23,13 +23,25 @@ public class MailConstructor {
     @Autowired
     private TemplateEngine templateEngine;
 
-    public  SimpleMailMessage constructResetTokenEmail(
-            String lien, User user){
+    public SimpleMailMessage constructResetTokenEmail(
+            String lien, User user) {
 
-        String message = "\n Veuillez activer votre compte en cliquant a   ce lien :\n"+lien;
+        String message = "\n Veuillez activer votre compte en cliquant a ce lien :\n" + lien;
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(user.getEmail());
         email.setSubject("Taekwondo- Nouvelle inscription ");
+        email.setText(message);
+        email.setFrom(env.getProperty("support.email"));
+        return email;
+    }
+
+    public SimpleMailMessage constructResetPasswordEmail(
+            String lien, User user) {
+
+        String message = "\n Veuillez confirmer la demande de changement de mot de passe en cliquant a ce lien :\n" + lien;
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(user.getEmail());
+        email.setSubject("Taekwondo- Changement de mot de passe  ");
         email.setText(message);
         email.setFrom(env.getProperty("support.email"));
         return email;
