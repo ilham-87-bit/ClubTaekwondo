@@ -1,0 +1,24 @@
+<div id="deleteCategoryConfirmationModal" class="modal" role="dialog" xmlns:th="http://www.thymeleaf.org">
+    <div class="modal-dialog">
+<!--            <form id="deleteGuarantyForm" th:action="@{/guaranty/deleteOne}" method="post">-->
+<!--                <input type="hidden" id="messageToDelete" name="messageToDelete"></input>-->
+<!--            </form>-->
+
+            <div class="modal-header">
+                <h4>Supprimer</h4>
+            </div>
+            <div class="modal-body">
+                <label> Vous etes sur de supprimer cette catégori? </label>
+            </div>
+            <div class="modal-footer">
+                <div class="container-fluid">
+                    <div class="row pull-right">
+                        <div class="col-sm-12">
+                            <button id="noButton" data-dismiss="modal" class="btn btn-primary btn-modal"> Annuler </button>
+                            <button id="yesButton" type="submit" class="btn btn-primary btn-modal"> Supprimer </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
