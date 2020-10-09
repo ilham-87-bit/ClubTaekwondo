@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "utilisateur")
@@ -27,6 +28,11 @@ public class User implements UserDetails {
 
     @Column(name = "email")
     private String email;
+
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens ;
+
+    private boolean active ;
 
     @OneToOne
     @JoinColumn(name = "id_role_utilisateur")
@@ -85,7 +91,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return active;
     }
 
     public void setPassword(String password) {
@@ -118,6 +124,23 @@ public class User implements UserDetails {
 
     public String getFirstName() {
         return firstName;
+    }
+
+    public List<Token> getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(List<Token> tokens) {
+        this.tokens = tokens;
+    }
+
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public void setFirstName(String firstName) {

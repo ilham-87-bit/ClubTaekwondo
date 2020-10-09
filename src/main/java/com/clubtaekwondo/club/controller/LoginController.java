@@ -50,6 +50,8 @@ public class LoginController {
     @Autowired
     private TokenService tokenService;
 
+    public final String MAIL_ADMIN = "takewondo.asbl@gmail.com" ;
+
     @ModelAttribute("user")
     public User newUser() {
 
@@ -99,6 +101,7 @@ public class LoginController {
 
     @GetMapping("/inscription")
     public String inscriptionGet() {
+
         return ("inscription");
     }
 
@@ -108,13 +111,15 @@ public class LoginController {
     BindingResult interface qui permet d'appliquer un validateur et de lier les résultats avec les vues
     */
         if (result.hasErrors()) {
-            return new ModelAndView("inscription");
+            return "inscription";
         }
         try {
             String password = user.getPassword();
             String hashedPassword = encoder.encode(password);
             user.setPassword(hashedPassword);
-            user = userService.save(user, Role.USER);
+
+            Role role = user.getEmail().equals(MAIL_ADMIN) ? Role.ADMIN : Role.USER;
+            user = userService.save(user, role);
 
             String tokenString = generateNewToken();
             // create a new Token in the database
@@ -132,17 +137,18 @@ public class LoginController {
             mailSender.send(mailMessage);
 
         } catch (Exception e) {
-            return new ModelAndView("inscription.html", "message", user.getEmail() + " existe déjà");
+            result.rejectValue("email", "email", "le e-mail exicte déja");
+            return "inscription";
         }
         Object authentication = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (authentication instanceof User) {
 
             user = (User) authentication;
             if (user.getUserRole().getRole().equals(Role.ADMIN.getAlea())) {
-                return new ModelAndView("redirect:/indexAdmin/html", "messageIngredient", user.getFirstName() + user.getLastName() + " , votre compte a bien été créé");
+                return "redirect:indexAdmin";
             }
         }
-        return new ModelAndView("redirect:/index/html", "messageIngredient", user.getFirstName() + user.getLastName() + " , votre compte a bien été créé");
+        return "redirect:index";
 
     }
 
@@ -150,8 +156,25 @@ public class LoginController {
 
     public String activate(@PathVariable String token, @PathVariable String login) {
 
+        User user = userService.findByLogin(login);
+        if (user != null && !user.isActive() && user.getTokens() != null && !user.getTokens().isEmpty()) {
+
+            for (Token tok : user.getTokens()) {
+                if (tok.getToken() != null && tok.getToken().equals(token)) {
+                    user.setActive(true);
+
+                    userService.save(user);
+                    System.out.println("The account has been activated ");
+                    break;
+                }
+
+            }
+        }
+        if (user == null || !user.isActive()) {
+            System.out.println("Activation of user has been failed ");
+        }
         //TODO complete the validation
-        return "index";
+        return "redirect:/index";
     }
 
 

@@ -34,6 +34,8 @@
                                     <input class="form-control py-4" id="inputEmailAddress" type="email"
                                            th:field="*{email}" aria-describedby="emailHelp"
                                            placeholder="Entrer email address"/>
+                                    <span class="badge badge-danger" th:errors="*{email}"
+                                          th:if="${#fields.hasErrors('email')}"></span>
                                 </div>
                                 <div class="form-row">
                                     <div class="col-md-6">
