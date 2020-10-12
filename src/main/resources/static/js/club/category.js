@@ -7,7 +7,7 @@ function initButtons() {
     $('#deleteCategory').on('click', function (e) {
         e.preventDefault();
         $('#checkboxAll').attr('data-substitute', $(this).attr('id'));
-        if (validateAtLeastOneChecked($('#checkboxAll'))) {
+        if (validateAtLeastOneChecked($('#categoryForm'))) {
             $('#deleteCategoryConfirmationModal').modal('show');
         }
     });

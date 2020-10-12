@@ -18,19 +18,22 @@
                         <a class="nav-link" th:href="@{/contact}">Contact</a>
                     </li>
                 </ul>
-
-                <form sec:authorize="!isAuthenticated()" th:action="@{/login}" method="post"
-                      class="navbar-form form-inline pull-left">
-                    <input type="text" id="username" name="username" placeholder="Login"/>
-                    <input type="password" id="password" name="password" placeholder="Password"/>
-                    <div class="alert-danger" th:if="${param.error ne null}"> username et password invalides</div>
-                    <div class="alert-normal" th:if="${param.logout ne null}">Vous avez été déconnecté.</div>
-                    <input type="submit" value="Connexion"/>
-                    <a class="navbar-brand" href="/inscription" th:href="@{/inscription}">S'inscrire</a>
-                </form>
-                <div class="navbar-header" sec:authorize="isAuthenticated()">
-                    <input type="submit" value="Déconnexion"/>
-                </div>
+                <ul class="navbar-nav ml-auto ml-md-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                                class="fas fa-user fa-fw"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                            <div class="navbar-header" sec:authorize="!isAuthenticated()">
+                                <a class="dropdown-item" th:href="@{login}">Connexion</a>
+                                <a class="dropdown-item" th:href="@{inscription}">S'inscrire</a>
+                            </div>
+                            <div class="navbar-header" sec:authorize="isAuthenticated()">
+                                <a class="dropdown-item" th:href="@{/logout}">Déconnexion</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>

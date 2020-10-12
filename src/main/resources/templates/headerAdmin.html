@@ -2,7 +2,21 @@
 
     <div class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand-lg navbar-dark bg-dark">
-                <img src="../static/images/img1.jpg" th:src="@{/static/images/img1.jpg}">
+            <div class="container">
+                <img src="/static/images/img1.jpg" th:src="@{/images/img1.jpg}">
+                <div class="float-right">
+                    <ul class="navbar-nav ml-auto ml-md-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                                    class="fas fa-user fa-fw"></i></a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" th:href="@{/logout}">Déconnexion</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
@@ -12,7 +26,7 @@
                             <a th:href="@{/admin/category/categoryList}" class="nav-link">Catégories</a>
                             <a href="#" class="nav-link">Ecoles</a>
                             <a th:href="@{/admin/coach/coachList}" class="nav-link">Entraineurs</a>
-                            <a th:href="@{/admin/period/periodList}"class="nav-link">Periode d'abonnement</a>
+                            <a th:href="@{/admin/period/periodList}" class="nav-link">Periode d'abonnement</a>
                             <a href="#" class="nav-link">Type d'abonnement</a>
                         </div>
                     </div>
