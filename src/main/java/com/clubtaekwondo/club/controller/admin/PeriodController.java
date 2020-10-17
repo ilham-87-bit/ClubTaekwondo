@@ -73,4 +73,15 @@ public class PeriodController {
 
         return "periodList";
     }
+
+    @GetMapping(value = "/delete/{period}")
+    public String deletePeriod(@PathVariable("period") Long id, Model model) {
+
+        SubscriptionPeriod period = subscriptionPeriodService.findById(id);
+        subscriptionPeriodService.delete(period);
+
+        model.addAttribute("periodList", subscriptionPeriodService.getAllPeriod());
+
+        return "periodList";
+    }
 }

@@ -17,13 +17,6 @@
                                        th:classappend="${hasPeriod} ? 'table-hover'">
                                     <thead>
                                     <tr>
-                                        <!--                                        <th class="cell&#45;&#45;five">-->
-                                        <!--                                            <input id="checkboxAll" type="checkbox"-->
-                                        <!--                                                   class="js-select-all checkboxAll with-font" name="check"-->
-                                        <!--                                                   data-substitute="deleteCategory"/>-->
-                                        <!--                                            <label for="checkboxAll"></label>-->
-                                        <!--                                        </th>-->
-                                        <!--                                        <th class="cell&#45;&#45;five"></th>-->
                                         <th class="cell--seven">
                                             <span> Durée d'abonnement </span>
                                         </th>
@@ -36,16 +29,6 @@
                                     <tbody class="list" id="periodList">
                                     <th:block th:if="${hasPeriod}">
                                         <tr th:each="period, row : ${periodList}" class="js-row-link-alt">
-                                            <!--                                            <td class="js-no-link">-->
-                                            <!--                                                <input type="checkbox" th:id="${'checkbox' + row.index}"-->
-                                            <!--                                                       name="categoriesList[]" th:value="${'/'+ category?.id}"-->
-                                            <!--                                                       class="checkboxGroup with-font"/>-->
-                                            <!--                                                <label th:for="${'checkbox' + row.index}"></label>-->
-                                            <!--                                            </td>-->
-                                            <!--                                            <td>-->
-                                            <!--                                                <a th:href="${'/'+ category?.id}"-->
-                                            <!--                                                   class="js-row-target"></a>-->
-                                            <!--                                            </td>-->
                                             <td>
                                                 <span th:text="${period?.period}"></span>
                                             </td>
@@ -55,6 +38,31 @@
                                             <td>
                                                 <a th:href="${'edit/'+ period?.id}"
                                                    class="btn btn-link fa fa-edit"></a>
+                                                <a class="btn btn-link fa fa-trash-alt"
+                                                   th:attr="data-target='#modal-delete'+${period?.id}"
+                                                   data-rel="tooltip" title="delete" data-toggle="modal"></a>
+
+                                                <div th:id="modal-delete+${period?.id}" class="modal fade"
+                                                     tabindex="-1">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header no-padding">
+                                                                <div class="table-header">Supprimer</div>
+                                                            </div>
+                                                            <div class="modal-body no-padding">Vous étes sur de
+                                                                supprimer cette durée d'abonnement?
+                                                            </div>
+                                                            <div class="modal-footer no-margin-top">
+                                                                <button class="btn btn-danger pull-left"
+                                                                        data-dismiss="modal"> Annuler
+                                                                </button>
+                                                                <a class="btn btn-danger pull-right" type="button"
+                                                                   th:href="${'delete/'+ period?.id}"> Supprimer
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     </th:block>
@@ -66,25 +74,15 @@
                             <h5 class="align-content-center">Aucun type d'abonnement </h5>
                         </th:block>
                         <div class="row align-items-end justify-content-end">
-                            <!--                            <div th:if="!${#lists.isEmpty(periodList)}">-->
-                            <!--                                <button id="deleteCategory" class="fa fa-trash"-->
-                            <!--                                        data-target="#categoryForm"> Supprimer-->
-                            <!--                                </button>-->
-                            <!--                            </div>-->
-                            <a th:href="@{addPeriod}" type="button" class="btn btn-dark"> Ajouter </a>
+                            <a th:href="@{/admin/period/addPeriod}" type="button" class="btn btn-dark"> Ajouter </a>
                         </div>
                     </form>
                 </th:block>
-                <!--                <th:block th:with="isOneCategory=${false}">-->
-                <!--                    <th:block th:replace="deleteCategoryConfirmation"></th:block>-->
-                <!--                </th:block>-->
             </div>
         </div>
     </main>
-    <!--    <span id="js-template-global" th:attr="data-delete-guaranty-url=@{/admin/category/delete}"></span>-->
     <!--    <script type="text/javascript" th:src="@{/static/js/club/category.js}"></script>-->
 </div>
 <footer th:replace="footer"></footer>
-
 </body>
 </html>
