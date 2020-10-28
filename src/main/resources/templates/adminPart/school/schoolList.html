@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="head"></head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head">
+</head>
 <body class="sb-nav-fixed">
 <header th:replace="headerAdmin">
 </header>
@@ -8,56 +9,56 @@
     <main>
         <div class="container-fluid">
             <div class="card-body">
-                <th:block th:with="hasPeriod=${!#lists.isEmpty(periodList)}">
-                    <form id="periodForm" method="post">
-                        <th:block th:if="!${#lists.isEmpty(periodList)}">
+                <th:block th:with="hasSchool=${!#lists.isEmpty(schoolList)}">
+                    <form id="schoolForm" method="post">
+                        <th:block th:if="!${#lists.isEmpty(schoolList)}">
                             <div class="card-body card-border">
-                                <table id="periodTable"
+                                <table id="schoolTable"
                                        class="table table-fixed table-striped"
-                                       th:classappend="${hasPeriod} ? 'table-hover'">
+                                       th:classappend="${hasSchool} ? 'table-hover'">
                                     <thead>
                                     <tr>
                                         <th class="cell--seven">
-                                            <span> Durée d'abonnement </span>
+                                            <span> Nom de l'école </span>
                                         </th>
                                         <th class="cell--twenty">
-                                            <span> Déscription </span>
+                                            <span> Adresse </span>
                                         </th>
                                         <th></th>
                                     </tr>
                                     </thead>
-                                    <tbody class="list" id="periodList">
-                                    <th:block th:if="${hasPeriod}">
-                                        <tr th:each="period, row : ${periodList}" class="js-row-link-alt">
+                                    <tbody class="list" id="schoolList">
+                                    <th:block th:if="${hasSchool}">
+                                        <tr th:each="scho, row : ${schoolList}" class="js-row-link-alt">
                                             <td>
-                                                <span th:text="${period?.period}"></span>
+                                                <span th:text="${scho?.name}"></span>
                                             </td>
                                             <td>
-                                                <span th:text="${period?.description}"></span>
+                                                <span th:text="${scho?.address?.street} + ', ' + ${scho?.address?.number} + ', ' + ${scho?.address?.city?.postalCode} + ', ' + ${scho?.address?.city?.cityName}"></span>
                                             </td>
                                             <td>
-                                                <a th:href="${'edit/'+ period?.id}"
+                                                <a th:href="${'edit/'+ scho?.id}"
                                                    class="btn btn-link fa fa-edit"></a>
                                                 <a class="btn btn-link fa fa-trash-alt"
-                                                   th:attr="data-target='#modal-delete'+${period?.id}"
+                                                   th:attr="data-target='#modal-delete'+${scho?.id}"
                                                    data-rel="tooltip" title="delete" data-toggle="modal"></a>
 
-                                                <div th:id="modal-delete+${period?.id}" class="modal fade"
+                                                <div th:id="modal-delete+${scho?.id}" class="modal fade"
                                                      tabindex="-1">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header no-padding">
-                                                                <div class="table-header">Supprimer</div>
+                                                                <div class="table-header">Suppression</div>
                                                             </div>
                                                             <div class="modal-body no-padding">Vous étes sur de
-                                                                supprimer cette durée d'abonnement?
+                                                                supprimer ce école?
                                                             </div>
                                                             <div class="modal-footer no-margin-top">
                                                                 <button class="btn btn-danger pull-left"
                                                                         data-dismiss="modal"> Annuler
                                                                 </button>
                                                                 <a class="btn btn-danger pull-right" type="button"
-                                                                   th:href="${'delete/'+ period?.id}"> Supprimer
+                                                                   th:href="${'delete/'+ scho?.id}"> Supprimer
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -70,19 +71,20 @@
                                 </table>
                             </div>
                         </th:block>
-                        <th:block th:unless="!${#lists.isEmpty(periodList)}">
-                            <h5 class="align-content-center">Aucun type d'abonnement </h5>
+                        <th:block th:unless="!${#lists.isEmpty(schoolList)}">
+                            <h5 class="align-content-center">Aucun école </h5>
                         </th:block>
                         <div class="row align-items-end justify-content-end">
-                            <a th:href="@{/admin/period/addPeriod}" type="button" class="btn btn-dark"> Ajouter </a>
+                            <a th:href="@{/admin/school/addSchool}" type="button" class="btn btn-dark"> Ajouter </a>
                         </div>
                     </form>
                 </th:block>
             </div>
         </div>
     </main>
-    <!--    <script type="text/javascript" th:src="@{/static/js/club/category.js}"></script>-->
 </div>
-<footer th:replace="footer"></footer>
+<div class="footer-admin">
+    <footer th:replace="footerAdmin"></footer>
+</div>
 </body>
 </html>

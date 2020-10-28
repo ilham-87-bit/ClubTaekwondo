@@ -11,6 +11,6 @@ public class CoachController {
     @GetMapping(value = "/coachList")
     public String coachList(){
 
-        return ("coachList");
+        return ("adminPart/coach/coachList");
     }
 }

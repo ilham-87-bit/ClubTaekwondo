@@ -10,10 +10,10 @@ public class School {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_ecole")
-    private Long idSchool;
+    private Long id;
 
     @Column(name = "nome_ecole")
-    private String schoolName;
+    private String name;
 
     @OneToOne
     @JoinColumn(name = "id_adresse")
@@ -25,30 +25,32 @@ public class School {
     @OneToMany(mappedBy = "s")
     private Set<TimeTable> timeTables;
 
-    public School(Long idSchool, String schoolName, Address address) {
-        this.idSchool = idSchool;
-        this.schoolName = schoolName;
+    public School(Long id, String name, Address address, Set<CategoryBySchool> categoryBySchools, Set<TimeTable> timeTables) {
+        this.id = id;
+        this.name = name;
         this.address = address;
+        this.categoryBySchools = categoryBySchools;
+        this.timeTables = timeTables;
     }
 
     public School() {
 
     }
 
-    public Long getIdSchool() {
-        return idSchool;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdSchool(Long idSchool) {
-        this.idSchool = idSchool;
+    public void setId(Long idSchool) {
+        this.id = idSchool;
     }
 
-    public String getSchoolName() {
-        return schoolName;
+    public String getName() {
+        return name;
     }
 
-    public void setSchoolName(String schoolName) {
-        this.schoolName = schoolName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Address getAddress() {
@@ -67,11 +69,11 @@ public class School {
         this.categoryBySchools = categoryBySchools;
     }
 
-    public Set<TimeTable> getTimes() {
+    public Set<TimeTable> getTimeTables() {
         return timeTables;
     }
 
-    public void setTimes(Set<TimeTable> timeTables) {
+    public void setTimeTables(Set<TimeTable> timeTables) {
         this.timeTables = timeTables;
     }
 }

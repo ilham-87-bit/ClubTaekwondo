@@ -9,7 +9,7 @@ public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_ville")
-    private Long idCity;
+    private Long id;
 
     @Column(name = "nome_ville")
     private String cityName;
@@ -17,8 +17,8 @@ public class City {
     @Column(name = "code_postal")
     private String postalCode;
 
-    public City(Long idCity, String cityName, String postalCode) {
-        this.idCity = idCity;
+    public City(Long id, String cityName, String postalCode) {
+        this.id = id;
         this.cityName = cityName;
         this.postalCode = postalCode;
     }
@@ -27,12 +27,12 @@ public class City {
 
     }
 
-    public Long getIdCity() {
-        return idCity;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdCity(Long idCity) {
-        this.idCity = idCity;
+    public void setId(Long idCity) {
+        this.id = idCity;
     }
 
     public String getCityName() {

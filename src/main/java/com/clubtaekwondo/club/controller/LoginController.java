@@ -85,22 +85,6 @@ public class LoginController {
         return "redirect:/index";
     }
 
-//    @GetMapping(value = "/addAdmin")
-//    public String addAdmin(Model model) {
-//        User user = new User();
-//        user.setEmail("admin@takewando.com");
-////        user.setLogin("admin");
-//        user.setPassword(encoder.encode("admin"));
-//        try {
-//            userService.save(user, Role.ADMIN);
-//        } catch (IllegalArgumentException ex) {
-//            model.addAttribute("error", ex.getMessage());
-//            System.out.println(ex.getMessage());
-//        }
-//
-//        return ("indexAdmin");
-//    }
-
     @GetMapping("/inscription")
     public String inscriptionGet() {
 

@@ -9,7 +9,7 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_adresse")
-    private Long idAddress;
+    private Long id;
 
     @Column(name = "rue")
     private String street;
@@ -22,8 +22,8 @@ public class Address {
     @JoinColumn(name = "id_ville")
     private City city;
 
-    public Address(Long idAddress, String street, String number, City city) {
-        this.idAddress = idAddress;
+    public Address(Long id, String street, String number, City city) {
+        this.id = id;
         this.street = street;
         this.number = number;
         this.city = city;
@@ -33,12 +33,12 @@ public class Address {
 
     }
 
-    public Long getIdAddress() {
-        return idAddress;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdAddress(Long idAddress) {
-        this.idAddress = idAddress;
+    public void setId(Long idAddress) {
+        this.id = idAddress;
     }
 
     public String getStreet() {

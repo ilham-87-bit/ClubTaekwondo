@@ -6,28 +6,19 @@
 </header>
 <div id="layoutSidenav_content">
     <main>
-        <div class="container-fluid">
-            <form id="idAddCategoryForm" class="form-horizontal" method="post"
-                  th:action="@{/admin/category/addCategory}"
-                  name="category" th:object="${category}">
+        <div class="container-fluid" th:with="hasType = ${type.id != null}">
+            <form id="idAddTypeForm" class="form-horizontal" method="post" th:object="${type}"
+                  th:action="@{(${hasType ? '/admin/type/edit' : '/admin/type/addType'})}" name="type">
 
                 <input type="hidden" th:field="*{id}">
                 <div class="form-group required col-6 col-lg-12">
-                    <label class="control-label" for="categoriesName"> Catégorie :</label>
-                    <input id="categoriesName"
-                           type="text"
-                           class="form-control py-4"
-                           name="categoryName"
-                           data-placement="right"
-                           maxlength="50"
-                           th:field="*{categoryName}"/>
+                    <label class="control-label" for="type"> Type d'abonnement :</label>
+                    <input id="type" type="text" class="form-control py-4" name="type" data-placement="right"
+                           maxlength="50" th:field="*{nbrHours}"/>
                 </div>
                 <div class="form-group required col-6 col-lg-12">
-                    <label class="control-label" for="descriptionCategory">Déscription de catégorie :</label>
-                    <input id="descriptionCategory"
-                           type="text"
-                           class="form-control py-4"
-                           name="description"
+                    <label class="control-label" for="description">Déscription du type :</label>
+                    <input id="description" type="text" class="form-control py-4" name="description"
                            data-placement="right"
                            maxlength="50"
                            th:field="*{description}"/>
@@ -38,7 +29,7 @@
                             <p class="disclaimer red font-weight-bold m-0"></p>
                         </div>
                         <div class="col-auto">
-                            <a th:href="@{/admin/category/categoryList}" class="btn btn-dark"> Précédent </a>
+                            <a th:href="@{/admin/type/typeList}" class="btn btn-dark"> Précédent </a>
                         </div>
                         <div class="col-auto">
                             <button th:if="*{id == null}" id="saveButton" type="submit" class="btn btn-dark">
@@ -55,6 +46,8 @@
         </div>
     </main>
 </div>
-<footer th:replace="footer"></footer>
+<div class="footer-admin">
+    <footer th:replace="footerAdmin"></footer>
+</div>
 </body>
 </html>

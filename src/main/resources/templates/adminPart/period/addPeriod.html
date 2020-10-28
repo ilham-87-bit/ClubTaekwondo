@@ -6,9 +6,9 @@
 </header>
 <div id="layoutSidenav_content">
     <main>
-        <div class="container-fluid">
-            <form id="idAddPeriodForm" th:object="${period}" class="form-horizontal" method="post"
-                  th:action="@{/admin/period/addPeriod}" name="period">
+        <div class="container-fluid" th:with="hasPeriod = ${period.id != null}">
+            <form id="idAddPeriodForm" class="form-horizontal" th:object="${period}" method="post"
+                  th:action="@{(${hasPeriod ? '/admin/period/edit' : '/admin/period/addPeriod'})}" name="period">
 
                 <input type="hidden" th:field="*{id}">
                 <div class="form-group required col-6 col-lg-12">
@@ -36,7 +36,8 @@
                                 Ajouter
                             </button>
 
-                            <button th:unless="*{id == null}" id="editButton" type="submit" class="btn btn-dark">
+                            <button th:unless="*{id == null}" id="editButton" th:href="@{/admin/period/edit}"
+                                    class="btn btn-dark">
                                 Modifier
                             </button>
                         </div>
@@ -46,7 +47,8 @@
         </div>
     </main>
 </div>
-<footer th:replace="footer"></footer>
-
+<div class="footer-admin">
+    <footer th:replace="footerAdmin"></footer>
+</div>
 </body>
 </html>

@@ -1,6 +1,5 @@
 package com.clubtaekwondo.club.controller.admin;
 
-import com.clubtaekwondo.club.model.Categories;
 import com.clubtaekwondo.club.model.SubscriptionPeriod;
 import com.clubtaekwondo.club.service.SubscriptionPeriodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class PeriodController {
     @GetMapping(value = "/periodList")
     public String periodList(Model model, WebRequest request) {
         model.addAttribute("periodList", subscriptionPeriodService.getAllPeriod());
-        return "periodList";
+        return "adminPart/period/periodList";
     }
 
     @GetMapping(value = "/{period}")
@@ -34,13 +33,13 @@ public class PeriodController {
 
         model.addAttribute(PERIOD, period);
 
-        return "addPeriod";
+        return "adminPart/period/addPeriod";
     }
 
     @GetMapping(value = "/addPeriod")
     public String getAddPeriod(SubscriptionPeriod period, Model model) {
         model.addAttribute(PERIOD, new SubscriptionPeriod());
-        return ("addPeriod");
+        return ("adminPart/period/addPeriod");
     }
 
     @PostMapping(value = "/addPeriod")
@@ -50,7 +49,7 @@ public class PeriodController {
 
         model.addAttribute(PERIOD, period);
         model.addAttribute("periodList", subscriptionPeriodService.getAllPeriod());
-        return "periodList";
+        return "adminPart/period/periodList";
     }
 
     @GetMapping(value = "/edit/{period}")
@@ -60,7 +59,7 @@ public class PeriodController {
 
         model.addAttribute(PERIOD, period);
 
-        return "addPeriod";
+        return "adminPart/period/addPeriod";
     }
 
     @PostMapping(value = "/edit")
@@ -71,7 +70,7 @@ public class PeriodController {
         model.addAttribute(PERIOD, period);
         model.addAttribute("periodList", subscriptionPeriodService.getAllPeriod());
 
-        return "periodList";
+        return "adminPart/period/periodList";
     }
 
     @GetMapping(value = "/delete/{period}")
@@ -82,6 +81,6 @@ public class PeriodController {
 
         model.addAttribute("periodList", subscriptionPeriodService.getAllPeriod());
 
-        return "periodList";
+        return "adminPart/period/periodList";
     }
 }

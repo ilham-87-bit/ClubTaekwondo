@@ -55,6 +55,31 @@
                                             <td>
                                                 <a th:href="${'edit/'+ category?.id}"
                                                    class="btn btn-link fa fa-edit"></a>
+                                                <a class="btn btn-link fa fa-trash-alt"
+                                                   th:attr="data-target='#modal-delete'+${category?.id}"
+                                                   data-rel="tooltip" title="delete" data-toggle="modal"></a>
+
+                                                <div th:id="modal-delete+${category?.id}" class="modal fade"
+                                                     tabindex="-1">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header no-padding">
+                                                                <div class="table-header">Suppression</div>
+                                                            </div>
+                                                            <div class="modal-body no-padding">Vous étes sur de
+                                                                supprimer cette catégorie ?
+                                                            </div>
+                                                            <div class="modal-footer no-margin-top">
+                                                                <button class="btn btn-danger pull-left"
+                                                                        data-dismiss="modal"> Annuler
+                                                                </button>
+                                                                <a class="btn btn-danger pull-right" type="button"
+                                                                   th:href="${'delete/'+ category?.id}"> Supprimer
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     </th:block>
@@ -66,24 +91,26 @@
                             <h5 class="align-content-center">La liste des catégories est vide </h5>
                         </th:block>
                         <div class="row align-items-end justify-content-end">
-                            <div th:if="!${#lists.isEmpty(categoryList)}">
-                                <button id="deleteCategory" class="fa fa-trash"
-                                        data-target="#categoryForm"> Supprimer
-                                </button>
-                            </div>
-                            <a th:href="@{addCategory}" type="button" class="btn btn-dark"> Ajouter </a>
+                            <!--                            <div th:if="!${#lists.isEmpty(categoryList)}">-->
+                            <!--                                <button id="deleteCategory" class="fa fa-trash"-->
+                            <!--                                        data-target="#categoryForm"> Supprimer-->
+                            <!--                                </button>-->
+                            <!--                            </div>-->
+                            <a th:href="@{/admin/category/addCategory}" type="button" class="btn btn-dark"> Ajouter </a>
                         </div>
                     </form>
                 </th:block>
-                <th:block th:with="isOneCategory=${false}">
-                    <th:block th:replace="deleteCategoryConfirmation"></th:block>
-                </th:block>
+                <!--                <th:block th:with="isOneCategory=${false}">-->
+                <!--                    <th:block th:replace="deleteCategoryConfirmation"></th:block>-->
+                <!--                </th:block>-->
             </div>
         </div>
     </main>
-    <span id="js-template-global" th:attr="data-delete-category-url=@{/admin/category/delete}"></span>
-    <script type="text/javascript" th:src="@{/js/club/category.js}"></script>
+    <!--    <span id="js-template-global" th:attr="data-delete-category-url=@{/admin/category/delete}"></span>-->
+    <!--    <script type="text/javascript" th:src="@{/js/club/category.js}"></script>-->
 </div>
-<footer th:replace="footer"></footer>
+<div class="footer-admin">
+    <footer th:replace="footerAdmin"></footer>
+</div>
 </body>
 </html>

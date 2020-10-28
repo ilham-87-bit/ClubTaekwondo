@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("admin existe déja");
         }
         if (userRepository.findByEmail(user.getEmail()) == null) {
-           user = userRepository.save(user);
+            user = userRepository.save(user);
 
         }
         return user;

@@ -10,28 +10,32 @@ public class SubscriptionType {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_type_abonnement")
-    private Long idSubscriptionType;
+    private Long id;
     @Column(name = "nbr_heur")
     private Integer nbrHours;
+
+    private String description;
 
     @OneToMany(mappedBy = "type")
     private Set<Tariff> tariffs;
 
-    public SubscriptionType(Long idSubscriptionType, Integer nbrHours) {
-        this.idSubscriptionType = idSubscriptionType;
+    public SubscriptionType(Long id, Integer nbrHours, String description, Set<Tariff> tariffs) {
+        this.id = id;
         this.nbrHours = nbrHours;
+        this.description = description;
+        this.tariffs = tariffs;
     }
 
     public SubscriptionType() {
 
     }
 
-    public Long getIdSubscriptionType() {
-        return idSubscriptionType;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdSubscriptionType(Long idSubscriptionType) {
-        this.idSubscriptionType = idSubscriptionType;
+    public void setId(Long idSubscriptionType) {
+        this.id = idSubscriptionType;
     }
 
     public Integer getNbrHours() {
@@ -41,11 +45,20 @@ public class SubscriptionType {
     public void setNbrHours(Integer nbrHours) {
         this.nbrHours = nbrHours;
     }
-    public Set<Tariff> getTarifs() {
+
+    public Set<Tariff> getTariffs() {
         return tariffs;
     }
 
-    public void setTarifs(Set<Tariff> tariffs) {
+    public void setTariffs(Set<Tariff> tariffs) {
         this.tariffs = tariffs;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

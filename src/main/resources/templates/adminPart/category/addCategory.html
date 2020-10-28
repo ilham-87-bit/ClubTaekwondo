@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head"></head>
+<body class="sb-nav-fixed">
+<header th:replace="headerAdmin">
+</header>
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid" th:with="hasCategory = ${category.id != null}">
+            <form id="idAddCategoryForm" class="form-horizontal" method="post" th:object="${category}"
+                  th:action="@{(${hasCategory ? '/admin/category/edit' : '/admin/category/addCategory'})}"
+                  name="category">
+
+                <input type="hidden" th:field="*{id}">
+                <div class="form-group required col-6 col-lg-12">
+                    <label class="control-label" for="categoriesName"> Catégorie :</label>
+                    <input id="categoriesName"
+                           type="text"
+                           class="form-control py-4"
+                           name="categoryName"
+                           data-placement="right"
+                           maxlength="50"
+                           th:field="*{categoryName}"/>
+                </div>
+                <div class="form-group required col-6 col-lg-12">
+                    <label class="control-label" for="descriptionCategory">Déscription de catégorie :</label>
+                    <input id="descriptionCategory"
+                           type="text"
+                           class="form-control py-4"
+                           name="description"
+                           data-placement="right"
+                           maxlength="50"
+                           th:field="*{description}"/>
+                </div>
+                <div class="card-footer">
+                    <div class="row align-items-end justify-content-end">
+                        <div class="col">
+                            <p class="disclaimer red font-weight-bold m-0"></p>
+                        </div>
+                        <div class="col-auto">
+                            <a th:href="@{/admin/category/categoryList}" class="btn btn-dark"> Précédent </a>
+                        </div>
+                        <div class="col-auto">
+                            <button th:if="*{id == null}" id="saveButton" type="submit" class="btn btn-dark">
+                                Ajouter
+                            </button>
+
+                            <button th:unless="*{id == null}" id="editButton" type="submit" class="btn btn-dark">
+                                Modifier
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+<div class="footer-admin">
+    <footer th:replace="footerAdmin"></footer>
+</div>
+</body>
+</html>

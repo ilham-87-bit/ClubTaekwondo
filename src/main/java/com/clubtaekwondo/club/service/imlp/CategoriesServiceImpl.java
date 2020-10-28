@@ -21,7 +21,6 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
 
-
     @Override
     public void deleteCategories(Categories categories) {
         categoriesRepository.delete(categories);
@@ -40,7 +39,7 @@ public class CategoriesServiceImpl implements CategoriesService {
 
     @Override
     public void deleteAllCategories(List<Categories> categoriesList) {
-        for(Categories category : categoriesList){
+        for (Categories category : categoriesList) {
             categoriesRepository.delete(category);
         }
     }
