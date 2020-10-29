@@ -49,22 +49,21 @@ public class SchoolController {
     public String addSchool(School school, Address address, City city, Model model) {
 
         Optional<City> firstCity = cityService.getAllCity().stream()
-                .filter(c -> c.getCityName().equals(city.getCityName()))
+                .filter(c -> c.getCityName().equals(school.getAddress().getCity().getCityName()) && c.getPostalCode().equals(school.getAddress().getCity().getPostalCode()))
                 .findFirst();
         if (firstCity.isPresent()) {
-            address.setCity(firstCity.get());
+            school.getAddress().setCity(firstCity.get());
         } else {
-            cityService.save(city);
+            cityService.save(school.getAddress().getCity());
             address.setCity(city);
         }
         Optional<Address> firstAddress = addressService.getAllAddress().stream()
-                .filter(a -> a.getStreet().equals(address.getStreet()) && a.getNumber().equals(address.getNumber()) && a.getCity().equals(address.getCity()))
+                .filter(a -> a.getStreet().equals(school.getAddress().getStreet()) && a.getNumber().equals(school.getAddress().getNumber()) && a.getCity().equals(school.getAddress().getCity()))
                 .findFirst();
         if (firstAddress.isPresent()) {
             school.setAddress(firstAddress.get());
         } else {
-            addressService.save(address);
-            school.setAddress(address);
+            addressService.save(school.getAddress());
         }
         schoolService.save(school);
 
@@ -102,6 +101,8 @@ public class SchoolController {
     @PostMapping(value = "/edit")
     public String editSchool(School school, Model model) {
 
+        cityService.save(school.getAddress().getCity());
+        addressService.save(school.getAddress());
         schoolService.save(school);
 
         model.addAttribute(SCHOOL, school);

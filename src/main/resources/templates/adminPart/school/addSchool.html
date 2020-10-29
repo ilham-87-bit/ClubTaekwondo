@@ -10,41 +10,41 @@
             <form id="idAddSchoolForm" class="form-horizontal" th:object="${school}"
                   th:action="@{(${hasSchool ? '/admin/school/edit' : '/admin/school/addSchool'})}" method="post">
                 <input type="hidden" th:field="*{id}">
-                <div class="form-group required col-6 col-lg-12">
+                <div class="form-group required col-6 col-lg-8">
                     <label class="control-label" for="school">Nom de l'ecole :</label>
                     <input id="school" type="text" class="form-control py-4" name="name" data-placement="right"
                            maxlength="50" th:field="*{name}"/>
                 </div>
 
                 <input type="hidden" th:field="*{address.id}">
-                <div class="form-group required col-6 col-lg-12">
+                <div class="form-group required col-6 col-lg-8">
                     <label class="control-label" for="street"> Rue :</label>
                     <input id="street" type="text" class="form-control py-4" name="street" data-placement="right"
                            maxlength="50" th:field="*{address.street}"/>
                 </div>
-                <div class="form-group required col-6 col-lg-12">
+                <div class="form-group required col-6 col-lg-8">
                     <label class="control-label" for="number"> Numero :</label>
                     <input id="number" type="text" class="form-control py-4" name="number" data-placement="right"
                            maxlength="50" th:field="*{address.number}"/>
                 </div>
 
                 <input type="hidden" th:field="*{address.city.id}">
-                <div class="form-group required col-6 col-lg-12">
+                <div class="form-group required col-6 col-lg-8">
                     <label class="control-label" for="postalCode"> Code postal:</label>
                     <input id="postalCode" type="text" class="form-control py-4" name="postalCode"
                            data-placement="right"
                            maxlength="50" th:field="*{address.city.postalCode}"/>
                 </div>
-                <div class="form-group required col-6 col-lg-12">
+                <div class="form-group required col-6 col-lg-8">
                     <label class="control-label" for="cityName"> Ville :</label>
                     <input id="cityName" type="text" class="form-control py-4" name="cityName" data-placement="right"
                            maxlength="50" th:field="*{address.city.cityName}"/>
                 </div>
                 <div class="card-footer">
                     <div class="row align-items-end justify-content-end">
-                        <div class="col">
-                            <p class="disclaimer red font-weight-bold m-0">Ce champ est obligatoire</p>
-                        </div>
+                        <!--                        <div class="col">-->
+                        <!--                            <p class="disclaimer red font-weight-bold m-0">Ce champ est obligatoire</p>-->
+                        <!--                        </div>-->
                         <div class="col-auto">
                             <a th:href="@{/admin/school/schoolList}" class="btn btn-dark"> Précédent </a>
                         </div>
