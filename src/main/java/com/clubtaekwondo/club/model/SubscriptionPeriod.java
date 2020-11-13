@@ -8,7 +8,7 @@ import java.util.Set;
 public class SubscriptionPeriod {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_dure_abonnement")
     private Long id;
 

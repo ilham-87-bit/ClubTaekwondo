@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class CategoryBySchool {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_offrir")
     private Long idCategoryBySchool;
 

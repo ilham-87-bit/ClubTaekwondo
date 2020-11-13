@@ -8,7 +8,7 @@ import java.sql.Time;
 public class TimeTable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_heur")
     private Long idTime;
 

@@ -7,7 +7,84 @@
 <div id="layoutSidenav_content">
     <main>
         <div class="container-fluid">
+            <div class="card-body">
+                <th:block th:with="hasCoach=${!#lists.isEmpty(coachList)}">
+                    <form id="coachForm" method="post">
+                        <th:block th:if="!${#lists.isEmpty(coachList)}">
+                            <div class="card-body card-border">
+                                <table id="coachTable"
+                                       class="table table-fixed table-striped"
+                                       th:classappend="${hasCoach} ? 'table-hover'">
+                                    <thead>
+                                    <tr>
+                                        <th class="cell--seven">
+                                            <span> Nom </span>
+                                        </th>
+                                        <th class="cell--twenty">
+                                            <span> Adresse </span>
+                                        </th>
+                                        <th class="cell--twenty">
+                                            <span> Ecole </span>
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="list" id="coachList">
+                                    <th:block th:if="${hasCoach}">
+                                        <tr th:each="co, row : ${coachList}" class="js-row-link-alt">
+                                            <td>
+                                                <span th:text="${co?.firstNameCoach} +'  ' + ${co?.nameCoach}"></span>
+                                            </td>
+                                            <td>
+                                                <span th:text="${co?.address?.street} + ', ' + ${co?.address?.number} + ', ' + ${co?.address?.city?.postalCode} + ', ' + ${co?.address?.city?.cityName}"></span>
+                                            </td>
+                                            <td>
+                                                <span th:text="${co?.school?.name}"></span>
+                                            </td>
+                                            <td>
+                                                <a th:href="${'edit/'+ co?.idCoach}"
+                                                   class="btn btn-link fa fa-edit"></a>
+                                                <a class="btn btn-link fa fa-trash-alt"
+                                                   th:attr="data-target='#modal-delete'+${co?.idCoach}"
+                                                   data-rel="tooltip" title="delete" data-toggle="modal"></a>
 
+                                                <div th:id="modal-delete+${co?.idCoach}" class="modal fade"
+                                                     tabindex="-1">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header no-padding">
+                                                                <div class="table-header">Suppression</div>
+                                                            </div>
+                                                            <div class="modal-body no-padding">Vous étes sur de
+                                                                supprimer cet entraineur?
+                                                            </div>
+                                                            <div class="modal-footer no-margin-top">
+                                                                <button class="btn btn-danger pull-left"
+                                                                        data-dismiss="modal"> Annuler
+                                                                </button>
+                                                                <a class="btn btn-danger pull-right" type="button"
+                                                                   th:href="${'delete/'+ co?.idCoach}"> Supprimer
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </th:block>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </th:block>
+                        <th:block th:unless="!${#lists.isEmpty(coachList)}">
+                            <h5 class="align-content-center text-center">Aucun entraineur </h5>
+                        </th:block>
+                        <div class="row align-items-end justify-content-end">
+                            <a th:href="@{/admin/coach/addCoach}" type="button" class="btn btn-dark"> Ajouter </a>
+                        </div>
+                    </form>
+                </th:block>
+            </div>
         </div>
     </main>
 </div>

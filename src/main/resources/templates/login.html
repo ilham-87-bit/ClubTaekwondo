@@ -13,18 +13,18 @@
                         <div class="card-body">
                             <form th:action="@{/login}" method="post">
                                 <div class="form-group">
-                                    <label class="small mb-1" for="username">Email</label>
+                                    <label class="control-label mb-1" for="username">Email</label>
                                     <input class="form-control py-4" type="text" id="username" name="username"
                                            placeholder="Entrer votre email"/>
                                 </div>
                                 <div class="form-group">
-                                    <label class="small mb-1" for="inputPassword">Mot de passe</label>
+                                    <label class="control-label mb-1" for="inputPassword">Mot de passe</label>
                                     <input class="form-control py-4" id="inputPassword" type="password"
                                            name="password"
                                            placeholder="Entrer le mot de passe"/>
                                 </div>
                                 <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
-                                    <a class="small" th:href="@{forgetpassword}">Mot de passe oublié?</a>
+                                    <a class="small" th:href="@{/forgetPassword}">Mot de passe oublié?</a>
                                     <input type="submit" value="Connexion"/>
                                 </div>
                             </form>

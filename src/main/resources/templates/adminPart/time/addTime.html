@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head"></head>
+<body>
+<header th:replace="headerAdmin">
+</header>
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid" th:with="hasTime = ${time.idTime != null}">
+            <form id="idAddTimeForm" class="form-horizontal" th:object="${time}"
+                  th:action="@{(${hasTime ? '/admin/time/edit' : '/admin/time/addTime'})}" method="post">
+                <input type="hidden" th:field="*{idTime}">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label class="control-label" for="idSchool"> Ecole :</label>
+                            <div class="select-awesome" data-placement="right" maxlength="50">
+                                <label>
+                                    <select id="idSchool"
+                                            class="form-control"
+                                            aria-invalid="false"
+                                            name="id">
+                                        <th:block th:if="!${#lists.isEmpty(schoolList)}">
+                                            <option th:each="scho : ${schoolList}"
+                                                    th:value="${scho.id}"
+                                                    th:text="${scho.name}"
+                                                    th:selected="${time?.s?.id} == ${scho.id}">
+                                            </option>
+                                        </th:block>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label class="control-label" for="idSchool"> Entraineur :</label>
+                            <div class="select-awesome" data-placement="right" maxlength="50">
+                                <label>
+                                    <select id="idCoach"
+                                            class="form-control"
+                                            aria-invalid="false"
+                                            name="idCoach">
+                                        <th:block th:if="!${#lists.isEmpty(coachList)}">
+                                            <option th:each="coach : ${coachList}"
+                                                    th:value="${coach.idCoach}"
+                                                    th:text="${coach.nameCoach}"
+                                                    th:selected="${time?.co?.idCoach} == ${coach.idCoach}">
+                                            </option>
+                                        </th:block>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label class="control-label" for="idCategory"> Categorie :</label>
+                            <div class="select-awesome" data-placement="right" maxlength="50">
+                                <label>
+                                    <select id="idCategory"
+                                            class="form-control"
+                                            aria-invalid="false"
+                                            name="idCategory">
+                                        <th:block th:if="!${#lists.isEmpty(categoryList)}">
+                                            <option th:each="category : ${categoryList}"
+                                                    th:value="${category.idCategory}"
+                                                    th:text="${category.categoryName}"
+                                                    th:selected="${time?.c?.idCategory} == ${category.idCategory}">
+                                            </option>
+                                        </th:block>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label class="control-label" for="idDay"> Jour :</label>
+                            <div class="select-awesome" data-placement="right" maxlength="50">
+                                <label>
+                                    <select id="idDay"
+                                            class="form-control"
+                                            aria-invalid="false"
+                                            name="idDay">
+                                        <th:block th:if="!${#lists.isEmpty(dayList)}">
+                                            <option th:each="d : ${dayList}"
+                                                    th:value="${d.idDay}"
+                                                    th:text="${d.day}"
+                                                    th:selected="${time?.day?.idDay} == ${d.idDay}">
+                                            </option>
+                                        </th:block>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label class="control-label" for="inputStartTime">Heur de début :</label>
+                            <input class="form-control" id="inputStartTime" type="text"
+                                   th:field="*{startTime}"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label class="control-label" for="inputEndTime">heur de fin :</label>
+                            <input class="form-control" id="inputEndTime" type="text"
+                                   th:field="*{endTime}"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="row align-items-end justify-content-end">
+                        <div class="col">
+                            <p class="disclaimer red font-weight-bold m-0">(*)Ce champ est obligatoire</p>
+                        </div>
+                        <div class="col-auto">
+                            <a th:href="@{/admin/time/timeList}" class="btn btn-dark"> Précédent </a>
+                        </div>
+                        <div class="col-auto">
+                            <button th:if="${time.idTime == null}" id="saveButton" type="submit" class="btn btn-dark">
+                                Ajouter
+                            </button>
+
+                            <button th:unless="${time.idTime == null}" id="editButton" type="submit"
+                                    class="btn btn-dark">
+                                Modifier
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+<footer th:replace="footerAdmin"></footer>
+</body>
+</html>

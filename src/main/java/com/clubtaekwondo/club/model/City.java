@@ -7,9 +7,9 @@ import javax.persistence.*;
 public class City {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_ville")
-    private Long id;
+    private Long idCity;
 
     @Column(name = "nome_ville")
     private String cityName;
@@ -17,8 +17,8 @@ public class City {
     @Column(name = "code_postal")
     private String postalCode;
 
-    public City(Long id, String cityName, String postalCode) {
-        this.id = id;
+    public City(Long idCity, String cityName, String postalCode) {
+        this.idCity = idCity;
         this.cityName = cityName;
         this.postalCode = postalCode;
     }
@@ -27,12 +27,12 @@ public class City {
 
     }
 
-    public Long getId() {
-        return id;
+    public Long getIdCity() {
+        return idCity;
     }
 
-    public void setId(Long idCity) {
-        this.id = idCity;
+    public void setIdCity(Long idCity) {
+        this.idCity = idCity;
     }
 
     public String getCityName() {

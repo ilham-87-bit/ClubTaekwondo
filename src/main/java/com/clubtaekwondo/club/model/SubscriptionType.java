@@ -8,18 +8,18 @@ import java.util.Set;
 public class SubscriptionType {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_type_abonnement")
     private Long id;
     @Column(name = "nbr_heur")
-    private Integer nbrHours;
+    private String nbrHours;
 
     private String description;
 
     @OneToMany(mappedBy = "type")
     private Set<Tariff> tariffs;
 
-    public SubscriptionType(Long id, Integer nbrHours, String description, Set<Tariff> tariffs) {
+    public SubscriptionType(Long id, String nbrHours, String description, Set<Tariff> tariffs) {
         this.id = id;
         this.nbrHours = nbrHours;
         this.description = description;
@@ -38,11 +38,11 @@ public class SubscriptionType {
         this.id = idSubscriptionType;
     }
 
-    public Integer getNbrHours() {
+    public String getNbrHours() {
         return nbrHours;
     }
 
-    public void setNbrHours(Integer nbrHours) {
+    public void setNbrHours(String nbrHours) {
         this.nbrHours = nbrHours;
     }
 

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head"></head>
+<body>
+<header th:replace="headerAdmin">
+</header>
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid" th:with="hasCoach = ${coach.idCoach != null}">
+            <form id="idAddCoachForm" class="form-horizontal" th:object="${coach}"
+                  th:action="@{(${hasCoach ? '/admin/coach/edit' : '/admin/coach/addCoach'})}" method="post">
+                <input type="hidden" th:field="*{idCoach}">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label class="control-label mb-1" for="inputFirstName">Prénome :</label>
+                            <input class="form-control" id="inputFirstName" type="text"
+                                   th:field="*{firstNameCoach}"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label class="control-label mb-1" for="inputLastName">Nome :</label>
+                            <input class="form-control" id="inputLastName" type="text"
+                                   th:field="*{nameCoach}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label class="control-label" for="inputEmailAddress">Email :</label>
+                            <input class="form-control" id="inputEmailAddress" type="email"
+                                   th:field="*{email}" aria-describedby="emailHelp"/>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label class="control-label" for="idSchool"> Ecole :</label>
+                            <div class="select-awesome" data-placement="right" maxlength="50">
+                                <label>
+                                    <select id="idSchool"
+                                            class="form-control"
+                                            aria-invalid="false"
+                                            name="id">
+                                        <th:block th:if="!${#lists.isEmpty(schoolList)}">
+                                            <option th:each="scho : ${schoolList}"
+                                                    th:value="${scho.id}"
+                                                    th:text="${scho.name}"
+                                                    th:selected="${coach?.school?.id} == ${scho.id}">
+                                            </option>
+                                        </th:block>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <input type="hidden" th:field="*{address.id}">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label class="control-label" for="street"> Rue :</label>
+                            <input id="street" type="text" class="form-control" name="street"
+                                   data-placement="right"
+                                   maxlength="50" th:field="*{address.street}"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label class="control-label" for="number"> Numero :</label>
+                            <input id="number" type="text" class="form-control" name="number"
+                                   data-placement="right"
+                                   maxlength="50" th:field="*{address.number}"/>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label class="control-label" for="postalCode"> Code postal:</label>
+                            <input id="postalCode" type="text" class="form-control" name="postalCode"
+                                   data-placement="right"
+                                   maxlength="50" th:field="*{address.city.postalCode}"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label class="control-label" for="idCity"> Ville :</label>
+                            <div class="select-awesome" data-placement="right" maxlength="50">
+                                <label>
+                                    <select id="idCity"
+                                            class="form-control"
+                                            aria-invalid="false"
+                                            name="idCity">
+                                        <th:block th:if="!${#lists.isEmpty(cityList)}">
+                                            <option th:each="city : ${cityList}"
+                                                    th:value="${city.idCity}"
+                                                    th:text="${city.cityName}"
+                                                    th:selected="${coach?.address?.city?.idCity} == ${city.idCity}">
+                                            </option>
+                                        </th:block>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer">
+                    <div class="row align-items-end justify-content-end">
+                        <div class="col">
+                            <p class="disclaimer red font-weight-bold m-0">(*)Ce champ est obligatoire</p>
+                        </div>
+                        <div class="col-auto">
+                            <a th:href="@{/admin/coach/coachList}" class="btn btn-dark"> Précédent </a>
+                        </div>
+                        <div class="col-auto">
+                            <button th:if="${coach.idCoach == null}" id="saveButton" type="submit" class="btn btn-dark">
+                                Ajouter
+                            </button>
+
+                            <button th:unless="${coach.idCoach == null}" id="editButton" type="submit"
+                                    class="btn btn-dark">
+                                Modifier
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+<footer th:replace="footerAdmin"></footer>
+</body>
+</html>

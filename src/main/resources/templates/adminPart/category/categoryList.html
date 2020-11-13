@@ -53,13 +53,13 @@
                                                 <span th:text="${category?.description}"></span>
                                             </td>
                                             <td>
-                                                <a th:href="${'edit/'+ category?.id}"
+                                                <a th:href="${'edit/'+ category?.idCategory}"
                                                    class="btn btn-link fa fa-edit"></a>
                                                 <a class="btn btn-link fa fa-trash-alt"
-                                                   th:attr="data-target='#modal-delete'+${category?.id}"
+                                                   th:attr="data-target='#modal-delete'+${category?.idCategory}"
                                                    data-rel="tooltip" title="delete" data-toggle="modal"></a>
 
-                                                <div th:id="modal-delete+${category?.id}" class="modal fade"
+                                                <div th:id="modal-delete+${category?.idCategory}" class="modal fade"
                                                      tabindex="-1">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
@@ -74,7 +74,8 @@
                                                                         data-dismiss="modal"> Annuler
                                                                 </button>
                                                                 <a class="btn btn-danger pull-right" type="button"
-                                                                   th:href="${'delete/'+ category?.id}"> Supprimer
+                                                                   th:href="${'delete/'+ category?.idCategory}">
+                                                                    Supprimer
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -88,7 +89,7 @@
                             </div>
                         </th:block>
                         <th:block th:unless="!${#lists.isEmpty(categoryList)}">
-                            <h5 class="align-content-center">La liste des catégories est vide </h5>
+                            <h5 class="align-content-center text-center">La liste des catégories est vide </h5>
                         </th:block>
                         <div class="row align-items-end justify-content-end">
                             <!--                            <div th:if="!${#lists.isEmpty(categoryList)}">-->

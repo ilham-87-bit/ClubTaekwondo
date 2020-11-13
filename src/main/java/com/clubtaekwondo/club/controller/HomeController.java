@@ -24,39 +24,4 @@ public class HomeController {
         return ("indexAdmin");
     }
 
-
-//    @GetMapping(value = "/login")
-//    public String login()
-//    {
-//        return ("login");
-//    }
-//
-//    @Autowired
-//    private UserRepository userRepository ;
-//    @Autowired
-//    private UserRoleRepository userRoleRepository ;
-//
-//    @Autowired
-//    private PasswordEncoder encoder ;
-//
-//
-//    @GetMapping(value = "/addAdmin")
-//    public String addAdmin()
-//    {
-//        User user = new User();
-//        user.setEmail("admin@takewando.com");
-//        user.setLogin("admin");
-//        user.setPassword(encoder.encode("admin"));
-//        UserRole role_admin = userRoleRepository.findByRole("ROLE_ADMIN");
-//        if (role_admin == null){
-//            role_admin = new UserRole("ROLE_ADMIN");
-//            role_admin = userRoleRepository.save(role_admin);
-//
-//        }
-//        user.setUserRole(role_admin);
-//        if( userRepository.findByLogin(user.getLogin()) ==  null){
-//            userRepository.save(user);
-//        }
-//        return ("index");
-//    }
 }

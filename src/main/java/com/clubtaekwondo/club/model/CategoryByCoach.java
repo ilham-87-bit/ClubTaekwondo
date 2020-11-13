@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class CategoryByCoach {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_donne")
     private Long idCategoryByCoach;
 

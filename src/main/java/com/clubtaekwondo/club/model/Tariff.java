@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class Tariff {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tarif")
     private Long idTarif;
 

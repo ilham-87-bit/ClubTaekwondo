@@ -6,6 +6,8 @@ import com.clubtaekwondo.club.service.CoachService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CoachServiceImpl implements CoachService {
 
@@ -18,12 +20,17 @@ public class CoachServiceImpl implements CoachService {
     }
 
     @Override
-    public Coach updateCoach(Coach coach) {
-        return null;
+    public void deleteCoach(Coach coach) {
+        coachRepository.delete(coach);
     }
 
     @Override
-    public void deleteCoach(Coach coach) {
-        coachRepository.delete(coach);
+    public List<Coach> getAllCoach() {
+        return coachRepository.findAll();
+    }
+
+    @Override
+    public Coach findById(Long id) {
+        return coachRepository.getOne(id);
     }
 }

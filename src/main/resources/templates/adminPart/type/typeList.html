@@ -71,7 +71,7 @@
                             </div>
                         </th:block>
                         <th:block th:unless="!${#lists.isEmpty(typeList)}">
-                            <h5 class="align-content-center">Aucun type d'abonnement </h5>
+                            <h5 class="align-content-center text-center">Aucun type d'abonnement </h5>
                         </th:block>
                         <div class="row align-items-end justify-content-end">
                             <a th:href="@{/admin/type/addType}" type="button" class="btn btn-dark"> Ajouter </a>
@@ -81,7 +81,6 @@
             </div>
         </div>
     </main>
-    <!--    <script type="text/javascript" th:src="@{/static/js/club/category.js}"></script>-->
 </div>
 <div class="footer-admin">
     <footer th:replace="footerAdmin"></footer>

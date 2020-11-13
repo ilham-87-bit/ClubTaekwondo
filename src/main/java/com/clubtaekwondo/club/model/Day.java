@@ -8,7 +8,7 @@ import java.util.Set;
 public class Day {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_jour")
     private Long idDay;
 

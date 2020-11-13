@@ -6,9 +6,9 @@ import java.util.Set;
 @Entity
 public class Categories {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_categorie")
-    private Long id;
+    private Long idCategory;
 
     @Column(name = "nom_categorie")
     private String categoryName;
@@ -29,26 +29,26 @@ public class Categories {
     private Set<TimeTable> timeTables;
 
 
-    public Categories(Long id, String categoryName, Set<Tariff> tariffs, Set<CategoryByCoach> categoryByCoaches, Set<CategoryBySchool> categoryBySchools, Set<TimeTable> timeTables, String description) {
-        this.id = id;
+    public Categories(Long idCategory, String categoryName, String description, Set<Tariff> tariffs, Set<CategoryByCoach> categoryByCoaches, Set<CategoryBySchool> categoryBySchools, Set<TimeTable> timeTables) {
+        this.idCategory = idCategory;
         this.categoryName = categoryName;
+        this.description = description;
         this.tariffs = tariffs;
         this.categoryByCoaches = categoryByCoaches;
         this.categoryBySchools = categoryBySchools;
         this.timeTables = timeTables;
-        this.description = description;
     }
 
     public Categories() {
 
     }
 
-    public Long getId() {
-        return id;
+    public Long getIdCategory() {
+        return idCategory;
     }
 
-    public void setId(Long idCategories) {
-        this.id = idCategories;
+    public void setIdCategory(Long idCategories) {
+        this.idCategory = idCategories;
     }
 
     public String getCategoryName() {

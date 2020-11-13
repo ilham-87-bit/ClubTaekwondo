@@ -41,22 +41,15 @@ public class SchoolController {
     public String getAddSchool(Model model) {
         model.addAttribute(SCHOOL, new School());
         model.addAttribute(ADDRESS, new Address());
-        model.addAttribute(CITY, new City());
+        model.addAttribute("cityList", cityService.getAllCity());
         return ("adminPart/school/addSchool");
     }
 
     @PostMapping(value = "/addSchool")
-    public String addSchool(School school, Address address, City city, Model model) {
+    public String addSchool(School school, City city, Model model) {
 
-        Optional<City> firstCity = cityService.getAllCity().stream()
-                .filter(c -> c.getCityName().equals(school.getAddress().getCity().getCityName()) && c.getPostalCode().equals(school.getAddress().getCity().getPostalCode()))
-                .findFirst();
-        if (firstCity.isPresent()) {
-            school.getAddress().setCity(firstCity.get());
-        } else {
-            cityService.save(school.getAddress().getCity());
-            address.setCity(city);
-        }
+        City c = cityService.findById(city.getIdCity());
+        school.getAddress().setCity(c);
         Optional<Address> firstAddress = addressService.getAllAddress().stream()
                 .filter(a -> a.getStreet().equals(school.getAddress().getStreet()) && a.getNumber().equals(school.getAddress().getNumber()) && a.getCity().equals(school.getAddress().getCity()))
                 .findFirst();
@@ -70,7 +63,7 @@ public class SchoolController {
 
         model.addAttribute(SCHOOL, school);
         model.addAttribute(ADDRESS, school.getAddress());
-        model.addAttribute(CITY, school.getAddress().getCity());
+        model.addAttribute("cityList", cityService.getAllCity());
         model.addAttribute("schoolList", schoolService.getAllSchool());
         return "redirect:/admin/school/schoolList";
     }
@@ -93,21 +86,24 @@ public class SchoolController {
 
         model.addAttribute(SCHOOL, school);
         model.addAttribute(ADDRESS, school.getAddress());
-        model.addAttribute(CITY, school.getAddress().getCity());
+//        model.addAttribute(CITY, school.getAddress().getCity());
+        model.addAttribute("cityList", cityService.getAllCity());
 
         return "adminPart/school/addSchool";
     }
 
     @PostMapping(value = "/edit")
-    public String editSchool(School school, Model model) {
+    public String editSchool(School school, City city, Model model) {
 
-        cityService.save(school.getAddress().getCity());
+        City c = cityService.findById(city.getIdCity());
+        school.getAddress().setCity(c);
         addressService.save(school.getAddress());
         schoolService.save(school);
 
         model.addAttribute(SCHOOL, school);
         model.addAttribute(ADDRESS, school.getAddress());
-        model.addAttribute(CITY, school.getAddress().getCity());
+//        model.addAttribute(CITY, school.getAddress().getCity());
+        model.addAttribute("cityList", cityService.getAllCity());
         model.addAttribute("schoolList", schoolService.getAllSchool());
 
         return "redirect:/admin/school/schoolList";
