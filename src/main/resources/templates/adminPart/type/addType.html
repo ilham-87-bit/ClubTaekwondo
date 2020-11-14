@@ -6,11 +6,11 @@
 </header>
 <div id="layoutSidenav_content">
     <main>
-        <div class="container-fluid" th:with="hasType = ${type.id != null}">
+        <div class="container-fluid" th:with="hasType = ${type.idType != null}">
             <form id="idAddTypeForm" class="form-horizontal" method="post" th:object="${type}"
                   th:action="@{(${hasType ? '/admin/type/edit' : '/admin/type/addType'})}" name="type">
 
-                <input type="hidden" th:field="*{id}">
+                <input type="hidden" th:field="*{idType}">
                 <div class="form-group required col-6 col-lg-8">
                     <label class="control-label" for="type"> Type d'abonnement :</label>
                     <input id="type" type="text" class="form-control py-4" name="type" data-placement="right"
@@ -32,11 +32,11 @@
                             <a th:href="@{/admin/type/typeList}" class="btn btn-dark"> Précédent </a>
                         </div>
                         <div class="col-auto">
-                            <button th:if="*{id == null}" id="saveButton" type="submit" class="btn btn-dark">
+                            <button th:if="*{idType == null}" id="saveButton" type="submit" class="btn btn-dark">
                                 Ajouter
                             </button>
 
-                            <button th:unless="*{id == null}" id="editButton" type="submit" class="btn btn-dark">
+                            <button th:unless="*{idType == null}" id="editButton" type="submit" class="btn btn-dark">
                                 Modifier
                             </button>
                         </div>

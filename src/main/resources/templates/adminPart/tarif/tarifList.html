@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="head"></head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head">
+</head>
 <body class="sb-nav-fixed">
 <header th:replace="headerAdmin">
 </header>
@@ -8,41 +9,53 @@
     <main>
         <div class="container-fluid">
             <div class="card-body">
-                <th:block th:with="hasType=${!#lists.isEmpty(typeList)}">
-                    <form id="typeForm" method="post">
-                        <th:block th:if="!${#lists.isEmpty(typeList)}">
+                <th:block th:with="hasTarif=${!#lists.isEmpty(tarifList)}">
+                    <form id="tarifForm" method="post">
+                        <th:block th:if="!${#lists.isEmpty(tarifList)}">
                             <div class="card-body card-border">
-                                <table id="typeTable"
+                                <table id="tarifTable"
                                        class="table table-fixed table-striped"
-                                       th:classappend="${hasType} ? 'table-hover'">
+                                       th:classappend="${hasTarif} ? 'table-hover'">
                                     <thead>
                                     <tr>
+                                        <th class="cell--seven">
+                                            <span> Catégorie </span>
+                                        </th>
+                                        <th class="cell--twenty">
+                                            <span> Durée d'abonnement </span>
+                                        </th>
                                         <th class="cell--seven">
                                             <span> Type d'abonnement </span>
                                         </th>
                                         <th class="cell--twenty">
-                                            <span> Déscription </span>
+                                            <span> Tarif </span>
                                         </th>
                                         <th></th>
                                     </tr>
                                     </thead>
-                                    <tbody class="list" id="typeList">
-                                    <th:block th:if="${hasType}">
-                                        <tr th:each="type, row : ${typeList}" class="js-row-link-alt">
+                                    <tbody class="list" id="tarifList">
+                                    <th:block th:if="${hasTarif}">
+                                        <tr th:each="ta, row : ${tarifList}" class="js-row-link-alt">
                                             <td>
-                                                <span th:text="${type?.nbrHours}"></span>
+                                                <span th:text="${ta?.category?.categoryName}"></span>
                                             </td>
                                             <td>
-                                                <span th:text="${type?.description}"></span>
+                                                <span th:text="${ta?.period?.period}"></span>
                                             </td>
                                             <td>
-                                                <a th:href="${'edit/'+ type?.idType}"
+                                                <span th:text="${ta?.type?.nbrHours}"></span>
+                                            </td>
+                                            <td>
+                                                <span th:text="${ta?.prix}"></span>
+                                            </td>
+                                            <td>
+                                                <a th:href="${'edit/'+ ta?.idTarif}"
                                                    class="btn btn-link fa fa-edit"></a>
                                                 <a class="btn btn-link fa fa-trash-alt"
-                                                   th:attr="data-target='#modal-delete'+${type?.idType}"
+                                                   th:attr="data-target='#modal-delete'+${ta?.idTarif}"
                                                    data-rel="tooltip" title="delete" data-toggle="modal"></a>
 
-                                                <div th:id="modal-delete+${type?.idType}" class="modal fade"
+                                                <div th:id="modal-delete+${ta?.idTarif}" class="modal fade"
                                                      tabindex="-1">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
@@ -50,14 +63,14 @@
                                                                 <div class="table-header">Suppression</div>
                                                             </div>
                                                             <div class="modal-body no-padding">Vous étes sur de
-                                                                supprimer ce type d'abonnement?
+                                                                supprimer ce tarif?
                                                             </div>
                                                             <div class="modal-footer no-margin-top">
                                                                 <button class="btn btn-danger pull-left"
                                                                         data-dismiss="modal"> Annuler
                                                                 </button>
                                                                 <a class="btn btn-danger pull-right" type="button"
-                                                                   th:href="${'delete/'+ type?.idType}"> Supprimer
+                                                                   th:href="${'delete/'+ ta?.idTarif}"> Supprimer
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -70,11 +83,11 @@
                                 </table>
                             </div>
                         </th:block>
-                        <th:block th:unless="!${#lists.isEmpty(typeList)}">
-                            <h5 class="align-content-center text-center">Aucun type d'abonnement </h5>
+                        <th:block th:unless="!${#lists.isEmpty(tarifList)}">
+                            <h5 class="align-content-center text-center">Aucun tarif </h5>
                         </th:block>
                         <div class="row align-items-end justify-content-end">
-                            <a th:href="@{/admin/type/addType}" type="button" class="btn btn-dark"> Ajouter </a>
+                            <a th:href="@{/admin/tarif/addTarif}" type="button" class="btn btn-dark"> Ajouter </a>
                         </div>
                     </form>
                 </th:block>

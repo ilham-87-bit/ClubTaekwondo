@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head"></head>
+<body>
+<header th:replace="headerAdmin">
+</header>
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid" th:with="hasTarif = ${tarif.idTarif != null}">
+            <form id="idAddTimeForm" class="form-horizontal" th:object="${tarif}"
+                  th:action="@{(${hasTarif ? '/admin/tarif/edit' : '/admin/tarif/addTarif'})}" method="post">
+                <input type="hidden" th:field="*{idTarif}">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label class="control-label" for="idCategory"> Catégorie :</label>
+                            <div class="select-awesome" data-placement="right" maxlength="50">
+                                <label>
+                                    <select id="idCategory"
+                                            class="form-control"
+                                            aria-invalid="false"
+                                            name="idCategory">
+                                        <th:block th:if="!${#lists.isEmpty(categoryList)}">
+                                            <option th:each="category : ${categoryList}"
+                                                    th:value="${category.idCategory}"
+                                                    th:text="${category.categoryName}"
+                                                    th:selected="${tarif?.category?.idCategory} == ${category.idCategory}">
+                                            </option>
+                                        </th:block>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label class="control-label" for="idPeriod"> Durée d'abonnement :</label>
+                            <div class="select-awesome" data-placement="right" maxlength="50">
+                                <label>
+                                    <select id="idPeriod"
+                                            class="form-control"
+                                            aria-invalid="false"
+                                            name="id">
+                                        <th:block th:if="!${#lists.isEmpty(periodList)}">
+                                            <option th:each="p : ${periodList}"
+                                                    th:value="${p.id}"
+                                                    th:text="${p.period}"
+                                                    th:selected="${tarif?.period?.id} == ${p.id}">
+                                            </option>
+                                        </th:block>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label class="control-label" for="idType"> Type d'abonnement :</label>
+                            <div class="select-awesome" data-placement="right" maxlength="50">
+                                <label>
+                                    <select id="idType"
+                                            class="form-control"
+                                            aria-invalid="false"
+                                            name="idType">
+                                        <th:block th:if="!${#lists.isEmpty(typeList)}">
+                                            <option th:each="ty : ${typeList}"
+                                                    th:value="${ty.idType}"
+                                                    th:text="${ty.nbrHours}"
+                                                    th:selected="${tarif?.type?.idType} == ${ty.idType}">
+                                            </option>
+                                        </th:block>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label class="control-label" for="inputTarif"> Tarif :</label>
+                            <input class="form-control" id="inputTarif" type="number"
+                                   th:field="*{prix}"/>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card-footer">
+                    <div class="row align-items-end justify-content-end">
+                        <div class="col">
+                            <p class="disclaimer red font-weight-bold m-0">(*)Ce champ est obligatoire</p>
+                        </div>
+                        <div class="col-auto">
+                            <a th:href="@{/admin/time/timeList}" class="btn btn-dark"> Précédent </a>
+                        </div>
+                        <div class="col-auto">
+                            <button th:if="${tarif.idTarif == null}" id="saveButton" type="submit" class="btn btn-dark">
+                                Ajouter
+                            </button>
+
+                            <button th:unless="${tarif.idTarif == null}" id="editButton" type="submit"
+                                    class="btn btn-dark">
+                                Modifier
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+<footer th:replace="footerAdmin"></footer>
+</body>
+</html>

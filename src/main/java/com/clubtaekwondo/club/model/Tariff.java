@@ -43,4 +43,35 @@ public class Tariff {
         this.idTarif = idTarif;
     }
 
+    public Categories getCategory() {
+        return category;
     }
+
+    public void setCategory(Categories category) {
+        this.category = category;
+    }
+
+    public SubscriptionType getType() {
+        return type;
+    }
+
+    public void setType(SubscriptionType type) {
+        this.type = type;
+    }
+
+    public SubscriptionPeriod getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(SubscriptionPeriod period) {
+        this.period = period;
+    }
+
+    public float getPrix() {
+        return prix;
+    }
+
+    public void setPrix(float prix) {
+        this.prix = prix;
+    }
+}
