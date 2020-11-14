@@ -26,12 +26,12 @@ public class TimeTable {
     private Coach co;
 
     @Column(name = "heur_debut")
-    private Integer startTime;
+    private String startTime;
 
     @Column(name = "heur_fin")
-    private Integer endTime;
+    private String endTime;
 
-    public TimeTable(Long idTime, Categories c, School s, Day day, Coach co, Integer startTime, Integer endTime) {
+    public TimeTable(Long idTime, Categories c, School s, Day day, Coach co, String startTime, String endTime) {
         this.idTime = idTime;
         this.c = c;
         this.s = s;
@@ -85,19 +85,19 @@ public class TimeTable {
         this.co = co;
     }
 
-    public Integer getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Integer startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public Integer getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Integer endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 }
