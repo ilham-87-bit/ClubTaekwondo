@@ -1,17 +1,14 @@
 package com.clubtaekwondo.club.controller.admin;
 
 import com.clubtaekwondo.club.model.*;
-import com.clubtaekwondo.club.service.AddressService;
-import com.clubtaekwondo.club.service.CityService;
-import com.clubtaekwondo.club.service.SchoolService;
+import com.clubtaekwondo.club.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -31,6 +28,12 @@ public class SchoolController {
     @Autowired
     private CityService cityService;
 
+    @Autowired
+    private CategoryBySchoolService categoryBySchoolService;
+
+    @Autowired
+    private CategoriesService categoriesService;
+
     @GetMapping(value = "/schoolList")
     public String schoolList(Model model) {
         model.addAttribute("schoolList", schoolService.getAllSchool());
@@ -42,11 +45,14 @@ public class SchoolController {
         model.addAttribute(SCHOOL, new School());
         model.addAttribute(ADDRESS, new Address());
         model.addAttribute("cityList", cityService.getAllCity());
+        model.addAttribute("categoryList", categoriesService.getAllCategory());
         return ("adminPart/school/addSchool");
     }
 
     @PostMapping(value = "/addSchool")
-    public String addSchool(School school, City city, Model model) {
+    public String addSchool(School school, City city, @RequestParam("categoriesList[]") List<Categories> categoriesList, Model model) {
+
+        List<Categories> listAdd = new ArrayList<>();
 
         City c = cityService.findById(city.getIdCity());
         school.getAddress().setCity(c);
@@ -60,11 +66,21 @@ public class SchoolController {
         }
         schoolService.save(school);
 
+        for (Categories categories : categoriesList) {
+            CategoryBySchool categoryBySchool = new CategoryBySchool();
+            categoryBySchool.setSchool(school);
+            categoryBySchool.setCat(categories);
+            categoryBySchoolService.save(categoryBySchool);
+            listAdd.add(categoryBySchool.getCat());
+        }
+
 
         model.addAttribute(SCHOOL, school);
         model.addAttribute(ADDRESS, school.getAddress());
         model.addAttribute("cityList", cityService.getAllCity());
         model.addAttribute("schoolList", schoolService.getAllSchool());
+        model.addAttribute("categoryList", categoriesService.getAllCategory());
+        model.addAttribute("listCat", listAdd);
         return "redirect:/admin/school/schoolList";
     }
 
@@ -72,6 +88,13 @@ public class SchoolController {
     public String deleteSchool(@PathVariable("school") Long id, Model model) {
 
         School s = schoolService.findById(id);
+
+        List<CategoryBySchool> categoryBySchoolList = categoryBySchoolService.getAllCategoryBySchool();
+        for (CategoryBySchool categoryBySchool : categoryBySchoolList) {
+            if (categoryBySchool.getSchool().getId().equals(s.getId())) {
+                categoryBySchoolService.delete(categoryBySchool);
+            }
+        }
         schoolService.delete(s);
 
         model.addAttribute("schoolList", schoolService.getAllSchool());
@@ -82,29 +105,55 @@ public class SchoolController {
     @GetMapping(value = "/edit/{school}")
     public String schoolDetails(@PathVariable("school") Long id, Model model) {
 
+        List<Categories> list = new ArrayList<>();
+
         School school = schoolService.findById(id);
+
+        List<CategoryBySchool> categoryBySchoolList = categoryBySchoolService.getAllCategoryBySchool();
+        for (CategoryBySchool categoryBySchool : categoryBySchoolList) {
+            if (categoryBySchool.getSchool().getId().equals(school.getId())) {
+                list.add(categoryBySchool.getCat());
+            }
+        }
 
         model.addAttribute(SCHOOL, school);
         model.addAttribute(ADDRESS, school.getAddress());
-//        model.addAttribute(CITY, school.getAddress().getCity());
+        model.addAttribute("listCat", list);
         model.addAttribute("cityList", cityService.getAllCity());
+        model.addAttribute("categoryList", categoriesService.getAllCategory());
 
         return "adminPart/school/addSchool";
     }
 
     @PostMapping(value = "/edit")
-    public String editSchool(School school, City city, Model model) {
+    public String editSchool(School school, City city, @RequestParam("categoriesList[]") List<Categories> categoriesList, Model model) {
+
+        List<Categories> listCat = new ArrayList<>();
 
         City c = cityService.findById(city.getIdCity());
         school.getAddress().setCity(c);
         addressService.save(school.getAddress());
+        List<CategoryBySchool> categoryBySchoolList = categoryBySchoolService.getAllCategoryBySchool();
+        for (CategoryBySchool categoryBySchool : categoryBySchoolList) {
+            if (categoryBySchool.getSchool().getId() == school.getId()) {
+                categoryBySchoolService.delete(categoryBySchool);
+            }
+        }
+        for (Categories categories : categoriesList) {
+            CategoryBySchool categoryBySchool = new CategoryBySchool();
+            categoryBySchool.setSchool(school);
+            categoryBySchool.setCat(categories);
+            categoryBySchoolService.save(categoryBySchool);
+            listCat.add(categoryBySchool.getCat());
+        }
         schoolService.save(school);
 
         model.addAttribute(SCHOOL, school);
         model.addAttribute(ADDRESS, school.getAddress());
-//        model.addAttribute(CITY, school.getAddress().getCity());
         model.addAttribute("cityList", cityService.getAllCity());
         model.addAttribute("schoolList", schoolService.getAllSchool());
+        model.addAttribute("categoryList", categoriesService.getAllCategory());
+        model.addAttribute("listCat", listCat);
 
         return "redirect:/admin/school/schoolList";
     }
