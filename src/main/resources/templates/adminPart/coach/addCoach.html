@@ -13,14 +13,14 @@
                 <div class="form-row">
                     <div class="col-md-6">
                         <div class="form-group required">
-                            <label class="control-label mb-1" for="inputFirstName">Prénome :</label>
+                            <label class="control-label mb-1" for="inputFirstName">Prénom :</label>
                             <input class="form-control" id="inputFirstName" type="text"
                                    th:field="*{firstNameCoach}"/>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group required">
-                            <label class="control-label mb-1" for="inputLastName">Nome :</label>
+                            <label class="control-label mb-1" for="inputLastName">Nom :</label>
                             <input class="form-control" id="inputLastName" type="text"
                                    th:field="*{nameCoach}"/>
                         </div>
@@ -34,7 +34,6 @@
                                    th:field="*{email}" aria-describedby="emailHelp"/>
                         </div>
                     </div>
-
                     <div class="col-md-6">
                         <div class="form-group required">
                             <label class="control-label" for="idSchool"> Ecole :</label>
@@ -109,7 +108,22 @@
                             </div>
                         </div>
                     </div>
-
+                </div>
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label"> Catégorie :</label>
+                            <div th:each="category, row : ${categoryList}" class="js-row-link-alt">
+                                <input type="checkbox" th:id="${'checkbox' + row.index}" name="categoriesList[]"
+                                       th:value="${category?.idCategory}"
+                                       th:checked="${listCat != null and listCat.contains(category)}"
+                                       class="checkboxGroup with-font"/>
+                                <label th:for="${'checkbox' + row.index}"
+                                       th:text="${category?.categoryName}"></label>
+                            </div>
+                            <!--                            th:selected="${categoryByCoach?.categories?.idCategory} == ${category.idCategory}"-->
+                        </div>
+                    </div>
                 </div>
                 <div class="card-footer">
                     <div class="row align-items-end justify-content-end">

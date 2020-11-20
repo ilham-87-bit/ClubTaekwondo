@@ -1,10 +1,7 @@
 package com.clubtaekwondo.club.controller;
 
 import com.clubtaekwondo.club.mail.MailConstructor;
-import com.clubtaekwondo.club.model.Role;
-import com.clubtaekwondo.club.model.Token;
-import com.clubtaekwondo.club.model.TokenType;
-import com.clubtaekwondo.club.model.User;
+import com.clubtaekwondo.club.model.*;
 import com.clubtaekwondo.club.repository.UserRepository;
 import com.clubtaekwondo.club.repository.UserRoleRepository;
 import com.clubtaekwondo.club.service.TokenService;
@@ -52,7 +49,7 @@ public class LoginController {
     @Autowired
     private TokenService tokenService;
 
-    public final String MAIL_ADMIN = "takewondo.asbl@gmail.com" ;
+    public final String MAIL_ADMIN = "clubtaekwondo.asbl@gmail.com";
 
     @ModelAttribute("user")
     public User newUser() {
@@ -121,7 +118,12 @@ public class LoginController {
             mailSender.send(mailMessage);
 
         } catch (Exception e) {
-            result.rejectValue("email", "email", "le e-mail existe déja");
+            @Valid User finalUser = user;
+            Optional<User> firstUser = userService.getAllUser().stream().filter(u -> u.getEmail().equals(finalUser.getEmail()))
+                    .findFirst();
+            if (firstUser.isPresent()) {
+                result.rejectValue("email", "email", "le e-mail existe déja");
+            }
             return "inscription";
         }
 
