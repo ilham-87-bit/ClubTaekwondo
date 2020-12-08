@@ -17,9 +17,10 @@
                             <div class="select-awesome" data-placement="right" maxlength="50">
                                 <label>
                                     <select id="idCategory"
-                                            class="form-control"
+                                            class="form-control" required
                                             aria-invalid="false"
                                             name="idCategory">
+                                        <option></option>
                                         <th:block th:if="!${#lists.isEmpty(categoryList)}">
                                             <option th:each="category : ${categoryList}"
                                                     th:value="${category.idCategory}"
@@ -39,9 +40,10 @@
                             <div class="select-awesome" data-placement="right" maxlength="50">
                                 <label>
                                     <select id="idPeriod"
-                                            class="form-control"
+                                            class="form-control" required
                                             aria-invalid="false"
                                             name="id">
+                                        <option></option>
                                         <th:block th:if="!${#lists.isEmpty(periodList)}">
                                             <option th:each="p : ${periodList}"
                                                     th:value="${p.id}"
@@ -64,9 +66,10 @@
                             <div class="select-awesome" data-placement="right" maxlength="50">
                                 <label>
                                     <select id="idType"
-                                            class="form-control"
+                                            class="form-control" required
                                             aria-invalid="false"
                                             name="idType">
+                                        <option></option>
                                         <th:block th:if="!${#lists.isEmpty(typeList)}">
                                             <option th:each="ty : ${typeList}"
                                                     th:value="${ty.idType}"
@@ -83,7 +86,7 @@
                     <div class="col-md-6">
                         <div class="form-group required">
                             <label class="control-label" for="inputTarif"> Tarif :</label>
-                            <input class="form-control" id="inputTarif" type="number"
+                            <input class="form-control" id="inputTarif" type="number" required
                                    th:field="*{prix}"/>
                         </div>
                     </div>

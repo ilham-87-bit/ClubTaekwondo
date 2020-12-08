@@ -35,7 +35,7 @@ public class Student {
     @OneToMany(mappedBy = "student")
     private Set<StudentRelation> person;
 
-    public Student(Long idStudent, String name, String firstName, Date birthDay, Integer gsm, String email, Address address) {
+    public Student(Long idStudent, String name, String firstName, Date birthDay, Integer gsm, String email, Address address, Set<StudentRelation> person) {
         this.idStudent = idStudent;
         this.name = name;
         this.firstName = firstName;
@@ -43,6 +43,7 @@ public class Student {
         this.gsm = gsm;
         this.email = email;
         this.address = address;
+        this.person = person;
     }
 
     public Student() {
@@ -116,4 +117,5 @@ public class Student {
     public void setPerson(Set<StudentRelation> person) {
         this.person = person;
     }
+
 }

@@ -12,26 +12,27 @@
                 <input type="hidden" th:field="*{id}">
                 <div class="form-group required col-6 col-lg-8">
                     <label class="control-label" for="school">Nom de l'ecole :</label>
-                    <input id="school" type="text" class="form-control py-4" name="name" data-placement="right"
+                    <input id="school" type="text" class="form-control py-4" name="name" required data-placement="right"
                            maxlength="50" th:field="*{name}"/>
                 </div>
 
                 <input type="hidden" th:field="*{address.id}">
                 <div class="form-group required col-6 col-lg-8">
                     <label class="control-label" for="street"> Rue :</label>
-                    <input id="street" type="text" class="form-control py-4" name="street" data-placement="right"
+                    <input id="street" type="text" class="form-control py-4" name="street" required
+                           data-placement="right"
                            maxlength="50" th:field="*{address.street}"/>
                 </div>
                 <div class="form-group required col-6 col-lg-8">
                     <label class="control-label" for="number"> Numero :</label>
-                    <input id="number" type="text" class="form-control py-4" name="number" data-placement="right"
+                    <input id="number" type="text" class="form-control py-4" name="number" required
+                           data-placement="right"
                            maxlength="50" th:field="*{address.number}"/>
                 </div>
 
-<!--                <input type="hidden" th:field="*{address.city.id}">-->
                 <div class="form-group required col-6 col-lg-8">
                     <label class="control-label" for="postalCode"> Code postal:</label>
-                    <input id="postalCode" type="text" class="form-control py-4" name="postalCode"
+                    <input id="postalCode" type="text" class="form-control py-4" required name="postalCode"
                            data-placement="right"
                            maxlength="50" th:field="*{address.city.postalCode}"/>
                 </div>
@@ -41,9 +42,10 @@
                     <div class="select-awesome" data-placement="right" maxlength="50">
                         <label>
                             <select id="idCity"
-                                    class="form-control"
+                                    class="form-control" required
                                     aria-invalid="false"
                                     name="idCity">
+                                <option></option>
                                 <th:block th:if="!${#lists.isEmpty(cityList)}">
                                     <option th:each="city : ${cityList}"
                                             th:value="${city.idCity}"
@@ -61,7 +63,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label"> Catégorie :</label>
-                            <div th:each="category, row : ${categoryList}" class="js-row-link-alt">
+                            <div id="chek" th:each="category, row : ${categoryList}" class="js-row-link-alt">
                                 <input type="checkbox" th:id="${'checkbox' + row.index}" name="categoriesList[]"
                                        th:value="${category?.idCategory}"
                                        th:checked="${listCat != null and listCat.contains(category)}"
@@ -75,18 +77,20 @@
 
                 <div class="card-footer">
                     <div class="row align-items-end justify-content-end">
-                        <!--                        <div class="col">-->
-                        <!--                            <p class="disclaimer red font-weight-bold m-0">Ce champ est obligatoire</p>-->
-                        <!--                        </div>-->
+                        <div class="col">
+                            <p class="disclaimer red font-weight-bold m-0"></p>
+                        </div>
                         <div class="col-auto">
                             <a th:href="@{/admin/school/schoolList}" class="btn btn-dark"> Précédent </a>
                         </div>
                         <div class="col-auto">
-                            <button th:if="${school.id == null}" id="saveButton" type="submit" class="btn btn-dark">
+                            <button th:if="${school.id == null}" id="saveButton" onclick="validCheckbox()" type="submit"
+                                    class="btn btn-dark">
                                 Ajouter
                             </button>
 
-                            <button th:unless="${school.id == null}" id="editButton" type="submit" class="btn btn-dark">
+                            <button th:unless="${school.id == null}" id="editButton" onclick="validCheckbox()"
+                                    type="submit" class="btn btn-dark">
                                 Modifier
                             </button>
                         </div>
@@ -95,6 +99,7 @@
             </form>
         </div>
     </main>
+    <script type="text/javascript" th:src="@{/js/club/school.js}"></script>
 </div>
 <footer th:replace="footerAdmin"></footer>
 </body>

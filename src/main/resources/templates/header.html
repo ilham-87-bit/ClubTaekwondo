@@ -9,7 +9,10 @@
                         <a class="nav-link" th:href="@{/index}">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/ecoles}">Ecoles</a>
+                        <a class="nav-link" th:href="@{/school}">Ecoles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/tarif}">Tarifs</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/subscription}">Abonnement</a>
@@ -34,6 +37,9 @@
                         </div>
                     </li>
                 </ul>
+                <!--                <div sec:authorize="isAuthenticated()" th:object="${user}">-->
+                <!--                    <span class="text-uppercase text-white" th:text="${user?.firstName} + ' ' + ${user?.lastName}"></span>-->
+                <!--                </div>-->
             </div>
         </div>
     </nav>

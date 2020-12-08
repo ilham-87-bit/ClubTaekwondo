@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head">
+</head>
+<body>
+<header th:replace="header">
+</header>
+<div class="sb-nav-fixed">
+    <div id="layoutSidenav_content">
+        <main>
+            <th:block>
+                <div>
+                    <img th:src="@{/images/taekwondo3.jpg}" class="img-card">
+                </div>
+            </th:block>
+            <th:block>
+                <div class="card-body">
+                    <div class="card-header">
+                        <h1 class="text-center font-weight-bold my-4">Venez-vous entraîner au
+                            Taekwon-Do avec nous!</h1>
+                        <p class="text-center font-italic">
+                            Notre Instructrice-chef Virginia Dionisi (VII Dan), Championne du Monde en 2009 et
+                            Championne d'Europe en 2008, est une ceinture noire qui a presque trente ans d’expérience
+                            dont le plus grand plaisir est de partager ses connaissances en collaboration avec son
+                            équipe d'instructeurs.<br>
+
+                            Nous vous offrons: <br>
+
+                            - Un enseignement de qualité dans un environnement adéquat, épanouissant et amical<br>
+                            - Des cours adaptés à votre âge et vos capacités<br>
+                            - Le développement de vos capacités d'auto-défense<br>
+                            - L'amélioration de vos aptitudes physiques et de la maîtrise de soi<br>
+                            - Des compétitions et séminaires non seulement nationaux mais encore internationaux<br>
+                            - Une ambiance de cours internationale<br>
+                            - Une activité à réaliser en famille<br>
+                            - Beaucoup d'amusement!<br><br>
+                        </p>
+                        <!--                        <p>-->
+                        <!--                            Rejoignez-nous dès maintenant! Inscriptions tout au long de l'année.<br>-->
+
+                        <!--                            Nous vous offrons la première leçon gratuite!<br>-->
+                        <!--                        </p>-->
+                    </div>
+                    <!--                </div>-->
+                    <!--                <div class="card-body">-->
+                    <!--                    <div class="row">-->
+                    <!--                        <div class="col-lg-4">-->
+                    <!--                            <div class="row justify-content-center">-->
+                    <!--                                <img th:src="@{/images/taekEnfant.jpg}" class="img-box">-->
+                    <!--                            </div>-->
+                    <!--                            <div class="row justify-content-center">-->
+                    <!--                                <h2> Enfant </h2>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="col-lg-4">-->
+                    <!--                            <div class="row justify-content-center">-->
+                    <!--                                <img th:src="@{/images/taekJunior.jpg}" class="img-box">-->
+                    <!--                            </div>-->
+                    <!--                            <div class="row justify-content-center">-->
+                    <!--                                <h2> Junior </h2>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="col-lg-4">-->
+                    <!--                            <div class="row justify-content-center">-->
+                    <!--                                <img th:src="@{/images/taekAdult.jpg}" class="img-box">-->
+                    <!--                            </div>-->
+                    <!--                            <div class="row justify-content-center">-->
+                    <!--                                <h2> Adulte </h2>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <!--                </div>-->
+                    <!--            </th:block>-->
+                    <!--            <th:block>-->
+                    <!--                <div class="card-body">-->
+                    <!--                    <div class="row justify-content-center ">-->
+                    <!--                        <h1 class="text-dark"> Choisir votre abonnement</h1>-->
+                    <!--                    </div>-->
+                    <th:block th:if="!${#lists.isEmpty(categoryList)}">
+                        <div class="card-body card-border">
+                            <table id="categoryTable"
+                                   class="table table-fixed table-striped"
+                                   th:classappend="${!#lists.isEmpty(categoryList)} ? 'table-hover'">
+                                <tbody class="list" id="categoryList">
+                                <th:block th:if="!${#lists.isEmpty(categoryList)}">
+                                    <tr th:each="category, row : ${categoryList}" class="js-row-link-alt">
+                                        <td class="text-center py-5">
+                                            <h3 class="text-uppercase font-weight-bold"
+                                                th:text="${category?.categoryName}"></h3>
+                                        </td>
+                                        <td class="text-center py-5">
+                                            <span th:text="${category?.description}"></span>
+                                        </td>
+                                        <td class="text-center py-5">
+                                            <a th:href="${'/addSubscription/'+ category?.idCategory}"
+                                               class="btn btn-secondary"> Choisir </a>
+                                            <!--                                            <button class="btn btn-secondary" > Choisir </button>-->
+                                        </td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </th:block>
+                </div>
+            </th:block>
+        </main>
+    </div>
+</div>
+<th:block>
+    <footer th:replace="footer">
+    </footer>
+</th:block>
+</body>
+</html>

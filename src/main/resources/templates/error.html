@@ -1,0 +1,40 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="head">
+</head>
+<body th:style="'background-image:url(' + @{/images/Taekwondo-2.jpg} + '); background-size: cover'">
+<div id="layoutAuthentication" class="p-5">
+    <div id="layoutAuthentication_content">
+        <main>
+            <div class="row justify-content-center">
+                <div class="col-lg-8 pt-5">
+                    <div class="card shadow-lg border-0 rounded-lg mt-5 py-5">
+                        <div class="card-header"><h1 class="text-center font-weight-light my-4 red">Oups!</h1></div>
+                        <div class="card-body text-center py-xl-5">
+                            <div class="row justify-content-center">
+                                <label class="control-label text-center red">Vérifier bien que votre login ou votre mot
+                                    de passe est correct !</label>
+                            </div>
+                            <div class="row justify-content-center">
+                                <label class="control-label text-center red"> Vérifier bien que vous avez activé votre
+                                    compte !</label>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row align-items-end justify-content-end">
+                                <div class="col-auto">
+                                    <a th:href="@{/index}" class="btn btn-primary"> Accueil </a>
+                                </div>
+                                <div class="col-auto">
+                                    <a th:href="@{login}" class="btn btn-primary"> Reconnexion </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

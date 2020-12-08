@@ -9,6 +9,12 @@
     <div id="layoutSidenav_content">
         <main>
             <th:block>
+                <!--                <div th:if="${messageError}">-->
+                <!--                    <p class="error" th:text="${messageError}"></p>-->
+                <!--                </div>-->
+                <!--                <div th:if="${messageAlert}">-->
+                <!--                    <p class="alert-info" th:text="${messageAlert}"></p>-->
+                <!--                </div>-->
                 <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
                         <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
@@ -42,31 +48,41 @@
                 </div>
             </th:block>
             <th:block>
-                <h1>Venez-vous entraîner au Taekwon-Do avec nous!</h1>
-                <p>
-                    Notre Instructrice-chef Virginia Dionisi (VII Dan), Championne du Monde en 2009 et Championne
-                    d'Europe en 2008, est
-                    une ceinture noire qui a presque trente ans d’expérience dont le plus grand plaisir est de partager
-                    ses
-                    connaissances en collaboration avec son équipe d'instructeurs.
+                <table cellpadding="10" cellspacing="0">
+                    <tbody>
+                    <tr bgcolor="#ffffff">
+                        <td bgcolor="#f0f0f0" valign="top">
+                            <h1>Venez-vous entraîner au Taekwon-Do avec nous!</h1>
+                            <p>
+                                Notre Instructrice-chef Virginia Dionisi (VII Dan), Championne du Monde en 2009 et
+                                Championne d'Europe en 2008, est une ceinture noire qui a presque trente ans
+                                d’expérience dont le plus grand plaisir est de partager ses connaissances en
+                                collaboration avec son équipe d'instructeurs.<br>
 
-                    Nous vous offrons:
+                                Nous vous offrons: <br>
 
-                    - Un enseignement de qualité dans un environnement adéquat,
-                    épanouissant et amical
-                    - Des cours adaptés à votre âge et vos capacités
-                    - Le développement de vos capacités d'auto-défense
-                    - L'amélioration de vos aptitudes physiques et de la maîtrise de soi
-                    - Des compétitions et séminaires non seulement nationaux mais
-                    encore internationaux
-                    - Une ambiance de cours internationale
-                    - Une activité à réaliser en famille
-                    - Beaucoup d'amusement!
+                                - Un enseignement de qualité dans un environnement adéquat, épanouissant et amical<br>
+                                - Des cours adaptés à votre âge et vos capacités<br>
+                                - Le développement de vos capacités d'auto-défense<br>
+                                - L'amélioration de vos aptitudes physiques et de la maîtrise de soi<br>
+                                - Des compétitions et séminaires non seulement nationaux mais encore internationaux<br>
+                                - Une ambiance de cours internationale<br>
+                                - Une activité à réaliser en famille<br>
+                                - Beaucoup d'amusement!<br><br>
+                            </p>
+                            <p>
+                                Rejoignez-nous dès maintenant! Inscriptions tout au long de l'année.<br>
 
-                    Rejoignez-nous dès maintenant! Inscriptions tout au long de l'année.
-
-                    Nous vous offrons la première leçon gratuite!
-                </p>
+                                Nous vous offrons la première leçon gratuite!<br>
+                            </p>
+                        </td>
+                        <td align="left" bgcolor="#f0f0f0" valign="top">
+                            <img src="../images/coach1.jpg" class="rounded float-right"
+                                 th:src="@{images/coach1.jpg}"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </th:block>
 
         </main>

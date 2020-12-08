@@ -386,11 +386,12 @@ textarea.form-control {
     margin-right: -5px;
     margin-left: -5px;
 }
-.form-row > .col,
-.form-row > [class*=col-] {
-    padding-right: 5px;
-    padding-left: 5px;
-}
+
+/*.form-row > .col,*/
+/*.form-row > [class*=col-] {*/
+/*    padding-right: 5px;*/
+/*    padding-left: 5px;*/
+/*}*/
 
 .form-check {
     position: relative;
@@ -8143,4 +8144,38 @@ body {
 
 .red {
     color: red !important;
+}
+
+.error {
+    color: #D8000C;
+    background-color: #FFBABA;
+}
+
+.img-card {
+    height: 800px;
+    width: 100%;
+}
+
+.img-box {
+    height: 200px;
+    width: 300px;
+}
+
+.content-block-text {
+    float: left;
+    width: 33.333333%;
+}
+
+.info {
+    color: #065408;
+    background-color: #050709;
+}
+
+.warning {
+    color: #05224f;
+    background-color: #d4c40a;
+}
+
+.hidden {
+    display: none !important;
 }

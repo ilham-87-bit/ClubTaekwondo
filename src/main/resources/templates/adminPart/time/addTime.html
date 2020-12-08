@@ -17,9 +17,10 @@
                             <div class="select-awesome" data-placement="right" maxlength="50">
                                 <label>
                                     <select id="idSchool"
-                                            class="form-control"
+                                            class="form-control" required
                                             aria-invalid="false"
                                             name="id">
+                                        <option></option>
                                         <th:block th:if="!${#lists.isEmpty(schoolList)}">
                                             <option th:each="scho : ${schoolList}"
                                                     th:value="${scho.id}"
@@ -39,9 +40,10 @@
                             <div class="select-awesome" data-placement="right" maxlength="50">
                                 <label>
                                     <select id="idCoach"
-                                            class="form-control"
+                                            class="form-control" required
                                             aria-invalid="false"
                                             name="idCoach">
+                                        <option></option>
                                         <th:block th:if="!${#lists.isEmpty(coachList)}">
                                             <option th:each="coach : ${coachList}"
                                                     th:value="${coach.idCoach}"
@@ -64,9 +66,10 @@
                             <div class="select-awesome" data-placement="right" maxlength="50">
                                 <label>
                                     <select id="idCategory"
-                                            class="form-control"
+                                            class="form-control" required
                                             aria-invalid="false"
                                             name="idCategory">
+                                        <option></option>
                                         <th:block th:if="!${#lists.isEmpty(categoryList)}">
                                             <option th:each="category : ${categoryList}"
                                                     th:value="${category.idCategory}"
@@ -86,9 +89,10 @@
                             <div class="select-awesome" data-placement="right" maxlength="50">
                                 <label>
                                     <select id="idDay"
-                                            class="form-control"
+                                            class="form-control" required
                                             aria-invalid="false"
                                             name="idDay">
+                                        <option></option>
                                         <th:block th:if="!${#lists.isEmpty(dayList)}">
                                             <option th:each="d : ${dayList}"
                                                     th:value="${d.idDay}"
@@ -107,14 +111,14 @@
                     <div class="col-md-6">
                         <div class="form-group required">
                             <label class="control-label" for="inputStartTime">Heur de début :</label>
-                            <input class="form-control" id="inputStartTime" type="time"
+                            <input class="form-control" id="inputStartTime" type="time" step="300" required
                                    th:field="*{startTime}"/>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group required">
                             <label class="control-label" for="inputEndTime">heur de fin :</label>
-                            <input class="form-control" id="inputEndTime" type="time"
+                            <input class="form-control" id="inputEndTime" type="time" step="300" required
                                    th:field="*{endTime}"/>
                         </div>
                     </div>
@@ -143,6 +147,7 @@
             </form>
         </div>
     </main>
+    <script type="text/javascript" th:src="@{/js/club/time.js}"></script>
 </div>
 <footer th:replace="footerAdmin"></footer>
 </body>

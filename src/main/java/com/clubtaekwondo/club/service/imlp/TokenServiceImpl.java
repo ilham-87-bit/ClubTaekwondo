@@ -6,6 +6,8 @@ import com.clubtaekwondo.club.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class TokenServiceImpl implements TokenService {
@@ -23,5 +25,10 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public void delete(Token token) {
         tokenRepository.delete(token);
+    }
+
+    @Override
+    public void deleteAllToken(List<Token> tokenList) {
+        tokenRepository.deleteAll(tokenList);
     }
 }

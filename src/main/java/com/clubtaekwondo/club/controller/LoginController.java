@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.SecureRandom;
@@ -58,27 +59,39 @@ public class LoginController {
     }
 
     @GetMapping("/login")
-    public String loginGet() {
+    public String loginGet(Model model) {
+        model.addAttribute("user", new User());
         return ("login");
     }
 
     @PostMapping("/login")
-    public String loginPost() {
+    public String loginPost(Model model) {
+        try {
+            Object authentication = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (authentication instanceof User) {
 
-        Object authentication = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (authentication instanceof User) {
-
-            User user = (User) authentication;
-            if (user.getUserRole().getRole().equals(Role.ADMIN.getAlea())) {
-                return "redirect:/admin/indexAdmin";
+                User user = (User) authentication;
+                if (user.getUserRole().getRole().equals(Role.ADMIN.getAlea())) {
+                    return "redirect:/admin/indexAdmin";
+                }
+                model.addAttribute("user", user);
             }
+            return ("index");
+        } catch (Exception e) {
+            model.addAttribute("messageError", "Veuillez bien vérifier les champs !");
+            return ("index");
         }
-        return ("index");
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
+        return "redirect:/index";
+    }
+
+    @GetMapping("/error")
+    public String error(Model model) {
+        model.addAttribute("messageAlert", "Votre compte n'est pas encore activer, Veuillez verifier vos e-mail ");
         return "redirect:/index";
     }
 
@@ -89,7 +102,7 @@ public class LoginController {
     }
 
     @PostMapping("/inscription")
-    public String inscriptionPost(@ModelAttribute("user") @Valid User user, BindingResult result) {
+    public String inscriptionPost(@ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
     /*
     BindingResult interface qui permet d'appliquer un validateur et de lier les résultats avec les vues
     */
@@ -100,10 +113,15 @@ public class LoginController {
             String password = user.getPassword();
             String hashedPassword = encoder.encode(password);
             user.setPassword(hashedPassword);
-
+            @Valid User finalUser = user;
+            Optional<User> firstUser = userService.getAllUser().stream().filter(u -> u.getEmail().equals(finalUser.getEmail()))
+                    .findFirst();
+            if (firstUser.isPresent()) {
+                result.rejectValue("email", "email", "le e-mail existe déja");
+                return "inscription";
+            }
             Role role = user.getEmail().equals(MAIL_ADMIN) ? Role.ADMIN : Role.USER;
             user = userService.save(user, role);
-
             String tokenString = generateNewToken();
             // create a new Token in the database
 
@@ -112,23 +130,20 @@ public class LoginController {
             token.setUser(user);
             token.setType(TokenType.NEW_ACCOUNT);
             token = tokenService.save(token);
-            String s = urlFromMethod(token.getToken(), user.getEmail(), "activate");
+//            String s = urlFromMethod(token.getToken(), user.getEmail(), "activate");
+            String s = MvcUriComponentsBuilder.fromMethodName(LoginController.class,
+                    "activate", token.getToken(), user.getEmail(), null).build().toString();
             SimpleMailMessage mailMessage = mailConstructor.constructResetTokenEmail(s, user);
 
             mailSender.send(mailMessage);
+            model.addAttribute("user", user);
 
         } catch (Exception e) {
-            @Valid User finalUser = user;
-            Optional<User> firstUser = userService.getAllUser().stream().filter(u -> u.getEmail().equals(finalUser.getEmail()))
-                    .findFirst();
-            if (firstUser.isPresent()) {
-                result.rejectValue("email", "email", "le e-mail existe déja");
-            }
+            model.addAttribute("messageError", "Veuillez bien vérifier les champs !");
             return "inscription";
         }
 
-        return "redirect:index";
-
+        return "validation";
     }
 
     @GetMapping("/forgetPassword")
@@ -204,6 +219,7 @@ public class LoginController {
                 persited.setPassword(encoder.encode(user.getPassword()));
                 userService.save(persited);
                 // TODO : Remove all tokens
+                tokenService.deleteAllToken(persited.getTokens());
                 System.out.println("Password has been modified ");
             }
         }
@@ -213,7 +229,7 @@ public class LoginController {
 
     @GetMapping("activate/{login}/{token}")
 
-    public String activate(@PathVariable String token, @PathVariable String login) {
+    public String activate(@PathVariable String token, @PathVariable String login, Model model) {
 
         User user = userService.findByLogin(login);
         if (user != null && !user.isActive() && user.getTokens() != null) {
@@ -226,14 +242,26 @@ public class LoginController {
                 user.setActive(true);
                 userService.save(user);
                 // TODO : Remove all tokens
+                tokenService.deleteAllToken(user.getTokens());
                 System.out.println("The account has been activated ");
             }
+            Object authentication = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (authentication instanceof User) {
+
+                User userAut = (User) authentication;
+                if (userAut.getUserRole().getRole().equals(Role.ADMIN.getAlea())) {
+                    return "redirect:/admin/indexAdmin";
+                }
+
+            }
+            model.addAttribute("user", user);
         }
         if (user == null || !user.isActive()) {
             System.out.println("Activation of user has been failed ");
+            model.addAttribute("messageError", "Veuillez bien vérifier les champs !");
+            return "inscription";
         }
-        //TODO complete the validation
-        return "redirect:/index";
+        return "activation";
     }
 
 

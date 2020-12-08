@@ -98,6 +98,18 @@ public class TimeTableController {
 
         timeTableService.save(timeTable);
 
+        School s = schoolService.findById(school.getId());
+        s.getTimeTables().add(timeTable);
+
+        Coach c = coachService.findById(coach.getIdCoach());
+        c.getTimeTables().add(timeTable);
+
+        Categories cat = categoriesService.findById(categories.getIdCategory());
+        cat.getTimeTables().add(timeTable);
+
+        Day d = dayService.getDayById(day.getIdDay());
+        d.getTimes().add(timeTable);
+
         model.addAttribute(TIME, timeTable);
         model.addAttribute("timeList", timeTableService.getAllTimeTable());
         model.addAttribute("schoolList", schoolService.getAllSchool());
