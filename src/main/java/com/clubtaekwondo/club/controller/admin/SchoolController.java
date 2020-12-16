@@ -3,13 +3,22 @@ package com.clubtaekwondo.club.controller.admin;
 import com.clubtaekwondo.club.model.*;
 import com.clubtaekwondo.club.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.clubtaekwondo.club.controller.user.UserController.fileToPath;
 
 @Controller
 @RequestMapping("admin/school")
@@ -34,9 +43,18 @@ public class SchoolController {
     @Autowired
     private CategoriesService categoriesService;
 
+    @Autowired
+    private StorageService storageService;
+
     @GetMapping(value = "/schoolList")
     public String schoolList(Model model) {
-        model.addAttribute("schoolList", schoolService.getAllSchool());
+
+        List<School> allSchool = schoolService.getAllSchool();
+        allSchool.stream().forEach(school -> {
+            String newImageName = String.format("schools/%s.jpeg", school.getId());
+            school.setFullUrlImg(fileToPath(storageService.load(newImageName)));
+        });
+        model.addAttribute("schoolList", allSchool);
         return "adminPart/school/schoolList";
     }
 
@@ -50,7 +68,7 @@ public class SchoolController {
     }
 
     @PostMapping(value = "/addSchool")
-    public String addSchool(School school, City city, @RequestParam("categoriesList[]") List<Categories> categoriesList, Model model) {
+    public String addSchool(School school, City city, @RequestParam("categoriesList[]") List<Categories> categoriesList, Model model, @RequestParam("file") MultipartFile file) {
 
         List<Categories> listAdd = new ArrayList<>();
 
@@ -64,7 +82,11 @@ public class SchoolController {
         } else {
             addressService.save(school.getAddress());
         }
-        schoolService.save(school);
+        School s = schoolService.save(school);
+        if (file != null && !file.isEmpty()) {
+            String newImageName = String.format("schools/%s.jpeg", s.getId());
+            storageService.store(file, newImageName);
+        }
 
         for (Categories categories : categoriesList) {
             CategoryBySchool categoryBySchool = new CategoryBySchool();
@@ -157,5 +179,6 @@ public class SchoolController {
 
         return "redirect:/admin/school/schoolList";
     }
+
 
 }

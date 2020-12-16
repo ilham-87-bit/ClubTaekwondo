@@ -8,7 +8,8 @@
     <main>
         <div class="container-fluid" th:with="hasSchool = ${school.id != null}">
             <form id="idAddSchoolForm" class="form-horizontal" th:object="${school}"
-                  th:action="@{(${hasSchool ? '/admin/school/edit' : '/admin/school/addSchool'})}" method="post">
+                  th:action="@{(${hasSchool ? '/admin/school/edit' : '/admin/school/addSchool'})}" method="post"
+                  enctype="multipart/form-data">
                 <input type="hidden" th:field="*{id}">
                 <div class="form-group required col-6 col-lg-8">
                     <label class="control-label" for="school">Nom de l'ecole :</label>
@@ -73,6 +74,10 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="form-row">
+                    <input accept="image/jpeg" class="form-control" id="imgURL"
+                           name="file" placeholder=" ex.: profile.jpeg" type="file"/>
                 </div>
 
                 <div class="card-footer">

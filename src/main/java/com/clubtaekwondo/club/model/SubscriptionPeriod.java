@@ -15,15 +15,19 @@ public class SubscriptionPeriod {
     @Column(name = "durée")
     private String period;
 
+    @Column(name = "nbr_mois")
+    private Integer nbrMonth;
+
     @Column(name = "description")
     private String description;
 
     @OneToMany(mappedBy = "period")
     private Set<Tariff> tariffs;
 
-    public SubscriptionPeriod(Long id, String period, String description, Set<Tariff> tariffs) {
+    public SubscriptionPeriod(Long id, String period, Integer nbrMonth, String description, Set<Tariff> tariffs) {
         this.id = id;
         this.period = period;
+        this.nbrMonth = nbrMonth;
         this.description = description;
         this.tariffs = tariffs;
     }
@@ -62,5 +66,13 @@ public class SubscriptionPeriod {
 
     public void setTariffs(Set<Tariff> tariffs) {
         this.tariffs = tariffs;
+    }
+
+    public Integer getNbrMonth() {
+        return nbrMonth;
+    }
+
+    public void setNbrMonth(Integer nbrMonth) {
+        this.nbrMonth = nbrMonth;
     }
 }

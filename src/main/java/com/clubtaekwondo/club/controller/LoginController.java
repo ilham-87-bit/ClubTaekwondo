@@ -9,6 +9,10 @@ import com.clubtaekwondo.club.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -21,12 +25,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Optional;
+import java.util.*;
+
+import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 @Controller
 public class LoginController {
@@ -50,7 +55,11 @@ public class LoginController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     public final String MAIL_ADMIN = "clubtaekwondo.asbl@gmail.com";
+//    Map<String,String> map = new HashMap<>();
 
     @ModelAttribute("user")
     public User newUser() {
@@ -110,7 +119,9 @@ public class LoginController {
             return "inscription";
         }
         try {
+            Token token = new Token();
             String password = user.getPassword();
+            token.setPass(password);
             String hashedPassword = encoder.encode(password);
             user.setPassword(hashedPassword);
             @Valid User finalUser = user;
@@ -122,17 +133,19 @@ public class LoginController {
             }
             Role role = user.getEmail().equals(MAIL_ADMIN) ? Role.ADMIN : Role.USER;
             user = userService.save(user, role);
+
+//            map.put(user.getEmail(), password);
+
             String tokenString = generateNewToken();
             // create a new Token in the database
 
-            Token token = new Token();
             token.setToken(tokenString);
             token.setUser(user);
             token.setType(TokenType.NEW_ACCOUNT);
             token = tokenService.save(token);
 //            String s = urlFromMethod(token.getToken(), user.getEmail(), "activate");
             String s = MvcUriComponentsBuilder.fromMethodName(LoginController.class,
-                    "activate", token.getToken(), user.getEmail(), null).build().toString();
+                    "activate", token.getToken(), user.getEmail(), null, null).build().toString();
             SimpleMailMessage mailMessage = mailConstructor.constructResetTokenEmail(s, user);
 
             mailSender.send(mailMessage);
@@ -228,9 +241,9 @@ public class LoginController {
     }
 
     @GetMapping("activate/{login}/{token}")
+    public String activate(@PathVariable String token, @PathVariable String login, Model model, HttpServletRequest req) {
 
-    public String activate(@PathVariable String token, @PathVariable String login, Model model) {
-
+        String pass = null;
         User user = userService.findByLogin(login);
         if (user != null && !user.isActive() && user.getTokens() != null) {
 
@@ -241,27 +254,28 @@ public class LoginController {
             if (first.isPresent()) {
                 user.setActive(true);
                 userService.save(user);
+//                if(map.containsKey(user.getEmail())){
+//                    pass = map.get(user.getEmail());
+//                }
+                UsernamePasswordAuthenticationToken authReq
+                        = new UsernamePasswordAuthenticationToken(user.getUsername(), first.get().getPass());
+                Authentication auth = authenticationManager.authenticate(authReq);
                 // TODO : Remove all tokens
                 tokenService.deleteAllToken(user.getTokens());
+
+                SecurityContext sc = SecurityContextHolder.getContext();
+                sc.setAuthentication(auth);
+                HttpSession session = req.getSession(true);
+                session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
                 System.out.println("The account has been activated ");
             }
-            Object authentication = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if (authentication instanceof User) {
-
-                User userAut = (User) authentication;
-                if (userAut.getUserRole().getRole().equals(Role.ADMIN.getAlea())) {
-                    return "redirect:/admin/indexAdmin";
-                }
-
-            }
-            model.addAttribute("user", user);
         }
         if (user == null || !user.isActive()) {
             System.out.println("Activation of user has been failed ");
             model.addAttribute("messageError", "Veuillez bien vérifier les champs !");
             return "inscription";
         }
-        return "activation";
+        return "index";
     }
 
 

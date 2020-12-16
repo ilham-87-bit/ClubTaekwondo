@@ -1,10 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head">
 </head>
 <body>
+<header th:replace="header">
+</header>
+<div class="sb-nav-fixed">
+    <div id="layoutSidenav_content">
+        <main>
+            <th:block>
+                <div>
+                    <img th:src="@{/images/taekAdult.jpg}" class="img-card">
+                </div>
+            </th:block>
+            <th:block>
 
+            </th:block>
+        </main>
+    </div>
+</div>
 </body>
 </html>

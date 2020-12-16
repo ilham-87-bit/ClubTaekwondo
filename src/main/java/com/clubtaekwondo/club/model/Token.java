@@ -15,6 +15,7 @@ public class Token {
     private Long id;
 
     private String token;
+    private String pass;
 
     @Enumerated(EnumType.STRING)
     private TokenType type;
@@ -53,5 +54,13 @@ public class Token {
 
     public void setType(TokenType type) {
         this.type = type;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
     }
 }

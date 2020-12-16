@@ -2,6 +2,7 @@ package com.clubtaekwondo.club.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -37,7 +38,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/admin/**")
                 .hasAnyRole("ADMIN")
-                .antMatchers("/**","/images/**","/webjars/**").permitAll()
+                .antMatchers("/**", "/images/**", "/webjars/**", "/less/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and().formLogin().loginPage("/login")
@@ -62,5 +63,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .logoutUrl("/logout")
 //                .permitAll();
 
+    }
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 }

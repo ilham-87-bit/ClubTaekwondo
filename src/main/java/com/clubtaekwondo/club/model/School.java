@@ -25,6 +25,9 @@ public class School {
     @OneToMany(mappedBy = "s")
     private Set<TimeTable> timeTables;
 
+    @Transient
+    private String fullUrlImg;
+
     public School(Long id, String name, Address address, Set<CategoryBySchool> categoryBySchools, Set<TimeTable> timeTables) {
         this.id = id;
         this.name = name;
@@ -75,5 +78,13 @@ public class School {
 
     public void setTimeTables(Set<TimeTable> timeTables) {
         this.timeTables = timeTables;
+    }
+
+    public String getFullUrlImg() {
+        return fullUrlImg;
+    }
+
+    public void setFullUrlImg(String fullUrlImg) {
+        this.fullUrlImg = fullUrlImg;
     }
 }
