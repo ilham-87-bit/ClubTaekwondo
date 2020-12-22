@@ -23,7 +23,6 @@ function formFunction() {
     });
 
 }
-
 // function formFunction() {
 //     var cheked = false;
 //     $('.rowSchool').each(function (index, element) {
@@ -77,7 +76,6 @@ function calculateEndDate(index) {
         }
     });
 }
-
 // function inputButton(){
 //     // $('#saveButton').on('click',function (e) {
 //     //     e.preventDefault();

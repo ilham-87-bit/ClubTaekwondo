@@ -10,15 +10,89 @@
         <main>
             <th:block>
                 <div>
-                    <img th:src="@{/images/taekondo2.jpg}" class="img-card">
+                    <img th:src="@{/images/taekwondo1.jpg}" class="img-card">
                 </div>
             </th:block>
             <th:block>
                 <div class="card-body">
+                    <div class="card shadow-lg border-0 rounded-lg mt-5">
+                        <form id="idAddStudentRelationForm" class="form-horizontal mt-5 ml-5 mr-5 mb-5"
+                              th:action="@{(${'/addContactPerson/' + student.idStudent})}" method="post">
+                            <div class="row form-group required">
+                                <div class="col-6">
+                                    <label class="title control-label"> Lien de parenté : </label>
+                                </div>
+                                <div class="col-3">
+                                    <input id="father" name="relationship" type="radio" class="with-font required"
+                                           th:checked="${studentRelation.relationship == 'pere'}">
+                                    <label for="father"> Pére </label>
+                                </div>
+                                <div class="col-3">
+                                    <input id="mother" name="relationship" type="radio" class="with-font required"
+                                           th:checked="${studentRelation.relationship}">
+                                    <label for="mother"> Mére </label>
+                                </div>
+                                <div class="col-3">
+                                    <input id="others" name="relationship" type="radio" class="with-font required"
+                                           th:checked="${studentRelation.relationship}">
+                                    <label for="mother"> Autre </label>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label mb-1" for="firstName">Prénom :</label>
+                                        <input class="form-control" id="firstName" type="text" required
+                                               name="personFirstName"
+                                               th:value="${contactPerson.personFirstName}"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label mb-1" for="name">Nom :</label>
+                                        <input class="form-control" id="name" type="text" required name="personName"
+                                               th:value="${contactPerson.personName}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label" for="inputEmailAddress">Email :</label>
+                                        <input class="form-control" id="inputEmailAddress" type="email" required
+                                               name="email"
+                                               th:value="${contactPerson.email}" aria-describedby="emailHelp"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" for="gsm"> GSM :</label>
+                                        <input class="form-control" id="gsm" type="text" name="gsm"
+                                               th:value="${contactPerson.gsm}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="row align-items-end justify-content-end">
+                                    <div class="col-auto">
+                                        <a th:href="@{(${'/addStudent/' + subscription.idSubscription})}"
+                                           class="btn btn-dark"> Précédent </a>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button id="saveButton" type="submit" class="btn btn-dark"> Suivant</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </th:block>
         </main>
     </div>
 </div>
+<th:block>
+    <footer th:replace="footer">
+    </footer>
+</th:block>
 </body>
 </html>

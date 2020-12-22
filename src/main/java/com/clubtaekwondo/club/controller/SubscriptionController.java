@@ -19,7 +19,7 @@ import java.util.*;
 @Controller
 public class SubscriptionController {
 
-    private float expenses = 35;
+    private float expenses = 40;
 
     @Autowired
     private CategoriesService categoriesService;
@@ -41,6 +41,12 @@ public class SubscriptionController {
     private CityService cityService;
     @Autowired
     private AddressService addressService;
+    @Autowired
+    private ContactPersonService contactPersonService;
+    @Autowired
+    private StudentRelationService studentRelationService;
+    @Autowired
+    private TariffService tariffService;
 
 
     @GetMapping(value = "/subscription")
@@ -127,7 +133,14 @@ public class SubscriptionController {
             subscription.setEndDate(subs.getEndDate());
             subscription.setSubscriptionType(subscriptionTypeService.findById(subscriptionT.getIdType()));
             subscription.setSubscriptionPeriod(subscriptionPeriodService.findById(subscriptionP.getId()));
-            subscriptionService.save(subscription);
+            Subscription newSubscription = subscriptionService.save(subscription);
+            Optional<Tariff> firstTariff = tariffService.getAllTariff().stream().filter(t -> t.getCategory().equals(newSubscription.getCategories()) && t.getPeriod().equals(newSubscription.getSubscriptionPeriod()) && t.getType().equals(newSubscription.getSubscriptionType()))
+                    .findFirst();
+            if (firstTariff.isPresent()) {
+                Tariff tariff = firstTariff.get();
+                subscription.setTotalPrice(tariff.getPrix() + subscription.getExpenses());
+                subscriptionService.save(subscription);
+            }
             model.addAttribute("subscription", subscription);
             String url = "/addStudent/" + subscription.getIdSubscription();
 
@@ -165,15 +178,81 @@ public class SubscriptionController {
             Student student = initializeStudent(studentDTO, city);
             Student s = studentService.save(student);
             subscription.setStudent(s);
+            subscriptionService.save(subscription);
             model.addAttribute("subscription", subscription);
             model.addAttribute("student", student);
+//            url = "/addContactPerson/" + student.getIdStudent();
 
-            return "user/addContactPerson";
+            return "redirect:/addContactPerson/" + student.getIdStudent();
+
         } catch (Exception e) {
-            String url = "/addStudent/" + subscription.getIdSubscription();
+//            url = "/addStudent/" + subscription.getIdSubscription();
             model.addAttribute("messageError", "erreur, veuillez essayer");
-            return "redirect:" + url;
+            return "redirect:/addStudent/" + subscription.getIdSubscription();
         }
+    }
+
+    @GetMapping(value = "/addContactPerson/{student}")
+    public String getAddContactPerson(@PathVariable("student") Long id, Model model) {
+        Subscription s = new Subscription();
+        Student student = studentService.findById(id);
+//        List<Subscription> subscriptionList = subscriptionService.getAllSubscription();
+        Optional<Subscription> firstSubscription = subscriptionService.getAllSubscription().stream().filter(su -> su.getStudent().getIdStudent().equals(student.getIdStudent()))
+                .findFirst();
+        if (firstSubscription.isPresent()) {
+            s = firstSubscription.get();
+        }
+//        for(Subscription subscription : subscriptionList){
+//            if(subscription.getStudent().getIdStudent().equals(student.getIdStudent()) && subscription.getStudent() != null){
+//                s = subscription;
+//            }
+//        }
+        model.addAttribute("subscription", s);
+        model.addAttribute("student", student);
+        model.addAttribute("studentRelation", new StudentRelation());
+        model.addAttribute("contactPerson", new ContactPerson());
+
+        return "user/addContactPerson";
+    }
+
+    @PostMapping(value = "/addContactPerson/{student}")
+    public String addContactPerson(@PathVariable("student") Long id, StudentRelation studentRelation, ContactPerson contactPerson, Model model) {
+        Subscription s = new Subscription();
+
+        Student student = studentService.findById(id);
+        ContactPerson c = contactPersonService.save(contactPerson);
+        studentRelation.setStudent(student);
+        studentRelation.setContactPerson(c);
+        StudentRelation sr = studentRelationService.save(studentRelation);
+
+        List<Subscription> subscriptionList = subscriptionService.getAllSubscription();
+        Optional<Subscription> firstSubscription = subscriptionService.getAllSubscription().stream().filter(su -> su.getStudent().equals(student.getIdStudent()))
+                .findFirst();
+        if (firstSubscription.isPresent()) {
+            s = firstSubscription.get();
+        }
+//        List<Subscription> subscriptionList = subscriptionService.getAllSubscription();
+//        for (Subscription subscription : subscriptionList) {
+//            if (subscription.getStudent().getIdStudent() == student.getIdStudent()) {
+//                s = subscription;
+//            }
+//        }
+        model.addAttribute("subscription", s);
+        model.addAttribute("student", student);
+        model.addAttribute("studentRelation", studentRelation);
+        model.addAttribute("contactPerson", c);
+
+        return "redirect:/summary/" + s.getIdSubscription();
+    }
+
+    @GetMapping(value = "/summary/{subscription}")
+    public String getSummary(@PathVariable("subscription") Long id, Model model) {
+
+        Subscription subscription = subscriptionService.findById(id);
+
+        model.addAttribute("subscription", subscription);
+
+        return "user/summary";
     }
 
     private Student initializeStudent(StudentDTO studentDTO, City c) throws ParseException {

@@ -22,6 +22,7 @@ function inputButton() {
 
 function checkModNationalNumber() {
     var value = $('#nationalRegistry').val();
+    var valid;
     if (value.length == 15) {
         value = value.replace(/\D/g, '');
     }
@@ -34,10 +35,11 @@ function checkModNationalNumber() {
     if ((97 - res % 97) != modRes) {
         $("#nationalRegistry").next(".error").show().text("Le numéro de registre national n'est pas valide, veuillez réessayer.");
         // $('#nationalRegistry').setAttribute('data-inputmask-alias') ;
-        $("[data-inputmask-alias]").inputmask();
-        return false;
+        valid = false;
+    } else {
+        $("#nationalRegistry").next(".error").hide();
+        valid = true;
     }
-    // else{
-    //      $("#nationalRegistry").next(".error").hide();
-    //  }
+    $("[data-inputmask-alias]").inputmask();
+    return valid;
 }

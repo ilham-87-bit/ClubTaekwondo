@@ -21,14 +21,19 @@ public class ContactPerson {
     @Column(name = "gsm")
     private Integer gsm;
 
+    @Column(name = "email")
+    private String email;
+
     @OneToMany(mappedBy = "contactPerson")
     private Set<StudentRelation> persons;
 
-    public ContactPerson(Long idPerson, String personName, String personFirstName, Integer gsm) {
+    public ContactPerson(Long idPerson, String personName, String personFirstName, Integer gsm, String email, Set<StudentRelation> persons) {
         this.idPerson = idPerson;
         this.personName = personName;
         this.personFirstName = personFirstName;
         this.gsm = gsm;
+        this.email = email;
+        this.persons = persons;
     }
 
     public ContactPerson() {
@@ -78,5 +83,13 @@ public class ContactPerson {
 
     public void setPersons(Set<StudentRelation> persons) {
         this.persons = persons;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
