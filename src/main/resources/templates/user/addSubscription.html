@@ -28,7 +28,7 @@
                     <div class="card shadow-lg border-0 rounded-lg mt-5">
                         <form id="idAddSubscriptionForm" class="form-horizontal mt-5 ml-5 mr-5 mb-5"
                               th:object="${subscription}"
-                              th:action="@{(${hasSubscription ? '/editSubscription' : '/addSubscription'})}"
+                              th:action="@{(${hasSubscription ? '/editSubscription' : '/addSubscription/' + cat.idCategory})}"
                               method="post">
                             <input type="hidden" th:field="*{idSubscription}">
                             <th:block th:with="hasSchool=${!#lists.isEmpty(schoolList)}">
@@ -66,9 +66,8 @@
                                                                     <label>
                                                                         <select th:id="${'idPeriod'+ row.index}"
                                                                                 class="form-control calculateDate"
-                                                                                required
                                                                                 aria-invalid="false"
-                                                                                name="id">
+                                                                                name="subscriptionPeriod.id">
                                                                             <option></option>
                                                                             <th:block
                                                                                     th:if="!${#lists.isEmpty(periodList)}">
@@ -76,7 +75,6 @@
                                                                                         th:value="${p.id}"
                                                                                         th:text="${p.period} +' (' + ${p.description} +')'"
                                                                                         th:selected="${subscription?.subscriptionPeriod?.id} == ${p.id}">
-                                                                                    <!--                                                                                    <input th:id="${'nbrMonth' + row.index}" type="hidden" th:value="${p.nbrMonth}"/>-->
                                                                                 </option>
                                                                             </th:block>
                                                                         </select>
@@ -84,14 +82,15 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-row">
-                                                                <label class="control-label" for="idType"> Type
+                                                                <label class="control-label"
+                                                                       th:for="${'idType'+ row.index}"> Type
                                                                     d'abonnement :</label>
                                                                 <div class="select-awesome" data-placement="right">
                                                                     <label>
-                                                                        <select id="idType"
-                                                                                class="form-control" required
+                                                                        <select th:id="${'idType'+ row.index}"
+                                                                                class="form-control"
                                                                                 aria-invalid="false"
-                                                                                name="idType">
+                                                                                name="subscriptionType.idType">
                                                                             <option></option>
                                                                             <th:block
                                                                                     th:if="!${#lists.isEmpty(typeList)}">
@@ -112,12 +111,12 @@
                                                                         de début: </label>
                                                                     <div class="input-group date">
                                                                         <input type="text"
-                                                                               class="form-control calculateDate"
+                                                                               class="form-control" date="startDate"
                                                                                th:id="${'startDate'+ row.index}"
                                                                                data-inputmask-alias="fh_date"
                                                                                th:value="${subscription.startDate}"/>
                                                                         <div class="input-group-append">
-                                                                            <span class="input-group-text"><i
+                                                                            <span class="input-group-text calculateDate"><i
                                                                                     class="far fa-calendar-alt"></i></span>
                                                                         </div>
                                                                     </div>
@@ -138,7 +137,8 @@
                                                                                    readonly
                                                                                    data-inputmask-alias="fh_date"
                                                                                    th:id="${'endDate'+ row.index}"
-                                                                                   th:value="${subscription.endDate}"/>
+                                                                                   date="endDate"
+                                                                                   th:value="${subscription?.endDate}"/>
                                                                             <div class="input-group-append">
                                                                             <span class="input-group-text"><i
                                                                                     class="far fa-calendar-alt"></i></span>
@@ -236,12 +236,18 @@
                             <!--                                </div>-->
                             <!--                            </div>-->
                             <div class="card-footer">
+                                <!--                                <input type="hidden" id="period" th:name="${subscriptionPeriod.id}"/>-->
+                                <!--                                <input type="hidden" id="type" th:name="${subscriptionType.idType}"/>-->
+                                <!--                                <input type="hidden" id="startD"  date="startDate"/>-->
+                                <!--                                <input type="hidden" id="endD"  date="endDate"/>-->
+
                                 <div class="row align-items-end justify-content-end">
                                     <div class="col-auto">
                                         <a th:href="@{/subscription}" class="btn btn-dark"> Précédent </a>
                                     </div>
                                     <div class="col-auto">
                                         <button th:if="*{idSubscription == null}" id="saveButton" type="submit"
+                                                onclick="inputButton()"
                                                 class="btn btn-dark">
                                             Ajouter
                                         </button>

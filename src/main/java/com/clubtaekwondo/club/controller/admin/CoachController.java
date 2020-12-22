@@ -34,6 +34,8 @@ public class CoachController {
 
     @Autowired
     private CategoryByCoachService categoryByCoachService;
+    @Autowired
+    private CategoryBySchoolService categoryBySchoolService;
 
 
     @GetMapping(value = "/coachList")
@@ -47,11 +49,15 @@ public class CoachController {
     @GetMapping(value = "/addCoach")
     public String getAddCoach(Model model) {
 
+        List<CategoryBySchool> categoryBySchoolList = categoryBySchoolService.getAllCategoryBySchool();
+
         model.addAttribute(COACH, new Coach());
         model.addAttribute(ADDRESS, new Address());
         model.addAttribute("cityList", cityService.getAllCity());
         model.addAttribute("schoolList", schoolService.getAllSchool());
+        model.addAttribute("parameters", categoryBySchoolList);
         model.addAttribute("categoryList", categoriesService.getAllCategory());
+
 
         return ("adminPart/coach/addCoach");
     }
@@ -123,6 +129,7 @@ public class CoachController {
                 list.add(categoryByCoach.getCategories());
             }
         }
+        List<CategoryBySchool> categoryBySchoolList = categoryBySchoolService.getAllCategoryBySchool();
 
         model.addAttribute(COACH, coach);
         model.addAttribute(ADDRESS, coach.getAddress());
@@ -130,6 +137,7 @@ public class CoachController {
         model.addAttribute("listCat", list);
         model.addAttribute("cityList", cityService.getAllCity());
         model.addAttribute("categoryList", categoriesService.getAllCategory());
+        model.addAttribute("parameters", categoryBySchoolList);
 
         return "adminPart/coach/addCoach";
     }

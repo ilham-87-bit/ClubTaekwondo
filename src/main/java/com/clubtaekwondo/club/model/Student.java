@@ -1,5 +1,7 @@
 package com.clubtaekwondo.club.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
@@ -19,6 +21,7 @@ public class Student {
     @Column(name = "prenom_eleve")
     private String firstName;
 
+    @DateTimeFormat(pattern = "dd-MMM-YYYY")
     @Column(name = "date_naissance")
     private Date birthDay;
 
@@ -27,7 +30,8 @@ public class Student {
 
     @Column(name = "email")
     private String email;
-
+    @Column(name = "numero_national")
+    private String nationalRegistry;
     @OneToOne
     @JoinColumn(name = "id_adresse")
     private Address address;
@@ -35,13 +39,14 @@ public class Student {
     @OneToMany(mappedBy = "student")
     private Set<StudentRelation> person;
 
-    public Student(Long idStudent, String name, String firstName, Date birthDay, Integer gsm, String email, Address address, Set<StudentRelation> person) {
+    public Student(Long idStudent, String name, String firstName, Date birthDay, Integer gsm, String email, String nationalRegistry, Address address, Set<StudentRelation> person) {
         this.idStudent = idStudent;
         this.name = name;
         this.firstName = firstName;
         this.birthDay = birthDay;
         this.gsm = gsm;
         this.email = email;
+        this.nationalRegistry = nationalRegistry;
         this.address = address;
         this.person = person;
     }
@@ -118,4 +123,11 @@ public class Student {
         this.person = person;
     }
 
+    public String getNationalRegistry() {
+        return nationalRegistry;
+    }
+
+    public void setNationalRegistry(String nationalRegistry) {
+        this.nationalRegistry = nationalRegistry;
+    }
 }

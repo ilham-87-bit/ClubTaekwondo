@@ -28,7 +28,7 @@
                                 <tbody class="list" id="coachList">
                                 <th:block th:if="${hasSchool}">
                                     <tr th:each="scho, row : ${schoolList}" class="js-row-link-alt">
-                                        <td align="center">
+                                        <td align="center" class="py-5">
                                             <img class="rounded align-content-center"
                                                  th:src="@{${scho.fullUrlImg}}" width="170" height="113"/>
                                         </td>

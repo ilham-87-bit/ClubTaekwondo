@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head">
+</head>
+<body>
+<header th:replace="header">
+</header>
+<div class="sb-nav-fixed">
+    <div id="layoutSidenav_content">
+        <main>
+            <th:block>
+                <div>
+                    <img th:src="@{/images/taekwondo.jpg}" class="img-card">
+                </div>
+            </th:block>
+            <th:block>
+                <div class="card-body">
+                    <!--                    <div class="row justify-content-center">-->
+                    <!--                        <h1 class="font-weight-bold my-4">Choisir votre Ecole</h1>-->
+                    <!--                    </div>-->
+                    <div class="row justify-content-center">
+                        <h5 class="font-weight-bold my-4"> Tranche d'âge : </h5>
+                        <span class="font-weight-bold my-4 text-uppercase"
+                              th:text="${subscription.categories.categoryName}"></span>
+                    </div>
+                    <div th:if="${messageError}">
+                        <p class="error" th:text="${messageError}"></p>
+                    </div>
+                    <div class="card shadow-lg border-0 rounded-lg mt-5">
+                        <form id="idAddSubscriptionForm2" class="form-horizontal mt-5 ml-5 mr-5 mb-5"
+                              th:object="${subscription}"
+                              th:action="@{(${'/addSubscriptionPart2/' + subscription.idSubscription})}"
+                              method="post">
+                            <input type="hidden" th:field="*{idSubscription}">
+                            <div class="card-body card-border">
+                                <div class="form-row">
+                                    <label class="control-label" for="idPeriod"> Durée
+                                        d'abonnement :</label>
+                                    <div class="select-awesome" data-placement="right">
+                                        <label>
+                                            <select id="idPeriod" class="form-control calculateDate"
+                                                    aria-invalid="false" name="id">
+                                                <option></option>
+                                                <th:block
+                                                        th:if="!${#lists.isEmpty(periodList)}">
+                                                    <option th:each="p : ${periodList}"
+                                                            th:value="${p.id}"
+                                                            th:text="${p.period} +' (' + ${p.description} +')'"
+                                                            th:selected="${subscription?.subscriptionPeriod?.id} == ${p.id}">
+                                                    </option>
+                                                </th:block>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <label class="control-label" for="idType"> Type
+                                        d'abonnement :</label>
+                                    <div class="select-awesome" data-placement="right">
+                                        <label>
+                                            <select id="idType" class="form-control"
+                                                    aria-invalid="false" name="idType">
+                                                <option></option>
+                                                <th:block
+                                                        th:if="!${#lists.isEmpty(typeList)}">
+                                                    <option th:each="t : ${typeList}"
+                                                            th:value="${t.idType}"
+                                                            th:text="${t.nbrHours} +' (' + ${t.description} +')'"
+                                                            th:selected="${subscription?.subscriptionType?.idType} == ${t.idType}">
+                                                    </option>
+                                                </th:block>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-4 form-group required">
+                                        <label class="control-label" for="startDate"> Date
+                                            de début: </label>
+                                        <div class="input-group date">
+                                            <input type="text" class="form-control" date="startDate" id="startDate"
+                                                   data-inputmask-alias="fh_date"
+                                                   th:value="${subscription.startDate}"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text calculateDate"><i
+                                                        class="far fa-calendar-alt"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 form-group required">
+                                        <label class="control-label"
+                                               for="endDate"> Date
+                                            de fin: </label>
+                                        <div class="form-row">
+                                            <ul class="hidden" id="nbrMonth">
+                                                <li th:each="parameter : ${parameters}"
+                                                    th:name="${parameter.key}" type="hidden"
+                                                    th:value="${parameter.value}">
+                                                </li>
+                                            </ul>
+                                            <div class="input-group date">
+                                                <input type="text" class="form-control"
+                                                       readonly
+                                                       data-inputmask-alias="fh_date"
+                                                       id="endDate" date="endDate"
+                                                       th:value="${subscription?.endDate}"/>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"><i
+                                                            class="far fa-calendar-alt"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-footer">
+
+                                <div class="row align-items-end justify-content-end">
+                                    <div class="col-auto">
+                                        <a th:href="@{/subscription}" class="btn btn-dark"> Précédent </a>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button id="saveButton" type="submit"
+                                                class="btn btn-dark">
+                                            Ajouter
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </th:block>
+        </main>
+    </div>
+</div>
+<th:block>
+    <footer th:replace="footer">
+    </footer>
+</th:block>
+<script type="text/javascript" th:src="@{/js/club/addSubscription.js}"></script>
+</body>
+</html>

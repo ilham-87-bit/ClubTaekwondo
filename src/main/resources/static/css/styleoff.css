@@ -395,9 +395,10 @@ textarea.form-control {
     margin-top: 0.3rem;
     margin-left: -1.25rem;
 }
-.form-check-input[disabled] ~ .form-check-label, .form-check-input:disabled ~ .form-check-label {
-    color: #6c757d;
-}
+
+/*.form-check-input[disabled] ~ .form-check-label, .form-check-input:disabled ~ .form-check-label {*/
+/*    color: #6c757d;*/
+/*}*/
 
 .form-check-label {
     margin-bottom: 0;
@@ -1390,6 +1391,7 @@ input[type=button].btn-block {
 .btn-group-toggle > .btn-group > .btn {
     margin-bottom: 0;
 }
+
 .btn-group-toggle > .btn input[type=radio],
 .btn-group-toggle > .btn input[type=checkbox],
 .btn-group-toggle > .btn-group > .btn input[type=radio],
@@ -1399,72 +1401,73 @@ input[type=button].btn-block {
     pointer-events: none;
 }
 
-.input-group {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: stretch;
-    width: 100%;
-}
-.input-group > .form-control,
-.input-group > .form-control-plaintext,
-.input-group > .custom-select,
-.input-group > .custom-file {
-    position: relative;
-    flex: 1 1 auto;
-    width: 1%;
-    min-width: 0;
-    margin-bottom: 0;
-}
-.input-group > .form-control + .form-control,
-.input-group > .form-control + .custom-select,
-.input-group > .form-control + .custom-file,
-.input-group > .form-control-plaintext + .form-control,
-.input-group > .form-control-plaintext + .custom-select,
-.input-group > .form-control-plaintext + .custom-file,
-.input-group > .custom-select + .form-control,
-.input-group > .custom-select + .custom-select,
-.input-group > .custom-select + .custom-file,
-.input-group > .custom-file + .form-control,
-.input-group > .custom-file + .custom-select,
-.input-group > .custom-file + .custom-file {
-    margin-left: -1px;
-}
-.input-group > .form-control:focus,
-.input-group > .custom-select:focus,
-.input-group > .custom-file .custom-file-input:focus ~ .custom-file-label {
-    z-index: 3;
-}
-.input-group > .custom-file .custom-file-input:focus {
-    z-index: 4;
-}
-.input-group > .form-control:not(:last-child),
-.input-group > .custom-select:not(:last-child) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-}
-.input-group > .form-control:not(:first-child),
-.input-group > .custom-select:not(:first-child) {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-}
-.input-group > .custom-file {
-    display: flex;
-    align-items: center;
-}
-.input-group > .custom-file:not(:last-child) .custom-file-label, .input-group > .custom-file:not(:last-child) .custom-file-label::after {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-}
-.input-group > .custom-file:not(:first-child) .custom-file-label {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-}
+/*.input-group {*/
+/*    position: relative;*/
+/*    display: flex;*/
+/*    flex-wrap: wrap;*/
+/*    align-items: stretch;*/
+/*    width: 100%;*/
+/*}*/
+/*.input-group > .form-control,*/
+/*.input-group > .form-control-plaintext,*/
+/*.input-group > .custom-select,*/
+/*.input-group > .custom-file {*/
+/*    position: relative;*/
+/*    flex: 1 1 auto;*/
+/*    width: 1%;*/
+/*    min-width: 0;*/
+/*    margin-bottom: 0;*/
+/*}*/
+/*.input-group > .form-control + .form-control,*/
+/*.input-group > .form-control + .custom-select,*/
+/*.input-group > .form-control + .custom-file,*/
+/*.input-group > .form-control-plaintext + .form-control,*/
+/*.input-group > .form-control-plaintext + .custom-select,*/
+/*.input-group > .form-control-plaintext + .custom-file,*/
+/*.input-group > .custom-select + .form-control,*/
+/*.input-group > .custom-select + .custom-select,*/
+/*.input-group > .custom-select + .custom-file,*/
+/*.input-group > .custom-file + .form-control,*/
+/*.input-group > .custom-file + .custom-select,*/
+/*.input-group > .custom-file + .custom-file {*/
+/*    margin-left: -1px;*/
+/*}*/
+/*.input-group > .form-control:focus,*/
+/*.input-group > .custom-select:focus,*/
+/*.input-group > .custom-file .custom-file-input:focus ~ .custom-file-label {*/
+/*    z-index: 3;*/
+/*}*/
+/*.input-group > .custom-file .custom-file-input:focus {*/
+/*    z-index: 4;*/
+/*}*/
+/*.input-group > .form-control:not(:last-child),*/
+/*.input-group > .custom-select:not(:last-child) {*/
+/*    border-top-right-radius: 0;*/
+/*    border-bottom-right-radius: 0;*/
+/*}*/
+/*.input-group > .form-control:not(:first-child),*/
+/*.input-group > .custom-select:not(:first-child) {*/
+/*    border-top-left-radius: 0;*/
+/*    border-bottom-left-radius: 0;*/
+/*}*/
+/*.input-group > .custom-file {*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*}*/
+/*.input-group > .custom-file:not(:last-child) .custom-file-label, .input-group > .custom-file:not(:last-child) .custom-file-label::after {*/
+/*    border-top-right-radius: 0;*/
+/*    border-bottom-right-radius: 0;*/
+/*}*/
+/*.input-group > .custom-file:not(:first-child) .custom-file-label {*/
+/*    border-top-left-radius: 0;*/
+/*    border-bottom-left-radius: 0;*/
+/*}*/
 
 .input-group-prepend,
 .input-group-append {
     display: flex;
 }
+
 .input-group-prepend .btn,
 .input-group-append .btn {
     position: relative;
@@ -1600,26 +1603,30 @@ input[type=button].btn-block {
 .custom-control-input:focus ~ .custom-control-label::before {
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
+
 .custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
     border-color: #80bdff;
 }
+
 .custom-control-input:not(:disabled):active ~ .custom-control-label::before {
     color: #fff;
     background-color: #b3d7ff;
     border-color: #b3d7ff;
 }
-.custom-control-input[disabled] ~ .custom-control-label, .custom-control-input:disabled ~ .custom-control-label {
-    color: #6c757d;
-}
-.custom-control-input[disabled] ~ .custom-control-label::before, .custom-control-input:disabled ~ .custom-control-label::before {
-    background-color: #e9ecef;
-}
+
+/*.custom-control-input[disabled] ~ .custom-control-label, .custom-control-input:disabled ~ .custom-control-label {*/
+/*    color: #6c757d;*/
+/*}*/
+/*.custom-control-input[disabled] ~ .custom-control-label::before, .custom-control-input:disabled ~ .custom-control-label::before {*/
+/*    background-color: #e9ecef;*/
+/*}*/
 
 .custom-control-label {
     position: relative;
     margin-bottom: 0;
     vertical-align: top;
 }
+
 .custom-control-label::before {
     position: absolute;
     top: 0.25rem;
@@ -1779,16 +1786,19 @@ input[type=button].btn-block {
     margin: 0;
     opacity: 0;
 }
+
 .custom-file-input:focus ~ .custom-file-label {
     border-color: #80bdff;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
-.custom-file-input[disabled] ~ .custom-file-label, .custom-file-input:disabled ~ .custom-file-label {
-    background-color: #e9ecef;
-}
+
+/*.custom-file-input[disabled] ~ .custom-file-label, .custom-file-input:disabled ~ .custom-file-label {*/
+/*    background-color: #e9ecef;*/
+/*}*/
 .custom-file-input:lang(en) ~ .custom-file-label::after {
     content: "Browse";
 }
+
 .custom-file-input ~ .custom-file-label[data-browse]::after {
     content: attr(data-browse);
 }

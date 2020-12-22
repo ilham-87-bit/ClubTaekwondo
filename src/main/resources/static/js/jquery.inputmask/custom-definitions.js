@@ -5,7 +5,7 @@
             $.inputmask.defaults.aliases,
             {
                 fh_date: {
-                    alias: "datetime",
+                    alias: "dd/mm/yyyy",
                     mask: "1/2/y",
                     placeholder: "_",
                     inputFormat: "dd/mm/yyyy",

@@ -1,4 +1,5 @@
 (function ($) {
+
     "use strict";
     // Add active state to sidbar nav links
     var path = window.location.href; // because the 'href' property of the DOM element is the absolute path
@@ -16,3 +17,6 @@
     });
 
 })(jQuery);
+$(document).ready(function () {
+    inputMaskEvents();
+});

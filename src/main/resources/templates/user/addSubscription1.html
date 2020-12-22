@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head">
+</head>
+<body>
+<header th:replace="header">
+</header>
+<div class="sb-nav-fixed">
+    <div id="layoutSidenav_content">
+        <main>
+            <th:block>
+                <div>
+                    <img th:src="@{/images/taekwondo-5.jpg}" class="img-card">
+                </div>
+            </th:block>
+            <th:block>
+                <div class="card-body" th:with="hasSubscription = ${subscription.idSubscription != null}">
+                    <div class="row justify-content-center">
+                        <h1 class="font-weight-bold my-4">Choisir votre Ecole</h1>
+                    </div>
+                    <div class="row justify-content-center">
+                        <h5 class="font-weight-bold my-4"> Tranche d'âge :</h5>
+                        <span class="font-weight-bold my-4" th:text="${cat.categoryName}"></span>
+                    </div>
+                    <div th:if="${messageError}">
+                        <p class="error" th:text="${messageError}"></p>
+                    </div>
+                    <div class="card shadow-lg border-0 rounded-lg mt-5">
+                        <form id="idAddSubscriptionForm" class="form-horizontal mt-5 ml-5 mr-5 mb-5"
+                              th:object="${subscription}"
+                              th:action="@{(${hasSubscription ? '/editSubscription' : '/addSubscription/' + cat.idCategory})}"
+                              method="post">
+                            <input type="hidden" th:field="*{idSubscription}">
+                            <th:block th:with="hasSchool=${!#lists.isEmpty(schoolList)}">
+                                <th:block th:if="!${#lists.isEmpty(schoolList)}">
+                                    <div class="card-body card-border">
+                                        <table id="schoolTable"
+                                               class="table table-fixed table-striped"
+                                               th:classappend="${hasSchool} ? 'table-hover'">
+                                            <tbody class="list" id="schoolList">
+                                            <th:block th:if="${hasSchool}">
+                                                <tr id="inputSchool" th:each="scho, row : ${schoolList}"
+                                                    class="rowSchool js-row-link-alt">
+                                                    <td class="text-center py-5">
+                                                        <input type="radio" th:id="${row.index}"
+                                                               onclick="formFunction()"
+                                                               name="id" th:value="${scho.getId()}"
+                                                               class="checkboxGroup with-font"/>
+                                                        <label th:for="${row.index}"></label>
+                                                    </td>
+                                                    <td class="text-center py-5">
+                                                        <h3 class="text-uppercase font-weight-bold"
+                                                            th:text="${scho?.name}"></h3>
+                                                    </td>
+                                                    <td class="text-center py-5">
+                                                        <span th:text="${scho?.address?.street} + ', ' + ${scho?.address?.number} "></span>
+                                                        <span th:text="${scho?.address?.city?.postalCode} + ', ' + ${scho?.address?.city?.cityName}"></span>
+                                                    </td>
+                                                </tr>
+                                            </th:block>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </th:block>
+                            </th:block>
+                            <div class="card-footer">
+                                <div class="row align-items-end justify-content-end">
+                                    <div class="col-auto">
+                                        <a th:href="@{/subscription}" class="btn btn-dark"> Précédent </a>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button th:if="*{idSubscription == null}" id="saveButton" type="submit"
+                                                class="btn btn-dark">
+                                            Suivant
+                                        </button>
+
+                                        <button th:unless="*{idSubscription == null}" id="editButton" type="submit"
+                                                class="btn btn-dark">
+                                            Modifier
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </th:block>
+        </main>
+    </div>
+</div>
+<th:block>
+    <footer th:replace="footer">
+    </footer>
+</th:block>
+<script type="text/javascript" th:src="@{/js/club/addsubscription.js}"></script>
+</body>
+</html>

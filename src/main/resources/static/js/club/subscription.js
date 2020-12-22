@@ -2,7 +2,7 @@ var form = $('#idAddSubscriptionForm');
 
 $(document).ready(function () {
     formFunction();
-    // inputDate();
+    // inputButton();
     inputMaskEvents();
     calculateEndDateFormFunction();
 });
@@ -24,6 +24,27 @@ function formFunction() {
 
 }
 
+// function formFunction() {
+//     var cheked = false;
+//     $('.rowSchool').each(function (index, element) {
+//         if ($('#' + index).prop('checked') === true) {
+//             cheked = true;
+//         }
+//     });
+//     if(cheked === true){
+//         $('#addSelect').removeClass('hidden');
+//         $('#startDate').datepicker({
+//             startDate: new Date(),
+//             clearBtn: true,
+//             format: "dd/mm/yyyy",
+//             todayHighlight: true
+//         });
+//     }else {
+//         $('#addSelect').addClass('hidden');
+//     }
+//
+// }
+
 function calculateEndDateFormFunction() {
 
     $('.calculateDate').on('input', function () {
@@ -36,11 +57,7 @@ function calculateEndDateFormFunction() {
 }
 
 function calculateEndDate(index) {
-    // var expdisp;
-    //
-    // $('#startDate' + index).on('changeDate', function () {
-    //     expdisp = $('#startDate' + index).val();
-    // });
+
     var list = $('#nbrMonth').children('li');
     var idPeriod = $(('#idPeriod' + index) + ' option:selected').val();
     $('#endDate' + index).val(null);
@@ -48,51 +65,32 @@ function calculateEndDate(index) {
     list.each(function (indexPara, elem) {
         if ($(elem).attr('name') === idPeriod) {
             var cpt = $(elem).attr('value');
-            // var arr = $('#startDate' + index).val().split("/");
-            // var date = new Date(arr[2] + "-" + arr[1] + "-" + arr[0]);
-            // date.setUTCMonth(date.getUTCMonth()+cpt +1);
-            // var d = date.getDate();
-            // var m = date.getUTCMonth();
-            //     // .valueOf();
-            // var y = date.getFullYear();
-            // date.setUTCMonth(m + cpt);
-            // Date.prototype.addMonth=function(n){
-            //     this.setUTCMonth(this.getUTCMonth()+n)
-            // }
-
-            var end = $('#startDate' + index).val();
-            end.setUTCMonth(end.getUTCMonth() + cpt + 1);
-            // var end = new Date(date.getDate(),date.getUTCMonth()+1,date.getFullYear());
-            $('#endDate' + index).val(new Date(end));
+            var arr = $('#startDate' + index).val().split("/");
+            var date = new Date(arr[2] + "-" + arr[1] + "-" + arr[0]);
+            var d = date.getDate();
+            var m = date.getMonth();
+            var y = date.getFullYear();
+            date.setMonth(m + cpt);
+            var endDate = new Date(date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear());
+            var endDateAsString = endDate.getDate() + '/' + (endDate.getMonth() + 1) + '/' + endDate.getFullYear();
+            $('#endDate' + index).val(endDateAsString);
         }
     });
 }
 
-// // $('.rowSchool').each(function (index, element) {
-// //     if ($('#' + index).prop('checked') === true) {
-// // $('#startDate' + index).on('changeDate', function () {
-// var expdisp = $('#startDate' + index).val();
-// var cpt = $('#idPeriod' + index).;
-// // if ($(('#idPeriod' + index) + ' option:selected').text().includes("semesttre") && $('#startDate' + index).val() != '') {
-// var arr = expdisp.split("/");
-// var date = new Date(arr[2] + "-" + arr[1] + "-" + arr[0]);
-// var d = date.getDate();
-// var m = date.getMonth();
-// var y = date.getFullYear();
-// var end = new Date(y, m + cpt, d);
-// $('#endDate' + index).val(end);
-// // } else {
-// //     if ($(('#idPeriod' + index) + ' option:selected').text().includes("annuelle") && $('#startDate' + index).val() != '') {
-// //         var arr = expdisp.split("/");
-// //         var date = new Date(arr[2] + "-" + arr[1] + "-" + arr[0]);
-// //         var d = date.getDate();
-// //         var m = date.getMonth();
-// //         var y = date.getFullYear();
-// //         var end = new Date(y + 1, m, d);
-// //         $('#endDate' + index).val(end);
-// //     } else {
-// //         $('#endDate' + index).val('');
-// //     }
-// // }
-
+// function inputButton(){
+//     // $('#saveButton').on('click',function (e) {
+//     //     e.preventDefault();
+//     // var start =
+//         $('.rowSchool').each(function (index, element) {
+//             if ($('#' + index).prop('checked') === true) {
+//                 $('#period').val($(('#idPeriod' + index)));
+//                 $('#type').val($(('#idType' + index)));
+//                 $('#startD').val(new Date($(('#startDate' + index)).val()));
+//                 $('#endD').val(new Date($(('#endDate' + index))));
+//             }
+//         // });
+//         //     form.submit();
+//     });
+// }
 

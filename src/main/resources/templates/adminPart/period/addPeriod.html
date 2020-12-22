@@ -9,27 +9,28 @@
         <div class="container-fluid" th:with="hasPeriod = ${period.id != null}">
             <form id="idAddPeriodForm" class="form-horizontal" th:object="${period}" method="post"
                   th:action="@{(${hasPeriod ? '/admin/period/edit' : '/admin/period/addPeriod'})}" name="period">
-
-                <input type="hidden" th:field="*{id}">
-                <div class="form-group required col-6 col-lg-8">
-                    <label class="control-label" for="period"> Durée d'abonnement :</label>
-                    <input id="period" type="text" class="form-control py-4" name="period" required
-                           data-placement="right"
-                           maxlength="50" th:field="*{period}"/>
-                </div>
-                <div class="form-group required col-6 col-lg-8">
-                    <label class="control-label" for="description">Déscription de la durée:</label>
-                    <input id="description" type="text" class="form-control py-4" name="description"
-                           data-placement="right"
-                           maxlength="50"
-                           th:field="*{description}"/>
-                </div>
-                <div class="form-group required col-6 col-lg-8">
-                    <label class="control-label" for="nbrMonth"> Nombre de mois:</label>
-                    <input id="nbrMonth" type="text" class="form-control py-4" name="nbrMonth"
-                           data-placement="right"
-                           maxlength="50"
-                           th:field="*{nbrMonth}"/>
+                <div class="card-body mt-5 ml-5 mr-5 mb-5">
+                    <input type="hidden" th:field="*{id}">
+                    <div class="form-group required col-6 col-lg-8">
+                        <label class="control-label" for="period"> Durée d'abonnement :</label>
+                        <input id="period" type="text" class="form-control py-4" name="period" required
+                               data-placement="right"
+                               maxlength="50" th:field="*{period}"/>
+                    </div>
+                    <div class="form-group required col-6 col-lg-8">
+                        <label class="control-label" for="description">Déscription de la durée:</label>
+                        <input id="description" type="text" class="form-control py-4" name="description"
+                               data-placement="right"
+                               maxlength="50"
+                               th:field="*{description}"/>
+                    </div>
+                    <div class="form-group required col-6 col-lg-8">
+                        <label class="control-label" for="nbrMonth"> Nombre de mois:</label>
+                        <input id="nbrMonth" type="text" class="form-control py-4" name="nbrMonth"
+                               data-placement="right"
+                               maxlength="50"
+                               th:field="*{nbrMonth}"/>
+                    </div>
                 </div>
                 <div class="card-footer">
                     <div class="row align-items-end justify-content-end">

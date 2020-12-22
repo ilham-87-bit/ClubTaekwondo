@@ -1,5 +1,7 @@
 package com.clubtaekwondo.club.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -12,9 +14,11 @@ public class Subscription {
     @Column(name = "id_abonnement")
     private Long idSubscription;
 
+    @DateTimeFormat(pattern = "dd-MMM-YYYY")
     @Column(name = "date_debut")
     private Date startDate;
 
+    @DateTimeFormat(pattern = "dd-MMM-YYYY")
     @Column(name = "date_fin")
     private Date endDate;
 

@@ -28,6 +28,8 @@ public class TimeTableController {
     private CategoriesService categoriesService;
     @Autowired
     private DayService dayService;
+    @Autowired
+    private CategoryByCoachService categoryByCoachService;
 
     @GetMapping(value = "/timeList")
     public String timeList(Model model) {
@@ -45,6 +47,7 @@ public class TimeTableController {
         model.addAttribute("coachList", coachService.getAllCoach());
         model.addAttribute("categoryList", categoriesService.getAllCategory());
         model.addAttribute("dayList", dayService.getAllDay());
+        model.addAttribute("parameters", categoryByCoachService.getAllCategoryByCoach());
 
         return ("adminPart/time/addTime");
     }

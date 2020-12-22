@@ -9,121 +9,126 @@
         <div class="container-fluid" th:with="hasTime = ${time.idTime != null}">
             <form id="idAddTimeForm" class="form-horizontal" th:object="${time}"
                   th:action="@{(${hasTime ? '/admin/time/edit' : '/admin/time/addTime'})}" method="post">
-                <input type="hidden" th:field="*{idTime}">
-                <div class="form-row">
-                    <div class="col-md-6">
-                        <div class="form-group required">
-                            <label class="control-label" for="idSchool"> Ecole :</label>
-                            <div class="select-awesome" data-placement="right" maxlength="50">
-                                <label>
-                                    <select id="idSchool"
-                                            class="form-control" required
-                                            aria-invalid="false"
-                                            name="id">
-                                        <option></option>
-                                        <th:block th:if="!${#lists.isEmpty(schoolList)}">
-                                            <option th:each="scho : ${schoolList}"
-                                                    th:value="${scho.id}"
-                                                    th:text="${scho.name}"
-                                                    th:selected="${time?.s?.id} == ${scho.id}">
-                                            </option>
-                                        </th:block>
-                                    </select>
-                                </label>
+                <div class="card-body mt-5 ml-5 mr-5 mb-5">
+                    <input type="hidden" th:field="*{idTime}">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group required">
+                                <label class="control-label" for="idSchool"> Ecole :</label>
+                                <div class="select-awesome" data-placement="right" maxlength="50">
+                                    <label>
+                                        <select id="idSchool" class="form-control selectSchool" required
+                                                aria-invalid="false" name="id">
+                                            <option></option>
+                                            <th:block th:if="!${#lists.isEmpty(schoolList)}">
+                                                <option th:each="scho : ${schoolList}"
+                                                        th:value="${scho.id}"
+                                                        th:text="${scho.name}"
+                                                        th:selected="${time?.s?.id} == ${scho.id}">
+                                                </option>
+                                            </th:block>
+                                        </select>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
 
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group required">
+                                <label class="control-label" for="idCoach"> Entraineur :</label>
+                                <div class="select-awesome" data-placement="right" maxlength="50">
+                                    <label>
+                                        <select id="idCoach" class="form-control selectCoach" required
+                                                aria-invalid="false" name="idCoach">
+                                            <option id="coachNull"></option>
+                                            <th:block th:if="!${#lists.isEmpty(coachList)}">
+                                                <option th:each="coach, row : ${coachList}" th:id="${'co' + row.index}"
+                                                        th:value="${coach.idCoach}" class="hidden coachList"
+                                                        th:text="${coach.nameCoach}"
+                                                        th:name="${coach.school.id}"
+                                                        th:selected="${time?.co?.idCoach} == ${coach.idCoach}">
+                                                </option>
+                                            </th:block>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group required">
-                            <label class="control-label" for="idCoach"> Entraineur :</label>
-                            <div class="select-awesome" data-placement="right" maxlength="50">
-                                <label>
-                                    <select id="idCoach"
-                                            class="form-control" required
-                                            aria-invalid="false"
-                                            name="idCoach">
-                                        <option></option>
-                                        <th:block th:if="!${#lists.isEmpty(coachList)}">
-                                            <option th:each="coach : ${coachList}"
-                                                    th:value="${coach.idCoach}"
-                                                    th:text="${coach.nameCoach}"
-                                                    th:selected="${time?.co?.idCoach} == ${coach.idCoach}">
-                                            </option>
-                                        </th:block>
-                                    </select>
-                                </label>
+
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group required">
+                                <label class="control-label" for="idCategory"> Categorie :</label>
+                                <div id="catCoach" th:each="parameter, row : ${parameters}"
+                                     class="js-row-link-alt categoryByCoach">
+                                    <input type="hidden" th:id="${'catByCoach' + row.index}"
+                                           th:name="${parameter.coach.idCoach}"
+                                           th:value="${parameter.categories.idCategory}"/>
+                                </div>
+                                <div class="select-awesome" data-placement="right" maxlength="50">
+                                    <label>
+                                        <select id="idCategory"
+                                                class="form-control" required
+                                                aria-invalid="false"
+                                                name="idCategory">
+                                            <option id="optionVide"></option>
+                                            <th:block th:if="!${#lists.isEmpty(categoryList)}">
+                                                <option th:each="category, row : ${categoryList}"
+                                                        th:id="${'cat' + row.index}"
+                                                        th:value="${category.idCategory}" class="categoryList hidden"
+                                                        th:text="${category.categoryName}"
+                                                        th:selected="${time?.c?.idCategory} == ${category.idCategory}">
+                                                </option>
+                                            </th:block>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group required">
+                                <label class="control-label" for="idDay"> Jour :</label>
+                                <div class="select-awesome" data-placement="right" maxlength="50">
+                                    <label>
+                                        <select id="idDay"
+                                                class="form-control" required
+                                                aria-invalid="false"
+                                                name="idDay">
+                                            <option></option>
+                                            <th:block th:if="!${#lists.isEmpty(dayList)}">
+                                                <option th:each="d : ${dayList}"
+                                                        th:value="${d.idDay}"
+                                                        th:text="${d.day}"
+                                                        th:selected="${time?.day?.idDay} == ${d.idDay}">
+                                                </option>
+                                            </th:block>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group required">
+                                <label class="control-label" for="inputStartTime">Heure-début :</label>
+                                <input class="form-control" id="inputStartTime" type="time" required
+                                       th:field="*{startTime}"/>
                             </div>
                         </div>
-
+                        <div class="col-md-6">
+                            <div class="form-group required">
+                                <label class="control-label" for="inputEndTime">heure-fin :</label>
+                                <input class="form-control" id="inputEndTime" type="time" step="300" required
+                                       th:field="*{endTime}"/>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="form-row">
-                    <div class="col-md-6">
-                        <div class="form-group required">
-                            <label class="control-label" for="idCategory"> Categorie :</label>
-                            <div class="select-awesome" data-placement="right" maxlength="50">
-                                <label>
-                                    <select id="idCategory"
-                                            class="form-control" required
-                                            aria-invalid="false"
-                                            name="idCategory">
-                                        <option></option>
-                                        <th:block th:if="!${#lists.isEmpty(categoryList)}">
-                                            <option th:each="category : ${categoryList}"
-                                                    th:value="${category.idCategory}"
-                                                    th:text="${category.categoryName}"
-                                                    th:selected="${time?.c?.idCategory} == ${category.idCategory}">
-                                            </option>
-                                        </th:block>
-                                    </select>
-                                </label>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group required">
-                            <label class="control-label" for="idDay"> Jour :</label>
-                            <div class="select-awesome" data-placement="right" maxlength="50">
-                                <label>
-                                    <select id="idDay"
-                                            class="form-control" required
-                                            aria-invalid="false"
-                                            name="idDay">
-                                        <option></option>
-                                        <th:block th:if="!${#lists.isEmpty(dayList)}">
-                                            <option th:each="d : ${dayList}"
-                                                    th:value="${d.idDay}"
-                                                    th:text="${d.day}"
-                                                    th:selected="${time?.day?.idDay} == ${d.idDay}">
-                                            </option>
-                                        </th:block>
-                                    </select>
-                                </label>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-md-6">
-                        <div class="form-group required">
-                            <label class="control-label" for="inputStartTime">Heur de début :</label>
-                            <input class="form-control" id="inputStartTime" type="time" step="300" required
-                                   th:field="*{startTime}"/>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group required">
-                            <label class="control-label" for="inputEndTime">heur de fin :</label>
-                            <input class="form-control" id="inputEndTime" type="time" step="300" required
-                                   th:field="*{endTime}"/>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="card-footer">
                     <div class="row align-items-end justify-content-end">
                         <div class="col">
