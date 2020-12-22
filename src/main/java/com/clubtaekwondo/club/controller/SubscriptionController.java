@@ -226,7 +226,7 @@ public class SubscriptionController {
         StudentRelation sr = studentRelationService.save(studentRelation);
 
         List<Subscription> subscriptionList = subscriptionService.getAllSubscription();
-        Optional<Subscription> firstSubscription = subscriptionService.getAllSubscription().stream().filter(su -> su.getStudent().equals(student.getIdStudent()))
+        Optional<Subscription> firstSubscription = subscriptionService.getAllSubscription().stream().filter(su -> su.getStudent().getIdStudent().equals(student.getIdStudent()))
                 .findFirst();
         if (firstSubscription.isPresent()) {
             s = firstSubscription.get();
