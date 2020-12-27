@@ -92,9 +92,12 @@
                                             <span th:text="${category?.description}"></span>
                                         </td>
                                         <td class="text-center py-5">
-                                            <a th:href="${'/addSubscription/'+ category?.idCategory}"
+                                            <a th:if="${subscription.idSubscription == null}"
+                                               th:href="${'/addSubscription/'+ category?.idCategory}"
                                                class="btn btn-secondary"> Choisir </a>
-                                            <!--                                            <button class="btn btn-secondary" > Choisir </button>-->
+                                            <a th:unless="${subscription.idSubscription == null}"
+                                               th:href="${'/editSubscription/'+ subscription.idSubscription +'/' + category?.idCategory}"
+                                               class="btn btn-secondary"> Choisir </a>
                                         </td>
                                     </tr>
                                 </th:block>

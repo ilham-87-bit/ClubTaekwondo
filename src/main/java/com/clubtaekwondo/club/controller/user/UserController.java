@@ -1,6 +1,7 @@
 package com.clubtaekwondo.club.controller.user;
 
 import com.clubtaekwondo.club.model.School;
+import com.clubtaekwondo.club.model.Tariff;
 import com.clubtaekwondo.club.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -38,6 +39,14 @@ public class UserController {
 
     @Autowired
     private StorageService storageService;
+    @Autowired
+    private SubscriptionService subscriptionService;
+    @Autowired
+    private TariffService tariffService;
+    @Autowired
+    private SubscriptionPeriodService subscriptionPeriodService;
+    @Autowired
+    private SubscriptionTypeService subscriptionTypeService;
 
     @GetMapping(value = "/school")
     public String getAllSchool(Model model) {
@@ -47,7 +56,19 @@ public class UserController {
             school.setFullUrlImg(fileToPath(storageService.load(newImageName)));
         });
         model.addAttribute("schoolList", allSchool);
+        model.addAttribute("subscriptions", subscriptionService.getCart());
         return "user/school";
+    }
+
+    @GetMapping(value = "/tariff")
+    public String getAllTariff(Model model) {
+        List<Tariff> tariffs = tariffService.getAllTariff();
+        model.addAttribute("tariffList", tariffs);
+        model.addAttribute("categoryList", categoriesService.getAllCategory());
+        model.addAttribute("periodList", subscriptionPeriodService.getAllPeriod());
+        model.addAttribute("typeList", subscriptionTypeService.getAllSubscriptionType());
+
+        return "user/tariff";
     }
 
     @GetMapping("/{filename:imgs.+}")

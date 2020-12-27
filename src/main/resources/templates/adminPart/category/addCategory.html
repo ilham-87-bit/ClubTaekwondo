@@ -11,6 +11,9 @@
                   th:action="@{(${hasCategory ? '/admin/category/edit' : '/admin/category/addCategory'})}"
                   name="category">
                 <div class="card-body mt-5 ml-5 mr-5 mb-5">
+                    <div th:if="${messageError}">
+                        <p class="error" th:text="${messageError}"></p>
+                    </div>
                     <input type="hidden" th:field="*{idCategory}">
                     <div class="form-group required col-6 col-lg-8">
                         <label class="control-label" for="categoriesName"> Catégorie :</label>

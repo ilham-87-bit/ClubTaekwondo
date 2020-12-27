@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head">
+</head>
+<body>
+<header th:replace="header">
+</header>
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid">
+            <div class="card-body">
+                <th:block th:with="hasSubscription=${!#lists.isEmpty(subscriptions)}">
+                    <th:block th:if="!${#lists.isEmpty(subscriptions)}">
+                        <div class="card-body card-border">
+                            <table id="subscriptionTable"
+                                   class="table table-fixed table-striped"
+                                   th:classappend="${hasSubscription} ? 'table-hover'">
+                                <!--                                <thead>-->
+                                <!--                                <tr>-->
+                                <!--                                    <th class="text-center cell&#45;&#45;twenty">-->
+                                <!--                                        <span> Eleve </span>-->
+                                <!--                                    </th>-->
+                                <!--                                    <th class="text-center cell&#45;&#45;twenty">-->
+                                <!--                                        <span> Ecole </span>-->
+                                <!--                                    </th>-->
+                                <!--                                    <th class="text-center cell&#45;&#45;twenty">-->
+                                <!--                                        <span> Catégorie </span>-->
+                                <!--                                    </th>-->
+                                <!--                                    <th class="text-center cell&#45;&#45;twenty">-->
+                                <!--                                        <span> Durée d'abonnement </span>-->
+                                <!--                                    </th>-->
+                                <!--                                    <th class="text-center cell&#45;&#45;twenty">-->
+                                <!--                                        <span> Type d'abonnement </span>-->
+                                <!--                                    </th>-->
+                                <!--                                    <th class="text-center cell&#45;&#45;twenty">-->
+                                <!--                                        <span> Prix </span>-->
+                                <!--                                    </th>-->
+                                <!--                                </tr>-->
+                                <!--                                </thead>-->
+                                <tbody class="list" id="subscriptionsList">
+                                <th:block th:if="${hasSubscription}">
+                                    <tr th:each="subsc, row : ${subscriptions}" class="js-row-link-alt">
+                                        <td align="center" class="py-5">
+                                            <span th:text="${subsc.student.firstName} + ' ' + ${subsc.student.name}"/>
+                                        </td>
+                                        <td align="center" class="py-5">
+                                            <span th:text="${subsc.school.name}"/>
+                                        </td>
+                                        <td align="center" class="py-5">
+                                            <span th:text="${subsc.categories.categoryName}"/>
+                                        </td>
+                                        <td align="center" class="py-5">
+                                            <span
+                                                    th:text="${subsc.subscriptionPeriod.period}"/>
+                                        </td>
+                                        <td align="center" class="py-5">
+                                            <span th:text="${subsc.subscriptionType.nbrHours}"/>
+                                        </td>
+                                        <td align="center" class="py-5">
+                                            <span th:text="${subsc.totalPrice}  + ' EURO'"/>
+                                        </td>
+                                        <td align="center" class="py-5">
+                                            <a th:href="${'edit/'+ subsc?.idSubscription}"
+                                               class="btn btn-link fa fa-edit"></a>
+                                            <a class="btn btn-link fa fa-trash-alt"
+                                               th:attr="data-target='#modal-delete'+${subsc?.idSubscription}"
+                                               data-rel="tooltip" title="delete" data-toggle="modal"></a>
+
+                                            <div th:id="modal-delete+${subsc?.idSubscription}" class="modal fade"
+                                                 tabindex="-1">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header no-padding">
+                                                            <div class="table-header">Suppression</div>
+                                                        </div>
+                                                        <div class="modal-body no-padding"> Voulez vous supprimer cette
+                                                            abonnement ?
+                                                        </div>
+                                                        <div class="modal-footer no-margin-top">
+                                                            <button class="btn btn-danger pull-left"
+                                                                    data-dismiss="modal"> Annuler
+                                                            </button>
+                                                            <a class="btn btn-danger pull-right" type="button"
+                                                               th:href="${'/deleteInCart/'+ subsc?.idSubscription}">
+                                                                Supprimer
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                            <div class="row align-items-end justify-content-end py-4">
+                                <div class="col-auto">
+                                    <label class="control-label border-info"> Total : </label><label
+                                        class="control-label"
+                                        th:text="${subscriptions.size()} + ' Abonnement(s)'"></label>
+                                </div>
+                                <div class="col-auto">
+                                    <label class="content-block-text border-info" th:text="${total} + '  EURO'"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row align-items-end justify-content-end">
+                                <div class="col-auto">
+                                    <!--                                    <button id="payerButton" type="submit" class="btn btn-dark"> Payer</button>-->
+                                    <a class="btn btn-dark"
+                                       href="https://serviweb.ca/projet/transaction.php?id=tr_133&prix=10.00">
+                                        Payer </a>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+                    <th:block th:unless="!${#lists.isEmpty(subscriptions)}">
+                        <h1 class="text-center py-5"> Le panier est vide </h1>
+                    </th:block>
+                </th:block>
+            </div>
+        </div>
+    </main>
+</div>
+<footer th:replace="footer">
+</footer>
+</body>
+</html>

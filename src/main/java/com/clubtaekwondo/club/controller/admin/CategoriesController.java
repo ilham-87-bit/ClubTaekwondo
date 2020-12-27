@@ -1,5 +1,6 @@
 package com.clubtaekwondo.club.controller.admin;
 
+import com.clubtaekwondo.club.model.Address;
 import com.clubtaekwondo.club.model.Categories;
 import com.clubtaekwondo.club.service.CategoriesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("admin/category")
@@ -22,16 +25,6 @@ public class CategoriesController {
         return "adminPart/category/categoryList";
     }
 
-    @GetMapping(value = "/{category}")
-    public String category(@PathVariable("category") Long id, Model model) {
-
-        Categories category = categoriesService.findById(id);
-
-        model.addAttribute(CATEGORY, category);
-
-        return "adminPart/category/addCategory";
-    }
-
     @GetMapping(value = "/addCategory")
     public String getAddCategory(Categories categories, Model model) {
         model.addAttribute(CATEGORY, new Categories());
@@ -41,11 +34,16 @@ public class CategoriesController {
     @PostMapping(value = "/addCategory")
     public String addCategory(Categories categories, Model model) {
 
-        categoriesService.saveCategories(categories);
-
+        Optional<Categories> firstCategories = categoriesService.getAllCategory().stream().filter(c -> c.getCategoryName().equals(categories.getCategoryName())).findFirst();
+        if (firstCategories.isPresent()) {
+            model.addAttribute(CATEGORY, new Categories());
+            model.addAttribute("messageError", "Cette catégorie existe déjà.");
+            return "adminPart/category/addCategory";
+        } else {
+            categoriesService.saveCategories(categories);
+        }
         model.addAttribute("category", categories);
         model.addAttribute("categoryList", categoriesService.getAllCategory());
-        model.addAttribute("mode", "add");
         return "adminPart/category/categoryList";
     }
 
@@ -62,7 +60,14 @@ public class CategoriesController {
     @PostMapping(value = "/edit")
     public String editCategory(Categories categories, Model model) {
 
-        categoriesService.saveCategories(categories);
+        Optional<Categories> firstCategories = categoriesService.getAllCategory().stream().filter(c -> c.getCategoryName().equals(categories.getCategoryName())).findFirst();
+        if (firstCategories.isPresent()) {
+            model.addAttribute(CATEGORY, categories);
+            model.addAttribute("messageError", "Cette catégorie existe déjà.");
+            return "adminPart/category/addCategory";
+        } else {
+            categoriesService.saveCategories(categories);
+        }
 
         model.addAttribute("category", categories);
         model.addAttribute("categoryList", categoriesService.getAllCategory());

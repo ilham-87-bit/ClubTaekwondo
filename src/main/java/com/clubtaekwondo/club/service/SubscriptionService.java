@@ -15,4 +15,6 @@ public interface SubscriptionService {
 
     List<Subscription> getAllSubscription();
 
+    List<Subscription> getCart();
+
 }

@@ -14,11 +14,11 @@ public class Subscription {
     @Column(name = "id_abonnement")
     private Long idSubscription;
 
-    @DateTimeFormat(pattern = "dd-MMM-YYYY")
+    @DateTimeFormat(pattern = "dd/MM/YYYY")
     @Column(name = "date_debut")
     private Date startDate;
 
-    @DateTimeFormat(pattern = "dd-MMM-YYYY")
+    @DateTimeFormat(pattern = "dd/MM/YYYY")
     @Column(name = "date_fin")
     private Date endDate;
 
@@ -29,6 +29,9 @@ public class Subscription {
 
     @Column(name = "prix_totale")
     private Float totalPrice;
+
+    @Column(name = "prix_abonnement")
+    private Float price;
 
     @OneToOne
     @JoinColumn(name = "id_categorie")
@@ -48,25 +51,31 @@ public class Subscription {
 
     @OneToOne
     @JoinColumn(name = "id_eleve")
-    private  Student student;
+    private Student student;
 
     @OneToOne
     @JoinColumn(name = "id_ecole")
     private School school;
 
-    public Subscription(Long idSubscription, Date startDate, Date endDate, Boolean validation, Float expenses, Float totalPrice, Categories categories, SubscriptionType subscriptionType, SubscriptionPeriod subscriptionPeriod, User user, Student student, School school) {
+    @Column
+    @Enumerated(EnumType.STRING)
+    private SubscriptionStatus subscriptionStatus = SubscriptionStatus.INITIATED;
+
+    public Subscription(Long idSubscription, Date startDate, Date endDate, Boolean validation, Float expenses, Float totalPrice, Float price, Categories categories, SubscriptionType subscriptionType, SubscriptionPeriod subscriptionPeriod, User user, Student student, School school, SubscriptionStatus subscriptionStatus) {
         this.idSubscription = idSubscription;
         this.startDate = startDate;
         this.endDate = endDate;
         this.validation = validation;
         this.expenses = expenses;
         this.totalPrice = totalPrice;
+        this.price = price;
         this.categories = categories;
         this.subscriptionType = subscriptionType;
         this.subscriptionPeriod = subscriptionPeriod;
         this.user = user;
         this.student = student;
         this.school = school;
+        this.subscriptionStatus = subscriptionStatus;
     }
 
     public Subscription() {
@@ -167,5 +176,21 @@ public class Subscription {
 
     public void setSchool(School school) {
         this.school = school;
+    }
+
+    public SubscriptionStatus getSubscriptionStatus() {
+        return subscriptionStatus;
+    }
+
+    public void setSubscriptionStatus(SubscriptionStatus subscriptionStatus) {
+        this.subscriptionStatus = subscriptionStatus;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
     }
 }

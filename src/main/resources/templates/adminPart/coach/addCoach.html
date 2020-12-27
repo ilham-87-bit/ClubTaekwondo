@@ -6,24 +6,24 @@
 </header>
 <div id="layoutSidenav_content">
     <main>
-        <div class="container-fluid" th:with="hasCoach = ${coach.idCoach != null}">
+        <div class="container-fluid" th:with="hasCoach = ${coach.id != null}">
             <form id="idAddCoachForm" class="form-horizontal" th:object="${coach}"
                   th:action="@{(${hasCoach ? '/admin/coach/edit' : '/admin/coach/addCoach'})}" method="post">
                 <div class="card-body mt-5 ml-5 mr-5 mb-5">
-                    <input type="hidden" th:field="*{idCoach}">
+                    <input type="hidden" th:field="*{id}">
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group required">
                                 <label class="control-label mb-1" for="inputFirstName">Prénom :</label>
                                 <input class="form-control" id="inputFirstName" type="text" required
-                                       th:field="*{firstNameCoach}"/>
+                                       th:field="*{firstName}"/>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group required">
                                 <label class="control-label mb-1" for="inputLastName">Nom :</label>
                                 <input class="form-control" id="inputLastName" type="text" required
-                                       th:field="*{nameCoach}"/>
+                                       th:field="*{lastName}"/>
                             </div>
                         </div>
                     </div>

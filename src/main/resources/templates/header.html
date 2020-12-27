@@ -12,7 +12,7 @@
                         <a class="nav-link" th:href="@{/school}">Ecoles</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/tarif}">Tarifs</a>
+                        <a class="nav-link" th:href="@{/tariff}">Tarifs</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/subscription}">Abonnement</a>
@@ -33,6 +33,22 @@
                             </div>
                             <div class="navbar-header" sec:authorize="isAuthenticated()">
                                 <a class="dropdown-item" th:href="@{/logout}">Déconnexion</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <ul sec:authorize="isAuthenticated()" class="navbar-nav ml-auto ml-md-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="chartDropdown" href="#" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span th:if="${subscriptions != null} AND ${subscriptions.size() != 0 }"
+                                  th:text="${subscriptions.size()} + ' '"></span><i
+                                class="fas fa-shopping-cart fa-fw"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="chartDropdown">
+                            <div class="navbar-header">
+                                <a class="dropdown-item" th:href="@{/cart}">Voir le panier</a>
+                                <a class="dropdown-item" th:href="@{/cart}">Valider le panier</a>
                             </div>
                         </div>
                     </li>

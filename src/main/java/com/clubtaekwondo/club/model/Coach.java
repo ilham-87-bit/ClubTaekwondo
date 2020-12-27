@@ -5,20 +5,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "entraineur")
-public class Coach {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_entraineur")
-    private Long idCoach;
-
-    @Column(name = "nom_entraineur")
-    private String nameCoach;
-
-    @Column(name = "prenom_entraineur")
-    private String firstNameCoach;
-
-    private String email;
+public class Coach extends User {
 
     @OneToOne
     @JoinColumn(name = "id_ecole")
@@ -34,11 +21,8 @@ public class Coach {
     @OneToMany(mappedBy = "co")
     private Set<TimeTable> timeTables;
 
-    public Coach(Long idCoach, String nameCoach, String firstNameCoach, String email, School school, Address address, Set<CategoryByCoach> categoryByCoaches, Set<TimeTable> timeTables) {
-        this.idCoach = idCoach;
-        this.nameCoach = nameCoach;
-        this.firstNameCoach = firstNameCoach;
-        this.email = email;
+    public Coach(Long id, String lastName, String firstName, String password, String email, UserRole userRole, School school, Address address, Set<CategoryByCoach> categoryByCoaches, Set<TimeTable> timeTables) {
+        super(id, lastName, firstName, password, email, userRole);
         this.school = school;
         this.address = address;
         this.categoryByCoaches = categoryByCoaches;
@@ -47,30 +31,6 @@ public class Coach {
 
     public Coach() {
 
-    }
-
-    public Long getIdCoach() {
-        return idCoach;
-    }
-
-    public void setIdCoach(Long idCoach) {
-        this.idCoach = idCoach;
-    }
-
-    public String getNameCoach() {
-        return nameCoach;
-    }
-
-    public void setNameCoach(String nameCoach) {
-        this.nameCoach = nameCoach;
-    }
-
-    public String getFirstNameCoach() {
-        return firstNameCoach;
-    }
-
-    public void setFirstNameCoach(String firstNameCoach) {
-        this.firstNameCoach = firstNameCoach;
     }
 
     public School getSchool() {
@@ -103,14 +63,6 @@ public class Coach {
 
     public void setTimes(Set<TimeTable> timeTables) {
         this.timeTables = timeTables;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public Set<TimeTable> getTimeTables() {

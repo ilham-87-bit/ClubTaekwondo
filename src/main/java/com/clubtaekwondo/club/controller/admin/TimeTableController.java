@@ -95,7 +95,7 @@ public class TimeTableController {
     private String getString(TimeTable timeTable, Coach coach, Day day, School school, Categories categories, Model model) {
 
         timeTable.setC(categoriesService.findById(categories.getIdCategory()));
-        timeTable.setCo(coachService.findById(coach.getIdCoach()));
+        timeTable.setCo(coachService.findById(coach.getId()));
         timeTable.setDay(dayService.getDayById(day.getIdDay()));
         timeTable.setS(schoolService.findById(school.getId()));
 
@@ -104,7 +104,7 @@ public class TimeTableController {
         School s = schoolService.findById(school.getId());
         s.getTimeTables().add(timeTable);
 
-        Coach c = coachService.findById(coach.getIdCoach());
+        Coach c = coachService.findById(coach.getId());
         c.getTimeTables().add(timeTable);
 
         Categories cat = categoriesService.findById(categories.getIdCategory());

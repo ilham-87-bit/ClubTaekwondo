@@ -10,6 +10,9 @@
             <form id="idAddTypeForm" class="form-horizontal" method="post" th:object="${type}"
                   th:action="@{(${hasType ? '/admin/type/edit' : '/admin/type/addType'})}" name="type">
                 <div class="card-body mt-5 ml-5 mr-5 mb-5">
+                    <div th:if="${messageError}">
+                        <p class="error" th:text="${messageError}"></p>
+                    </div>
                     <input type="hidden" th:field="*{idType}">
                     <div class="form-group required col-6 col-lg-8">
                         <label class="control-label" for="type"> Type d'abonnement :</label>

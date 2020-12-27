@@ -7787,6 +7787,7 @@ body {
     z-index: 1037;
     opacity: 0.5;
     transition: opacity 0.3s ease-in-out;
+    bottom: 0;
 }
 
 @media (min-width: 992px) {
@@ -8036,6 +8037,12 @@ body {
 .font-twentytwo {
     font-size: 22px;
 }
+
+/*.footer-user{*/
+/*    position: relative;*/
+/*    bottom: 0;*/
+/*    width: 100%;*/
+/*}*/
 
 /*.picker__input {*/
 /*    background-image: url('../img/datepicker.svg');*/

@@ -19,22 +19,23 @@
                         <form id="idAddStudentRelationForm" class="form-horizontal mt-5 ml-5 mr-5 mb-5"
                               th:action="@{(${'/addContactPerson/' + student.idStudent})}" method="post">
                             <div class="row form-group required">
-                                <div class="col-6">
-                                    <label class="title control-label"> Lien de parenté : </label>
-                                </div>
+                                <label class="title control-label"> Lien de parenté : </label>
                                 <div class="col-3">
                                     <input id="father" name="relationship" type="radio" class="with-font required"
-                                           th:checked="${studentRelation.relationship == 'pere'}">
+                                           th:checked="${T(com.clubtaekwondo.club.model.RelationType).FATHER == studentRelation.relationship} ? 'checked'"
+                                           th:value="${T(com.clubtaekwondo.club.model.RelationType).FATHER}">
                                     <label for="father"> Pére </label>
                                 </div>
                                 <div class="col-3">
                                     <input id="mother" name="relationship" type="radio" class="with-font required"
-                                           th:checked="${studentRelation.relationship}">
+                                           th:checked="${T(com.clubtaekwondo.club.model.RelationType).MOTHER == studentRelation.relationship} ? 'checked'"
+                                           th:value="${T(com.clubtaekwondo.club.model.RelationType).MOTHER}">
                                     <label for="mother"> Mére </label>
                                 </div>
                                 <div class="col-3">
                                     <input id="others" name="relationship" type="radio" class="with-font required"
-                                           th:checked="${studentRelation.relationship}">
+                                           th:checked="${T(com.clubtaekwondo.club.model.RelationType).OTHERS == studentRelation.relationship} ? 'checked'"
+                                           th:value="${T(com.clubtaekwondo.club.model.RelationType).OTHERS}">
                                     <label for="mother"> Autre </label>
                                 </div>
                             </div>

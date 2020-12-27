@@ -85,7 +85,7 @@ public class LoginController {
                 }
                 model.addAttribute("user", user);
             }
-            return ("index");
+            return ("redirect:/index");
         } catch (Exception e) {
             model.addAttribute("messageError", "Veuillez bien vérifier les champs !");
             return ("index");

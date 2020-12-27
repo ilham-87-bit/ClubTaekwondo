@@ -10,6 +10,9 @@
             <form id="idAddPeriodForm" class="form-horizontal" th:object="${period}" method="post"
                   th:action="@{(${hasPeriod ? '/admin/period/edit' : '/admin/period/addPeriod'})}" name="period">
                 <div class="card-body mt-5 ml-5 mr-5 mb-5">
+                    <div th:if="${messageError}">
+                        <p class="error" th:text="${messageError}"></p>
+                    </div>
                     <input type="hidden" th:field="*{id}">
                     <div class="form-group required col-6 col-lg-8">
                         <label class="control-label" for="period"> Durée d'abonnement :</label>

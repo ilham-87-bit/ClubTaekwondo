@@ -10,6 +10,9 @@
             <form id="idAddTimeForm" class="form-horizontal" th:object="${tarif}"
                   th:action="@{(${hasTarif ? '/admin/tarif/edit' : '/admin/tarif/addTarif'})}" method="post">
                 <div class="card-body mt-5 ml-5 mr-5 mb-5">
+                    <div th:if="${messageError}">
+                        <p class="error" th:text="${messageError}"></p>
+                    </div>
                     <input type="hidden" th:field="*{idTarif}">
                     <div class="form-row">
                         <div class="col-md-6">

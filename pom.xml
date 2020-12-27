@@ -134,12 +134,12 @@
             <artifactId>thymeleaf-spring3</artifactId>
             <version>3.0.8.RELEASE</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.webjars/bootstrap-datepicker -->
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>bootstrap-datepicker</artifactId>
-            <version>1.7.1</version>
-        </dependency>
+        <!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.webjars/bootstrap-datepicker &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.webjars</groupId>-->
+        <!--            <artifactId>bootstrap-datepicker</artifactId>-->
+        <!--            <version>1.7.1</version>-->
+        <!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/org.webjars/font-awesome -->
         <dependency>
@@ -157,6 +157,12 @@
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap-timepicker</artifactId>
             <version>0.2.3</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.webjars/jquery-ui -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery-ui</artifactId>
+            <version>1.12.0</version>
         </dependency>
 
     </dependencies>

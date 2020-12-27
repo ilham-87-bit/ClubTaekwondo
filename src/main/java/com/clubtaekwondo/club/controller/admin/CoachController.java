@@ -105,7 +105,7 @@ public class CoachController {
 
         List<CategoryByCoach> categoryByCoachList = categoryByCoachService.getAllCategoryByCoach();
         for (CategoryByCoach categoryByCoach : categoryByCoachList) {
-            if (categoryByCoach.getCoach().getIdCoach().equals(coach.getIdCoach())) {
+            if (categoryByCoach.getCoach().getId().equals(coach.getId())) {
                 categoryByCoachService.delete(categoryByCoach);
             }
         }
@@ -125,7 +125,7 @@ public class CoachController {
 
         List<CategoryByCoach> categoryByCoachList = categoryByCoachService.getAllCategoryByCoach();
         for (CategoryByCoach categoryByCoach : categoryByCoachList) {
-            if (categoryByCoach.getCoach().getIdCoach().equals(coach.getIdCoach())) {
+            if (categoryByCoach.getCoach().getId().equals(coach.getId())) {
                 list.add(categoryByCoach.getCategories());
             }
         }
@@ -154,7 +154,7 @@ public class CoachController {
         addressService.save(coach.getAddress());
         List<CategoryByCoach> categoryByCoachList = categoryByCoachService.getAllCategoryByCoach();
         for (CategoryByCoach categoryByCoach : categoryByCoachList) {
-            if (categoryByCoach.getCoach().getIdCoach() == coach.getIdCoach()) {
+            if (categoryByCoach.getCoach().getId() == coach.getId()) {
                 categoryByCoachService.delete(categoryByCoach);
             }
         }

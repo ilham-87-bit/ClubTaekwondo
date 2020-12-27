@@ -11,6 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "utilisateur")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User implements UserDetails {
 
     @Id

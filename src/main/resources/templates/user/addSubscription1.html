@@ -28,7 +28,7 @@
                     <div class="card shadow-lg border-0 rounded-lg mt-5">
                         <form id="idAddSubscriptionForm" class="form-horizontal mt-5 ml-5 mr-5 mb-5"
                               th:object="${subscription}"
-                              th:action="@{(${hasSubscription ? '/editSubscription' : '/addSubscription/' + cat.idCategory})}"
+                              th:action="@{(${hasSubscription ? '/editSubscription/' + subscription.idSubscription + '/' + cat.idCategory : '/addSubscription/' + cat.idCategory})}"
                               method="post">
                             <input type="hidden" th:field="*{idSubscription}">
                             <th:block th:with="hasSchool=${!#lists.isEmpty(schoolList)}">

@@ -1,5 +1,6 @@
 package com.clubtaekwondo.club.controller.admin;
 
+import com.clubtaekwondo.club.model.Categories;
 import com.clubtaekwondo.club.model.SubscriptionPeriod;
 import com.clubtaekwondo.club.service.SubscriptionPeriodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("admin/period")
@@ -26,16 +29,6 @@ public class PeriodController {
         return "adminPart/period/periodList";
     }
 
-    @GetMapping(value = "/{period}")
-    public String period(@PathVariable("period") Long id, Model model) {
-
-        SubscriptionPeriod period = subscriptionPeriodService.findById(id);
-
-        model.addAttribute(PERIOD, period);
-
-        return "adminPart/period/addPeriod";
-    }
-
     @GetMapping(value = "/addPeriod")
     public String getAddPeriod(SubscriptionPeriod period, Model model) {
         model.addAttribute(PERIOD, new SubscriptionPeriod());
@@ -45,7 +38,14 @@ public class PeriodController {
     @PostMapping(value = "/addPeriod")
     public String addPeriod(SubscriptionPeriod period, Model model) {
 
-       subscriptionPeriodService.save(period);
+        Optional<SubscriptionPeriod> firstPeriod = subscriptionPeriodService.getAllPeriod().stream().filter(p -> p.getPeriod().equals(period.getPeriod())).findFirst();
+        if (firstPeriod.isPresent()) {
+            model.addAttribute(PERIOD, new SubscriptionPeriod());
+            model.addAttribute("messageError", "Cette durée d'abonnement existe déjà.");
+            return ("adminPart/period/addPeriod");
+        } else {
+            subscriptionPeriodService.save(period);
+        }
 
         model.addAttribute(PERIOD, period);
         model.addAttribute("periodList", subscriptionPeriodService.getAllPeriod());
@@ -55,7 +55,7 @@ public class PeriodController {
     @GetMapping(value = "/edit/{period}")
     public String periodDetails(@PathVariable("period") Long id, Model model) {
 
-       SubscriptionPeriod period = subscriptionPeriodService.findById(id);
+        SubscriptionPeriod period = subscriptionPeriodService.findById(id);
 
         model.addAttribute(PERIOD, period);
 
@@ -65,7 +65,14 @@ public class PeriodController {
     @PostMapping(value = "/edit")
     public String editPeriod(SubscriptionPeriod period, Model model) {
 
-        subscriptionPeriodService.save(period);
+        Optional<SubscriptionPeriod> firstPeriod = subscriptionPeriodService.getAllPeriod().stream().filter(p -> p.getPeriod().equals(period.getPeriod())).findFirst();
+        if (firstPeriod.isPresent()) {
+            model.addAttribute(PERIOD, period);
+            model.addAttribute("messageError", "Cette durée d'abonnement existe déjà.");
+            return ("adminPart/period/addPeriod");
+        } else {
+            subscriptionPeriodService.save(period);
+        }
 
         model.addAttribute(PERIOD, period);
         model.addAttribute("periodList", subscriptionPeriodService.getAllPeriod());

@@ -78,8 +78,8 @@
                                         <label class="control-label" for="startDate"> Date
                                             de début: </label>
                                         <div class="input-group date">
-                                            <input type="text" class="form-control" date="startDate" id="startDate"
-                                                   data-inputmask-alias="fh_date"
+                                            <input type="text" class="form-control calculateDate" name="startDate"
+                                                   id="startDate"
                                                    th:value="${subscription.startDate}"/>
                                             <div class="input-group-append">
                                                 <span class="input-group-text calculateDate"><i
@@ -101,8 +101,7 @@
                                             <div class="input-group date">
                                                 <input type="text" class="form-control"
                                                        readonly
-                                                       data-inputmask-alias="fh_date"
-                                                       id="endDate" date="endDate"
+                                                       id="endDate" name="endDate"
                                                        th:value="${subscription?.endDate}"/>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i
@@ -121,10 +120,7 @@
                                         <a th:href="@{/subscription}" class="btn btn-dark"> Précédent </a>
                                     </div>
                                     <div class="col-auto">
-                                        <button id="saveButton" type="submit"
-                                                class="btn btn-dark">
-                                            Ajouter
-                                        </button>
+                                        <button id="saveButton" type="submit" class="btn btn-dark">Suivant</button>
                                     </div>
                                 </div>
                             </div>

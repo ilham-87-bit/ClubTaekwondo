@@ -1,5 +1,8 @@
 package com.clubtaekwondo.club.service.imlp;
 
+import com.clubtaekwondo.club.model.Categories;
+import com.clubtaekwondo.club.model.SubscriptionPeriod;
+import com.clubtaekwondo.club.model.SubscriptionType;
 import com.clubtaekwondo.club.model.Tariff;
 import com.clubtaekwondo.club.repository.TariffRepository;
 import com.clubtaekwondo.club.service.TariffService;
@@ -33,5 +36,10 @@ public class TariffImpl implements TariffService {
     @Override
     public Tariff getTariffById(Long id) {
         return tariffRepository.getOne(id);
+    }
+
+    @Override
+    public Tariff getOneTariff(Categories categories, SubscriptionPeriod subscriptionPeriod, SubscriptionType subscriptionType) {
+        return tariffRepository.getOneTariff(categories, subscriptionPeriod, subscriptionType);
     }
 }
