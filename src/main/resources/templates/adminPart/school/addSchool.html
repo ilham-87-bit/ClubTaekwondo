@@ -6,7 +6,7 @@
 </header>
 <div id="layoutSidenav_content">
     <main>
-        <div class="container-fluid" th:with="hasSchool = ${school.id != null}">
+        <div class="container-fluid" th:with="hasSchool = ${school.idSchool != null}">
             <form id="idAddSchoolForm" class="form-horizontal" th:object="${school}"
                   th:action="@{(${hasSchool ? '/admin/school/edit' : '/admin/school/addSchool'})}" method="post"
                   enctype="multipart/form-data">
@@ -14,7 +14,7 @@
                     <div th:if="${messageError}">
                         <p class="error" th:text="${messageError}"></p>
                     </div>
-                    <input type="hidden" th:field="*{id}">
+                    <input type="hidden" th:field="*{idSchool}">
                     <div class="form-group required col-6 col-lg-8">
                         <label class="control-label" for="school">Nom de l'ecole :</label>
                         <input id="school" type="text" class="form-control py-4" name="name" required
@@ -94,12 +94,13 @@
                             <a th:href="@{/admin/school/schoolList}" class="btn btn-dark"> Précédent </a>
                         </div>
                         <div class="col-auto">
-                            <button th:if="${school.id == null}" id="saveButton" onclick="validCheckbox()" type="submit"
+                            <button th:if="${school.idSchool == null}" id="saveButton" onclick="validCheckbox()"
+                                    type="submit"
                                     class="btn btn-dark">
                                 Ajouter
                             </button>
 
-                            <button th:unless="${school.id == null}" id="editButton" onclick="validCheckbox()"
+                            <button th:unless="${school.idSchool == null}" id="editButton" onclick="validCheckbox()"
                                     type="submit" class="btn btn-dark">
                                 Modifier
                             </button>

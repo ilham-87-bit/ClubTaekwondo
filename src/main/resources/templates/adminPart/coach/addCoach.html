@@ -16,6 +16,7 @@
                             <div class="form-group required">
                                 <label class="control-label mb-1" for="inputFirstName">Prénom :</label>
                                 <input class="form-control" id="inputFirstName" type="text" required
+                                       th:disabled="${coach.id != null}"
                                        th:field="*{firstName}"/>
                             </div>
                         </div>
@@ -23,6 +24,7 @@
                             <div class="form-group required">
                                 <label class="control-label mb-1" for="inputLastName">Nom :</label>
                                 <input class="form-control" id="inputLastName" type="text" required
+                                       th:disabled="${coach.id != null}"
                                        th:field="*{lastName}"/>
                             </div>
                         </div>
@@ -32,6 +34,7 @@
                             <div class="form-group required">
                                 <label class="control-label" for="inputEmailAddress">Email :</label>
                                 <input class="form-control" id="inputEmailAddress" type="email" required
+                                       th:disabled="${coach.id != null}"
                                        th:field="*{email}" aria-describedby="emailHelp"/>
                             </div>
                         </div>
@@ -42,13 +45,13 @@
                                     <label>
                                         <select id="idSchool" class="form-control selectSchool" required
                                                 aria-invalid="false"
-                                                name="id">
+                                                name="idSchool">
                                             <option></option>
                                             <th:block th:if="!${#lists.isEmpty(schoolList)}">
                                                 <option th:each="scho : ${schoolList}"
-                                                        th:value="${scho.id}"
+                                                        th:value="${scho.idSchool}"
                                                         th:text="${scho.name}"
-                                                        th:selected="${coach?.school?.id} == ${scho.id}">
+                                                        th:selected="${coach?.school?.idSchool} == ${scho.idSchool}">
                                                 </option>
                                             </th:block>
                                         </select>
@@ -118,7 +121,8 @@
                                 <div id="catSchool" th:each="parameter, row : ${parameters}"
                                      class="js-row-link-alt categoryBySchool">
                                     <input type="hidden" th:id="${'catBySchool' + row.index}"
-                                           th:name="${parameter.school.id}" th:value="${parameter.cat.idCategory}"/>
+                                           th:name="${parameter.school.idSchool}"
+                                           th:value="${parameter.cat.idCategory}"/>
                                 </div>
                                 <div id="listCat" th:each="l, row : ${listCat}"
                                      class="js-row-link-alt listCat">
@@ -147,12 +151,12 @@
                             <a th:href="@{/admin/coach/coachList}" class="btn btn-dark"> Précédent </a>
                         </div>
                         <div class="col-auto">
-                            <button th:if="${coach.idCoach == null}" id="saveButton" onclick="validCheckbox()"
+                            <button th:if="${coach.id == null}" id="saveButton" onclick="validCheckbox()"
                                     type="submit" class="btn btn-dark">
                                 Ajouter
                             </button>
 
-                            <button th:unless="${coach.idCoach == null}" id="editButton" onclick="validCheckbox()"
+                            <button th:unless="${coach.id== null}" id="editButton" onclick="validCheckbox()"
                                     type="submit"
                                     class="btn btn-dark">
                                 Modifier

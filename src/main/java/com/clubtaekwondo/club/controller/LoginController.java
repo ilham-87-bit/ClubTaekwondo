@@ -190,7 +190,6 @@ public class LoginController {
     }
 
     @GetMapping("resetPassword/{login}/{token}")
-
     public String resetPassword(@PathVariable String token, @PathVariable String login, Model model) {
 
         User user = userService.findByLogin(login);
@@ -217,7 +216,7 @@ public class LoginController {
     }
 
     @PostMapping("resetPassword")
-    public String resetPasswordPost(@ModelAttribute User user, Model model) {
+    public String resetPasswordPost(@ModelAttribute User user, Model model, HttpServletRequest req) {
 
         User persited = userService.findByLogin(user.getEmail());
         String token = user.getTokens() != null && user.getTokens().size() == 1 ? user.getTokens().get(0).getToken() : "ND";
@@ -228,11 +227,19 @@ public class LoginController {
                     .filter(tok -> tok.getToken().equals(token))
                     .findFirst();
             if (first.isPresent()) {
-
+                String pass = user.getPassword();
                 persited.setPassword(encoder.encode(user.getPassword()));
                 userService.save(persited);
+                UsernamePasswordAuthenticationToken authReq
+                        = new UsernamePasswordAuthenticationToken(user.getUsername(), pass);
+                Authentication auth = authenticationManager.authenticate(authReq);
                 // TODO : Remove all tokens
                 tokenService.deleteAllToken(persited.getTokens());
+
+                SecurityContext sc = SecurityContextHolder.getContext();
+                sc.setAuthentication(auth);
+                HttpSession session = req.getSession(true);
+                session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
                 System.out.println("Password has been modified ");
             }
         }
@@ -276,6 +283,65 @@ public class LoginController {
             return "inscription";
         }
         return "index";
+    }
+
+
+    @GetMapping("choosePassword/{login}/{token}")
+    public String choosePassword(@PathVariable String token, @PathVariable String login, Model model) {
+
+        Coach coach = (Coach) userService.findByLogin(login);
+        if (coach != null && coach.getTokens() != null) {
+
+            Optional<Token> first = coach.getTokens().stream()
+                    .filter(tok -> tok.getType() == TokenType.NEW_ACCOUNT)
+                    .filter(tok -> tok.getToken().equals(token))
+                    .findFirst();
+            if (first.isPresent()) {
+                Coach temp = new Coach();
+                temp.setTokens(new ArrayList<>());
+                temp.getTokens().add(first.get());
+                temp.setEmail(coach.getEmail());
+                model.addAttribute("coach", temp);
+
+                return "choosePassword";
+            }
+        }
+        System.out.println("Token or mail are not correct ");
+        //TODO complete the validation
+        return "redirect:/index";
+    }
+
+    @PostMapping("choosePassword")
+    public String choosePasswordPost(@ModelAttribute Coach coach, Model model, HttpServletRequest req) {
+
+        Coach coachPersited = (Coach) userService.findByLogin(coach.getEmail());
+        String token = coach.getTokens() != null && coach.getTokens().size() == 1 ? coach.getTokens().get(0).getToken() : "ND";
+        if (coachPersited != null && !coach.isActive() && coachPersited.getTokens() != null) {
+
+            Optional<Token> first = coachPersited.getTokens().stream()
+                    .filter(tok -> tok.getType() == TokenType.NEW_ACCOUNT)
+                    .filter(tok -> tok.getToken().equals(token))
+                    .findFirst();
+            if (first.isPresent()) {
+                coachPersited.setActive(true);
+                String pass = coach.getPassword();
+                coachPersited.setPassword(encoder.encode(coach.getPassword()));
+                userService.save(coachPersited);
+                UsernamePasswordAuthenticationToken authReq
+                        = new UsernamePasswordAuthenticationToken(coachPersited.getUsername(), pass);
+                Authentication auth = authenticationManager.authenticate(authReq);
+                // TODO : Remove all tokens
+                tokenService.deleteAllToken(coachPersited.getTokens());
+
+                SecurityContext sc = SecurityContextHolder.getContext();
+                sc.setAuthentication(auth);
+                HttpSession session = req.getSession(true);
+                session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
+                System.out.println("Password has been modified ");
+            }
+        }
+        //TODO complete the validation
+        return "redirect:/index";
     }
 
 

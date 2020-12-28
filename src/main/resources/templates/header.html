@@ -17,6 +17,10 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/subscription}">Abonnement</a>
                     </li>
+                    <li class="nav-item"
+                        th:if="${user != null} and ${T(com.clubtaekwondo.club.model.Role).COACH == user.userRole.role}">
+                        <a class="nav-link" th:href="@{/studentList}"> Liste des éleves </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/contact}">Contact</a>
                     </li>
@@ -24,8 +28,11 @@
                 <ul class="navbar-nav ml-auto ml-md-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
-                                class="fas fa-user fa-fw"></i></a>
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user fa-fw"></i>
+                            <span class="text-uppercase" sec:authorize="isAuthenticated()"
+                                  th:text="${#authentication.getPrincipal().getFirstName()} + ' ' + ${#authentication.getPrincipal().getLastName()}"></span>
+                        </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                             <div class="navbar-header" sec:authorize="!isAuthenticated()">
                                 <a class="dropdown-item" th:href="@{login}">Connexion</a>

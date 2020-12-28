@@ -37,13 +37,13 @@
                                                 <span th:text="${scho?.address?.street} + ', ' + ${scho?.address?.number} + ', ' + ${scho?.address?.city?.postalCode} + ', ' + ${scho?.address?.city?.cityName}"></span>
                                             </td>
                                             <td>
-                                                <a th:href="${'edit/'+ scho?.id}"
+                                                <a th:href="${'edit/'+ scho?.idSchool}"
                                                    class="btn btn-link fa fa-edit"></a>
                                                 <a class="btn btn-link fa fa-trash-alt"
-                                                   th:attr="data-target='#modal-delete'+${scho?.id}"
+                                                   th:attr="data-target='#modal-delete'+${scho?.idSchool}"
                                                    data-rel="tooltip" title="delete" data-toggle="modal"></a>
 
-                                                <div th:id="modal-delete+${scho?.id}" class="modal fade"
+                                                <div th:id="modal-delete+${scho?.idSchool}" class="modal fade"
                                                      tabindex="-1">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
@@ -58,7 +58,7 @@
                                                                         data-dismiss="modal"> Annuler
                                                                 </button>
                                                                 <a class="btn btn-danger pull-right" type="button"
-                                                                   th:href="${'delete/'+ scho?.id}"> Supprimer
+                                                                   th:href="${'delete/'+ scho?.idSchool}"> Supprimer
                                                                 </a>
                                                             </div>
                                                         </div>

@@ -10,7 +10,7 @@ public class School {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_ecole")
-    private Long id;
+    private Long idSchool;
 
     @Column(name = "nome_ecole")
     private String name;
@@ -28,8 +28,8 @@ public class School {
     @Transient
     private String fullUrlImg;
 
-    public School(Long id, String name, Address address, Set<CategoryBySchool> categoryBySchools, Set<TimeTable> timeTables) {
-        this.id = id;
+    public School(Long idSchool, String name, Address address, Set<CategoryBySchool> categoryBySchools, Set<TimeTable> timeTables) {
+        this.idSchool = idSchool;
         this.name = name;
         this.address = address;
         this.categoryBySchools = categoryBySchools;
@@ -40,12 +40,12 @@ public class School {
 
     }
 
-    public Long getId() {
-        return id;
+    public Long getIdSchool() {
+        return idSchool;
     }
 
-    public void setId(Long idSchool) {
-        this.id = idSchool;
+    public void setIdSchool(Long idSchool) {
+        this.idSchool = idSchool;
     }
 
     public String getName() {

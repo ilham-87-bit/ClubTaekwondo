@@ -33,7 +33,7 @@
                                     <th:block th:if="${hasCoach}">
                                         <tr th:each="co, row : ${coachList}" class="js-row-link-alt">
                                             <td>
-                                                <span th:text="${co?.firstNameCoach} +'  ' + ${co?.nameCoach}"></span>
+                                                <span th:text="${co?.firstName} +'  ' + ${co?.lastName}"></span>
                                             </td>
                                             <td>
                                                 <span th:text="${co?.address?.street} + ', ' + ${co?.address?.number} + ', ' + ${co?.address?.city?.postalCode} + ', ' + ${co?.address?.city?.cityName}"></span>
@@ -42,13 +42,13 @@
                                                 <span th:text="${co?.school?.name}"></span>
                                             </td>
                                             <td>
-                                                <a th:href="${'edit/'+ co?.idCoach}"
+                                                <a th:href="${'edit/'+ co?.id}"
                                                    class="btn btn-link fa fa-edit"></a>
                                                 <a class="btn btn-link fa fa-trash-alt"
-                                                   th:attr="data-target='#modal-delete'+${co?.idCoach}"
+                                                   th:attr="data-target='#modal-delete'+${co?.id}"
                                                    data-rel="tooltip" title="delete" data-toggle="modal"></a>
 
-                                                <div th:id="modal-delete+${co?.idCoach}" class="modal fade"
+                                                <div th:id="modal-delete+${co?.id}" class="modal fade"
                                                      tabindex="-1">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
@@ -63,7 +63,7 @@
                                                                         data-dismiss="modal"> Annuler
                                                                 </button>
                                                                 <a class="btn btn-danger pull-right" type="button"
-                                                                   th:href="${'delete/'+ co?.idCoach}"> Supprimer
+                                                                   th:href="${'delete/'+ co?.id}"> Supprimer
                                                                 </a>
                                                             </div>
                                                         </div>

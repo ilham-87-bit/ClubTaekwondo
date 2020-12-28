@@ -1,5 +1,6 @@
 package com.clubtaekwondo.club.controller;
 
+import com.clubtaekwondo.club.model.Role;
 import com.clubtaekwondo.club.model.User;
 import com.clubtaekwondo.club.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,16 @@ public class HomeController {
     @Autowired
     private SubscriptionService service;
 
+
     @GetMapping(value = "/index")
     public String home(Model model) {
         model.addAttribute("subscriptions", service.getCart());
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (authentication.isAuthenticated()) {
+//            User user = (User) authentication;
+//            model.addAttribute("user", user);
+//        }
         System.out.println(authentication.getPrincipal());
         return ("index");
     }

@@ -97,11 +97,11 @@ public class TimeTableController {
         timeTable.setC(categoriesService.findById(categories.getIdCategory()));
         timeTable.setCo(coachService.findById(coach.getId()));
         timeTable.setDay(dayService.getDayById(day.getIdDay()));
-        timeTable.setS(schoolService.findById(school.getId()));
+        timeTable.setS(schoolService.findById(school.getIdSchool()));
 
         timeTableService.save(timeTable);
 
-        School s = schoolService.findById(school.getId());
+        School s = schoolService.findById(school.getIdSchool());
         s.getTimeTables().add(timeTable);
 
         Coach c = coachService.findById(coach.getId());

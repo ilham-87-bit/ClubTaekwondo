@@ -52,7 +52,7 @@ public class UserController {
     public String getAllSchool(Model model) {
         List<School> allSchool = schoolService.getAllSchool();
         allSchool.stream().forEach(school -> {
-            String newImageName = String.format("schools/%s.jpeg", school.getId());
+            String newImageName = String.format("schools/%s.jpeg", school.getIdSchool());
             school.setFullUrlImg(fileToPath(storageService.load(newImageName)));
         });
         model.addAttribute("schoolList", allSchool);

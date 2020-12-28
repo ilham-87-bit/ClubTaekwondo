@@ -1,7 +1,6 @@
 package com.clubtaekwondo.club.controller;
 
 
-import com.clubtaekwondo.club.controller.user.StudentDTO;
 import com.clubtaekwondo.club.controller.user.SubscriptionDTO;
 import com.clubtaekwondo.club.model.*;
 import com.clubtaekwondo.club.service.*;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -96,7 +94,7 @@ public class SubscriptionController {
             Categories c = categoriesService.findById(id);
             subscription.setUser((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
             subscription.setCategories(c);
-            subscription.setSchool(schoolService.findById(school.getId()));
+            subscription.setSchool(schoolService.findById(school.getIdSchool()));
             subscription.setValidation(false);
             subscription.setExpenses(expenses);
 
@@ -252,7 +250,7 @@ public class SubscriptionController {
             Categories c = categoriesService.findById(id);
             Subscription subscription = subscriptionService.findById(idSub);
             subscription.setCategories(c);
-            subscription.setSchool(schoolService.findById(school.getId()));
+            subscription.setSchool(schoolService.findById(school.getIdSchool()));
             subscription.setValidation(false);
             subscription.setExpenses(expenses);
 

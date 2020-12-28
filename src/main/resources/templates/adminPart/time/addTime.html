@@ -18,13 +18,13 @@
                                 <div class="select-awesome" data-placement="right" maxlength="50">
                                     <label>
                                         <select id="idSchool" class="form-control selectSchool" required
-                                                aria-invalid="false" name="id">
+                                                aria-invalid="false" name="idSchool">
                                             <option></option>
                                             <th:block th:if="!${#lists.isEmpty(schoolList)}">
                                                 <option th:each="scho : ${schoolList}"
-                                                        th:value="${scho.id}"
+                                                        th:value="${scho.idSchool}"
                                                         th:text="${scho.name}"
-                                                        th:selected="${time?.s?.id} == ${scho.id}">
+                                                        th:selected="${time?.s?.idSchool} == ${scho.idSchool}">
                                                 </option>
                                             </th:block>
                                         </select>
@@ -45,7 +45,7 @@
                                                 <option th:each="coach, row : ${coachList}" th:id="${'co' + row.index}"
                                                         th:value="${coach.idCoach}" class="hidden coachList"
                                                         th:text="${coach.nameCoach}"
-                                                        th:name="${coach.school.id}"
+                                                        th:name="${coach.school.idSchool}"
                                                         th:selected="${time?.co?.idCoach} == ${coach.idCoach}">
                                                 </option>
                                             </th:block>

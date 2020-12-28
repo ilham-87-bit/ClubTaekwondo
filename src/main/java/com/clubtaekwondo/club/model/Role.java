@@ -2,8 +2,7 @@ package com.clubtaekwondo.club.model;
 
 public enum Role {
 
-    ADMIN("ROLE_ADMIN"), USER("ROLE_USER");
-//    ,COACH("ROLE_COACH")
+    ADMIN("ROLE_ADMIN"), USER("ROLE_USER"), COACH("ROLE_COACH");
 
     private final String alea;
 

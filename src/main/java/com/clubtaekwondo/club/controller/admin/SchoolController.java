@@ -3,17 +3,11 @@ package com.clubtaekwondo.club.controller.admin;
 import com.clubtaekwondo.club.model.*;
 import com.clubtaekwondo.club.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -51,7 +45,7 @@ public class SchoolController {
 
         List<School> allSchool = schoolService.getAllSchool();
         allSchool.stream().forEach(school -> {
-            String newImageName = String.format("schools/%s.jpeg", school.getId());
+            String newImageName = String.format("schools/%s.jpeg", school.getIdSchool());
             school.setFullUrlImg(fileToPath(storageService.load(newImageName)));
         });
         model.addAttribute("schoolList", allSchool);
@@ -93,7 +87,7 @@ public class SchoolController {
             }
             School s = schoolService.save(school);
             if (file != null && !file.isEmpty()) {
-                String newImageName = String.format("schools/%s.jpeg", s.getId());
+                String newImageName = String.format("schools/%s.jpeg", s.getIdSchool());
                 storageService.store(file, newImageName);
             }
 
@@ -123,7 +117,7 @@ public class SchoolController {
 
         List<CategoryBySchool> categoryBySchoolList = categoryBySchoolService.getAllCategoryBySchool();
         for (CategoryBySchool categoryBySchool : categoryBySchoolList) {
-            if (categoryBySchool.getSchool().getId().equals(s.getId())) {
+            if (categoryBySchool.getSchool().getIdSchool().equals(s.getIdSchool())) {
                 categoryBySchoolService.delete(categoryBySchool);
             }
         }
@@ -143,7 +137,7 @@ public class SchoolController {
 
         List<CategoryBySchool> categoryBySchoolList = categoryBySchoolService.getAllCategoryBySchool();
         for (CategoryBySchool categoryBySchool : categoryBySchoolList) {
-            if (categoryBySchool.getSchool().getId().equals(school.getId())) {
+            if (categoryBySchool.getSchool().getIdSchool().equals(school.getIdSchool())) {
                 list.add(categoryBySchool.getCat());
             }
         }
@@ -184,7 +178,7 @@ public class SchoolController {
             addressService.save(school.getAddress());
             List<CategoryBySchool> categoryBySchoolList = categoryBySchoolService.getAllCategoryBySchool();
             for (CategoryBySchool categoryBySchool : categoryBySchoolList) {
-                if (categoryBySchool.getSchool().getId() == school.getId()) {
+                if (categoryBySchool.getSchool().getIdSchool() == school.getIdSchool()) {
                     categoryBySchoolService.delete(categoryBySchool);
                 }
             }
