@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head">
+</head>
+<body>
+<div class="sb-nav-fixed">
+    <header th:replace="headerAdmin">
+    </header>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid">
+                <div class="card-body">
+                    <form id="idGetSubscriptionForm" class="form-horizontal mt-5 ml-5 mr-5 mb-5"
+                          th:action="@{(${'/admin/verification/' + subscription.idSubscription})}"
+                          th:object="${subscription}" method="post">
+                        <div class="form-row py-4">
+                            <div class="col-lg-6 col-12">
+                                <label class="control-label font-weight-bold my-4"> Ecole : </label>
+                                <span class="my-4 text-uppercase"
+                                      th:text="${subscription.school.name}"></span>
+                            </div>
+                            <div class="col-lg-6 col-12">
+                                <label class="control-label font-weight-bold my-4"> catégorie : </label>
+                                <span class="my-4 text-uppercase"
+                                      th:text="${subscription.categories.categoryName}"></span>
+                            </div>
+                        </div>
+                        <div class="form-row py-4">
+                            <div class="col-lg-6 col-12">
+                                <label class="control-label font-weight-bold my-4"> Eleve : </label>
+                                <span class="my-4 text-uppercase"
+                                      th:text="${subscription.student.firstName} +' ' + ${subscription.student.name}"></span>
+                            </div>
+                            <div class="col-lg-6 col-12">
+                                <label class="control-label font-weight-bold my-4"> Eleve : </label>
+                                <span class="my-4 text-uppercase"
+                                      th:text="${subscription.student.nationalRegistry}"></span>
+                            </div>
+                        </div>
+                        <div class="form-row py-4">
+                            <div class="col-lg-6 col-12">
+                                <label class="control-label font-weight-bold my-4"> Durée d'abonnement : </label>
+                                <span class="my-4 text-uppercase"
+                                      th:text="${subscription.subscriptionPeriod.period}"></span>
+                            </div>
+                            <div class="col-lg-6 col-12">
+                                <label class="control-label font-weight-bold my-4"> Nombre d'heur/semaine : </label>
+                                <span class="my-4 text-uppercase"
+                                      th:text="${subscription.subscriptionType.nbrHours} +'( ' + ${subscription.subscriptionType.description} + ' )'"></span>
+                            </div>
+                        </div>
+                        <div class="form-row py-4">
+                            <div class="col-lg-6 col-12">
+                                <label class="control-label font-weight-bold my-4"> prix totale : </label>
+                                <span class="text-uppercase"
+                                      th:text="${subscription.totalPrice}  + ' EURO'"></span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row align-items-end justify-content-end">
+                                <div class="col-auto">
+                                    <button id="validButton" type="submit" class="btn btn-dark"> Valider</button>
+                                </div>
+                                <div class="col-auto">
+                                    <a type="button" th:href="${'/admin/noValid/'+ subscription?.idSubscription}"
+                                       class="btn btn-dark"> non valider </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<th:block>
+    <footer th:replace="footerAdmin">
+    </footer>
+</th:block>
+</body>
+</html>

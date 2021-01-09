@@ -29,7 +29,7 @@ public class TimeTableController {
     @Autowired
     private DayService dayService;
     @Autowired
-    private CategoryByCoachService categoryByCoachService;
+    private SubscriptionTypeService subscriptionTypeService;
 
     @GetMapping(value = "/timeList")
     public String timeList(Model model) {
@@ -47,15 +47,15 @@ public class TimeTableController {
         model.addAttribute("coachList", coachService.getAllCoach());
         model.addAttribute("categoryList", categoriesService.getAllCategory());
         model.addAttribute("dayList", dayService.getAllDay());
-        model.addAttribute("parameters", categoryByCoachService.getAllCategoryByCoach());
+        model.addAttribute("typeList", subscriptionTypeService.getAllSubscriptionType());
 
         return ("adminPart/time/addTime");
     }
 
     @PostMapping(value = "/addTime")
-    public String addTime(TimeTable timeTable, Coach coach, Day day, School school, Categories categories, Model model) {
+    public String addTime(TimeTable timeTable, Coach coach, Day day, School school, Categories categories, SubscriptionType subscriptionType, Model model) {
 
-        return getString(timeTable, coach, day, school, categories, model);
+        return getString(timeTable, coach, day, school, categories, subscriptionType, model);
     }
 
     @GetMapping(value = "/delete/{time}")
@@ -80,24 +80,26 @@ public class TimeTableController {
         model.addAttribute("coachList", coachService.getAllCoach());
         model.addAttribute("categoryList", categoriesService.getAllCategory());
         model.addAttribute("dayList", dayService.getAllDay());
+        model.addAttribute("typeList", subscriptionTypeService.getAllSubscriptionType());
 
         return ("adminPart/time/addTime");
 
     }
 
     @PostMapping(value = "/edit")
-    public String editTime(TimeTable timeTable, Coach coach, Day day, School school, Categories categories, Model model) {
+    public String editTime(TimeTable timeTable, Coach coach, Day day, School school, Categories categories, SubscriptionType subscriptionType, Model model) {
 
 
-        return getString(timeTable, coach, day, school, categories, model);
+        return getString(timeTable, coach, day, school, categories, subscriptionType, model);
     }
 
-    private String getString(TimeTable timeTable, Coach coach, Day day, School school, Categories categories, Model model) {
+    private String getString(TimeTable timeTable, Coach coach, Day day, School school, Categories categories, SubscriptionType subscriptionType, Model model) {
 
         timeTable.setC(categoriesService.findById(categories.getIdCategory()));
         timeTable.setCo(coachService.findById(coach.getId()));
         timeTable.setDay(dayService.getDayById(day.getIdDay()));
         timeTable.setS(schoolService.findById(school.getIdSchool()));
+        timeTable.setSubscriptionType(subscriptionTypeService.findById(subscriptionType.getIdType()));
 
         timeTableService.save(timeTable);
 
@@ -113,12 +115,16 @@ public class TimeTableController {
         Day d = dayService.getDayById(day.getIdDay());
         d.getTimes().add(timeTable);
 
+        SubscriptionType subsType = subscriptionTypeService.findById(subscriptionType.getIdType());
+        subsType.getTimeTables().add(timeTable);
+
         model.addAttribute(TIME, timeTable);
         model.addAttribute("timeList", timeTableService.getAllTimeTable());
         model.addAttribute("schoolList", schoolService.getAllSchool());
         model.addAttribute("coachList", coachService.getAllCoach());
         model.addAttribute("categoryList", categoriesService.getAllCategory());
         model.addAttribute("dayList", dayService.getAllDay());
+        model.addAttribute("typeList", subscriptionTypeService.getAllSubscriptionType());
 
         return "redirect:/admin/time/timeList";
     }

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+    <meta http-equiv="Content-Language" content="fr-FR">
+
+    <title>Inscription en ligne</title>
+
+    <meta name="description" content=""/>
+
+    <meta name="keywords" content=""/>
+
+    <meta name="robots" content="index,follow"/>
+
+</head>
+<body>
+<form id="transactionForm" action="https://esqa.moneris.com/HPPDP/index.php" name="Ajouter">
+
+    <INPUT TYPE="HIDDEN" NAME="ps_store_id" VALUE="AZNUEtore3">
+
+    <INPUT TYPE="HIDDEN" NAME="hpp_key" VALUE="hpX9BVA12NAM">
+
+    <INPUT TYPE="HIDDEN" NAME="charge_total" VALUE="10.00">
+
+    <!--MORE OPTIONAL VARIABLES CAN BE DEFINED HERE -->
+
+    <INPUT TYPE="HIDDEN" NAME="order_id" th:value="${payment.code}">
+
+    <INPUT TYPE="HIDDEN" NAME="cust_id" th:value="${auth.id}">
+
+    <INPUT TYPE="HIDDEN" NAME="lang" VALUE="fr-FR">
+
+</form>
+<footer th:replace="footerAdmin">
+</footer>
+<script type="text/javascript" th:src="@{/js/club/transaction.js}"></script>
+</body>
+</html>

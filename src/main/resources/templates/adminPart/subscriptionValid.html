@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head">
+</head>
+<body>
+<header th:replace="headerAdmin">
+</header>
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid">
+            <div class="card-body">
+                <th:block th:with="hasSubscriptionC=${!#lists.isEmpty(validSubscriptionList)}">
+                    <th:block th:if="!${#lists.isEmpty(validSubscriptionList)}">
+                        <div class="card-body card-border">
+                            <table id="subscriptionConfirmedTable"
+                                   class="table table-fixed table-striped"
+                                   th:classappend="${hasSubscriptionC} ? 'table-hover'">
+                                <tbody class="list" id="subscriptionsConfirmed">
+                                <th:block th:if="${hasSubscriptionC}">
+                                    <tr th:each="subsc, row : ${validSubscriptionList}" class="js-row-link-alt">
+                                        <td align="center" class="py-5">
+                                            <span th:text="${subsc.student.firstName} + ' ' + ${subsc.student.name}"/>
+                                        </td>
+                                        <td align="center" class="py-5">
+                                            <span th:text="${subsc.school.name}"/>
+                                        </td>
+                                        <td align="center" class="py-5">
+                                            <span th:text="${subsc.categories.categoryName}"/>
+                                        </td>
+                                        <td align="center" class="py-5">
+                                            <span
+                                                    th:text="${subsc.subscriptionPeriod.period}"/>
+                                        </td>
+                                        <td align="center" class="py-5">
+                                            <span th:text="${subsc.subscriptionType.nbrHours}"/>
+                                        </td>
+                                        <td align="center" class="py-5">
+                                            <span th:text="${subsc.totalPrice}  + ' EURO'"/>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </th:block>
+                    <th:block th:unless="!${#lists.isEmpty(validSubscriptionList)}">
+                        <h5 class="align-content-center text-center">Pas d'abonnement.</h5>
+                    </th:block>
+                </th:block>
+            </div>
+        </div>
+    </main>
+</div>
+<div class="footer-admin">
+    <footer th:replace="footerAdmin"></footer>
+</div>
+</body>
+</html>

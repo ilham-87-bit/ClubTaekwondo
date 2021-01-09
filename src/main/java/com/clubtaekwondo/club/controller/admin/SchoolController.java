@@ -31,8 +31,8 @@ public class SchoolController {
     @Autowired
     private CityService cityService;
 
-    @Autowired
-    private CategoryBySchoolService categoryBySchoolService;
+//    @Autowired
+//    private CategoryBySchoolService categoryBySchoolService;
 
     @Autowired
     private CategoriesService categoriesService;
@@ -62,7 +62,7 @@ public class SchoolController {
     }
 
     @PostMapping(value = "/addSchool")
-    public String addSchool(School school, City city, @RequestParam("categoriesList[]") List<Categories> categoriesList, Model model, @RequestParam("file") MultipartFile file) {
+    public String addSchool(School school, City city, @RequestParam("categoryList[]") List<Categories> categoryList, Model model, @RequestParam("file") MultipartFile file) {
 
         List<Categories> listAdd = new ArrayList<>();
 
@@ -85,28 +85,29 @@ public class SchoolController {
             } else {
                 addressService.save(school.getAddress());
             }
+            school.setCategoriesList(categoryList);
             School s = schoolService.save(school);
             if (file != null && !file.isEmpty()) {
                 String newImageName = String.format("schools/%s.jpeg", s.getIdSchool());
                 storageService.store(file, newImageName);
             }
 
-            for (Categories categories : categoriesList) {
-                CategoryBySchool categoryBySchool = new CategoryBySchool();
-                categoryBySchool.setSchool(school);
-                categoryBySchool.setCat(categories);
-                categoryBySchoolService.save(categoryBySchool);
-                listAdd.add(categoryBySchool.getCat());
-            }
+//            for (Categories categories : categoriesList) {
+//                CategoryBySchool categoryBySchool = new CategoryBySchool();
+//                categoryBySchool.setSchool(school);
+//                categoryBySchool.setCat(categories);
+//                categoryBySchoolService.save(categoryBySchool);
+//                listAdd.add(categoryBySchool.getCat());
+//            }
 
             model.addAttribute(SCHOOL, school);
+            model.addAttribute(ADDRESS, school.getAddress());
+            model.addAttribute("cityList", cityService.getAllCity());
+            model.addAttribute("schoolList", schoolService.getAllSchool());
+            model.addAttribute("categoryList", categoriesService.getAllCategory());
+            model.addAttribute("listCat", s.getCategoriesList());
         }
 
-        model.addAttribute(ADDRESS, school.getAddress());
-        model.addAttribute("cityList", cityService.getAllCity());
-        model.addAttribute("schoolList", schoolService.getAllSchool());
-        model.addAttribute("categoryList", categoriesService.getAllCategory());
-        model.addAttribute("listCat", listAdd);
         return "redirect:/admin/school/schoolList";
     }
 
@@ -115,12 +116,12 @@ public class SchoolController {
 
         School s = schoolService.findById(id);
 
-        List<CategoryBySchool> categoryBySchoolList = categoryBySchoolService.getAllCategoryBySchool();
-        for (CategoryBySchool categoryBySchool : categoryBySchoolList) {
-            if (categoryBySchool.getSchool().getIdSchool().equals(s.getIdSchool())) {
-                categoryBySchoolService.delete(categoryBySchool);
-            }
-        }
+//        List<CategoryBySchool> categoryBySchoolList = categoryBySchoolService.getAllCategoryBySchool();
+//        for (CategoryBySchool categoryBySchool : categoryBySchoolList) {
+//            if (categoryBySchool.getSchool().getIdSchool().equals(s.getIdSchool())) {
+//                categoryBySchoolService.delete(categoryBySchool);
+//            }
+//        }
         schoolService.delete(s);
 
         model.addAttribute("schoolList", schoolService.getAllSchool());
@@ -135,16 +136,16 @@ public class SchoolController {
 
         School school = schoolService.findById(id);
 
-        List<CategoryBySchool> categoryBySchoolList = categoryBySchoolService.getAllCategoryBySchool();
-        for (CategoryBySchool categoryBySchool : categoryBySchoolList) {
-            if (categoryBySchool.getSchool().getIdSchool().equals(school.getIdSchool())) {
-                list.add(categoryBySchool.getCat());
-            }
-        }
+//        List<CategoryBySchool> categoryBySchoolList = categoryBySchoolService.getAllCategoryBySchool();
+//        for (CategoryBySchool categoryBySchool : categoryBySchoolList) {
+//            if (categoryBySchool.getSchool().getIdSchool().equals(school.getIdSchool())) {
+//                list.add(categoryBySchool.getCat());
+//            }
+//        }
 
         model.addAttribute(SCHOOL, school);
         model.addAttribute(ADDRESS, school.getAddress());
-        model.addAttribute("listCat", list);
+        model.addAttribute("listCat", school.getCategoriesList());
         model.addAttribute("cityList", cityService.getAllCity());
         model.addAttribute("categoryList", categoriesService.getAllCategory());
 
@@ -152,22 +153,22 @@ public class SchoolController {
     }
 
     @PostMapping(value = "/edit")
-    public String editSchool(School school, City city, @RequestParam("categoriesList[]") List<Categories> categoriesList, Model model) {
+    public String editSchool(School school, City city, @RequestParam("categoryList[]") List<Categories> categoryList, Model model) {
 
         List<Categories> listCat = new ArrayList<>();
         Optional<School> firstSchool = schoolService.getAllSchool().stream().filter(s -> s.getName().equals(school.getName())).findFirst();
         if (firstSchool.isPresent()) {
-            for (Categories categories : categoriesList) {
-                CategoryBySchool categoryBySchool = new CategoryBySchool();
-                categoryBySchool.setSchool(school);
-                categoryBySchool.setCat(categories);
-                categoryBySchoolService.save(categoryBySchool);
-                listCat.add(categoryBySchool.getCat());
-            }
+//            for (Categories categories : categoriesList) {
+//                CategoryBySchool categoryBySchool = new CategoryBySchool();
+//                categoryBySchool.setSchool(school);
+//                categoryBySchool.setCat(categories);
+//                categoryBySchoolService.save(categoryBySchool);
+//                listCat.add(categoryBySchool.getCat());
+//            }
             model.addAttribute(SCHOOL, school);
             model.addAttribute(ADDRESS, school.getAddress());
             model.addAttribute("cityList", cityService.getAllCity());
-            model.addAttribute("listCat", listCat);
+            model.addAttribute("listCat", school.getCategoriesList());
             model.addAttribute("categoryList", categoriesService.getAllCategory());
             model.addAttribute("messageError", "Ce école existe déjà.");
             return ("adminPart/school/addSchool");
@@ -176,19 +177,20 @@ public class SchoolController {
             City c = cityService.findById(city.getIdCity());
             school.getAddress().setCity(c);
             addressService.save(school.getAddress());
-            List<CategoryBySchool> categoryBySchoolList = categoryBySchoolService.getAllCategoryBySchool();
-            for (CategoryBySchool categoryBySchool : categoryBySchoolList) {
-                if (categoryBySchool.getSchool().getIdSchool() == school.getIdSchool()) {
-                    categoryBySchoolService.delete(categoryBySchool);
-                }
-            }
-            for (Categories categories : categoriesList) {
-                CategoryBySchool categoryBySchool = new CategoryBySchool();
-                categoryBySchool.setSchool(school);
-                categoryBySchool.setCat(categories);
-                categoryBySchoolService.save(categoryBySchool);
-                listCat.add(categoryBySchool.getCat());
-            }
+//            List<CategoryBySchool> categoryBySchoolList = categoryBySchoolService.getAllCategoryBySchool();
+//            for (CategoryBySchool categoryBySchool : categoryBySchoolList) {
+//                if (categoryBySchool.getSchool().getIdSchool() == school.getIdSchool()) {
+//                    categoryBySchoolService.delete(categoryBySchool);
+//                }
+//            }
+//            for (Categories categories : categoriesList) {
+//                CategoryBySchool categoryBySchool = new CategoryBySchool();
+//                categoryBySchool.setSchool(school);
+//                categoryBySchool.setCat(categories);
+//                categoryBySchoolService.save(categoryBySchool);
+//                listCat.add(categoryBySchool.getCat());
+//            }
+            school.setCategoriesList(categoryList);
             schoolService.save(school);
 
             model.addAttribute(SCHOOL, school);
@@ -197,10 +199,9 @@ public class SchoolController {
         model.addAttribute("cityList", cityService.getAllCity());
         model.addAttribute("schoolList", schoolService.getAllSchool());
         model.addAttribute("categoryList", categoriesService.getAllCategory());
-        model.addAttribute("listCat", listCat);
+        model.addAttribute("listCat", school.getCategoriesList());
 
         return "redirect:/admin/school/schoolList";
     }
-
 
 }

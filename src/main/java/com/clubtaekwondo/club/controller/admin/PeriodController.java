@@ -65,7 +65,7 @@ public class PeriodController {
     @PostMapping(value = "/edit")
     public String editPeriod(SubscriptionPeriod period, Model model) {
 
-        Optional<SubscriptionPeriod> firstPeriod = subscriptionPeriodService.getAllPeriod().stream().filter(p -> p.getPeriod().equals(period.getPeriod())).findFirst();
+        Optional<SubscriptionPeriod> firstPeriod = subscriptionPeriodService.getAllPeriod().stream().filter(p -> p.getPeriod().equals(period.getPeriod()) && !p.getId().equals(period.getId())).findFirst();
         if (firstPeriod.isPresent()) {
             model.addAttribute(PERIOD, period);
             model.addAttribute("messageError", "Cette durée d'abonnement existe déjà.");

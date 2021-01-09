@@ -4,6 +4,8 @@ package com.clubtaekwondo.club.controller;
 import com.clubtaekwondo.club.controller.user.SubscriptionDTO;
 import com.clubtaekwondo.club.model.*;
 import com.clubtaekwondo.club.service.*;
+import org.joda.time.LocalDate;
+import org.joda.time.Years;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.text.SimpleDateFormat;
+import java.time.Year;
 import java.util.*;
 
 @Controller
@@ -32,8 +35,6 @@ public class SubscriptionController {
     private SubscriptionTypeService subscriptionTypeService;
     @Autowired
     private TimeTableService timeTableService;
-    @Autowired
-    private CategoryBySchoolService categoryBySchoolService;
     @Autowired
     private StudentService studentService;
     @Autowired
@@ -67,13 +68,15 @@ public class SubscriptionController {
             User user = (User) authentication;
             model.addAttribute("user", user);
             Categories categories = categoriesService.findById(id);
-
-            List<CategoryBySchool> categoryBySchools = categoryBySchoolService.getAllCategoryBySchool();
-            for (CategoryBySchool categoryBySchool : categoryBySchools) {
-                if (categoryBySchool.getCat().getIdCategory().equals(categories.getIdCategory())) {
-                    schoolList.add(categoryBySchool.getSchool());
+            List<School> schools = schoolService.getAllSchool();
+            for (School school : schools) {
+                for (Categories cat : school.getCategoriesList()) {
+                    if (cat.getIdCategory().equals(categories.getIdCategory())) {
+                        schoolList.add(school);
+                    }
                 }
             }
+
             model.addAttribute("cat", categories);
             model.addAttribute("subscription", new Subscription());
             model.addAttribute("categoryList", categoriesService.getAllCategory());
@@ -88,9 +91,10 @@ public class SubscriptionController {
 
     }
 
-    @PostMapping(value = "/addSubscription/{category}")
+    @PostMapping(value = "user/addSubscription/{category}")
     public String addSubscription(@PathVariable("category") Long id, Subscription subscription, School school, Model model) {
         try {
+            Date date = new Date();
             Categories c = categoriesService.findById(id);
             subscription.setUser((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
             subscription.setCategories(c);
@@ -98,11 +102,12 @@ public class SubscriptionController {
             subscription.setValidation(false);
             subscription.setExpenses(expenses);
 
+
             subscriptionService.save(subscription);
 
             model.addAttribute("subscription", subscription);
             model.addAttribute("subscriptions", subscriptionService.getCart());
-            String url = "/addSubscriptionPart2/" + subscription.getIdSubscription();
+            String url = "/user/addSubscriptionPart2/" + subscription.getIdSubscription();
 
             return "redirect:" + url;
         } catch (Exception e) {
@@ -112,7 +117,7 @@ public class SubscriptionController {
         }
     }
 
-    @GetMapping(value = "/addSubscriptionPart2/{subscription}")
+    @GetMapping(value = "user/addSubscriptionPart2/{subscription}")
     public String getSubscriptionPart2(@PathVariable("subscription") Long id, Model model) {
 
         Subscription subscription = subscriptionService.findById(id);
@@ -130,10 +135,16 @@ public class SubscriptionController {
         return "user/addSubscriptionPart2";
     }
 
-    @PostMapping(value = "/addSubscriptionPart2/{subscription}")
+    @PostMapping(value = "user/addSubscriptionPart2/{subscription}")
     public String addSubscriptionPart2(@PathVariable("subscription") Long id, SubscriptionDTO subscriptionDTO, SubscriptionType subscriptionT, SubscriptionPeriod subscriptionP, Model model, Locale locale) {
         try {
+            Date dateCurrent = new Date();
             Subscription subscription = subscriptionService.findById(id);
+            if (subscription.getEndDate() != null) {
+                if (subscription.getEndDate().before(dateCurrent)) {
+                    subscription.setSubscriptionStatus(SubscriptionStatus.INITIATED);
+                }
+            }
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy", locale);
             String dateString = subscriptionDTO.getStartDate();
             Date date = sdf.parse(dateString);
@@ -152,14 +163,10 @@ public class SubscriptionController {
                 subscription.setTotalPrice(tariff.getPrix() + subscription.getExpenses());
                 subscriptionService.save(subscription);
             }
-//            Long idTariff = tariffService.getOneTariff(subscription.getCategories(), subscription.getSubscriptionPeriod(), subscription.getSubscriptionType());
-//            Tariff tariff = tariffService.getTariffById(idTariff);
-//            subscription.setTotalPrice(tariff.getPrix() + subscription.getExpenses());
-//            subscriptionService.save(subscription);
 
             model.addAttribute("subscription", subscription);
             model.addAttribute("subscriptions", subscriptionService.getCart());
-            String url = "/addStudent/" + subscription.getIdSubscription();
+            String url = "/user/addStudent/" + subscription.getIdSubscription();
 
             return "redirect:" + url;
         } catch (Exception e) {
@@ -169,7 +176,7 @@ public class SubscriptionController {
         }
     }
 
-    @GetMapping(value = "/summary/{subscription}")
+    @GetMapping(value = "user/summary/{subscription}")
     public String getSummary(@PathVariable("subscription") Long id, Model model) {
 
         Subscription subscription = subscriptionService.findById(id);
@@ -180,7 +187,7 @@ public class SubscriptionController {
         return "user/summary";
     }
 
-    @PostMapping(value = "/confirmSubscription/{subscription}")
+    @PostMapping(value = "user/confirmSubscription/{subscription}")
     public String confirmSubsctiption(@PathVariable("subscription") Long id, Model model) {
         Subscription subscription = subscriptionService.findById(id);
         // put the sbscription in the chart
@@ -190,7 +197,7 @@ public class SubscriptionController {
         return "redirect:/index";
     }
 
-    @GetMapping(value = "/delete/{subscription}")
+    @GetMapping(value = "user/delete/{subscription}")
     public String deleteSubscription(@PathVariable("subscription") Long id, Model model) {
 
         Subscription subscription = subscriptionService.findById(id);
@@ -208,7 +215,7 @@ public class SubscriptionController {
         return "redirect:/index";
     }
 
-    @GetMapping(value = "/edit/{subscription}")
+    @GetMapping(value = "user/edit/{subscription}")
     public String getEditSubscription(@PathVariable("subscription") Long id, Model model) {
 
         Subscription subscription = subscriptionService.findById(id);
@@ -220,18 +227,19 @@ public class SubscriptionController {
         return "user/subscription";
     }
 
-    @GetMapping(value = "/editSubscription/{subscription}/{category}")
+    @GetMapping(value = "user/editSubscription/{subscription}/{category}")
     public String getEditSubscription(@PathVariable("subscription") Long idSub, @PathVariable("category") Long id, Model model) {
 
 
         List<School> schoolList = new ArrayList<>();
         Subscription subscription = subscriptionService.findById(idSub);
         Categories categories = categoriesService.findById(id);
-
-        List<CategoryBySchool> categoryBySchools = categoryBySchoolService.getAllCategoryBySchool();
-        for (CategoryBySchool categoryBySchool : categoryBySchools) {
-            if (categoryBySchool.getCat().getIdCategory().equals(categories.getIdCategory())) {
-                schoolList.add(categoryBySchool.getSchool());
+        List<School> schools = schoolService.getAllSchool();
+        for (School school : schools) {
+            for (Categories cat : school.getCategoriesList()) {
+                if (cat.getIdCategory().equals(categories.getIdCategory())) {
+                    schoolList.add(school);
+                }
             }
         }
         model.addAttribute("subscription", subscription);
@@ -244,7 +252,7 @@ public class SubscriptionController {
         return "user/addSubscription1";
     }
 
-    @PostMapping(value = "/editSubscription/{subscription}/{category}")
+    @PostMapping(value = "user/editSubscription/{subscription}/{category}")
     public String editSubscription(@PathVariable("subscription") Long idSub, @PathVariable("category") Long id, School school, Model model) {
         try {
             Categories c = categoriesService.findById(id);
@@ -258,7 +266,7 @@ public class SubscriptionController {
 
             model.addAttribute("subscription", subscription);
             model.addAttribute("subscriptions", subscriptionService.getCart());
-            String url = "/addSubscriptionPart2/" + subscription.getIdSubscription();
+            String url = "/user/addSubscriptionPart2/" + subscription.getIdSubscription();
 
             return "redirect:" + url;
         } catch (Exception e) {
@@ -267,4 +275,84 @@ public class SubscriptionController {
             return "redirect:/subscription";
         }
     }
+
+    @GetMapping(value = "/user/renewSubscription/{subscription}")
+    public String getRenewSubscription(@PathVariable("subscription") Long id, Model model) {
+
+        Object authentication = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Date date = new Date();
+        List<School> schoolList = new ArrayList<>();
+
+        List<Categories> categoriesList = categoriesService.getAllCategory();
+
+        if (authentication instanceof User) {
+            User user = (User) authentication;
+            model.addAttribute("user", user);
+            Subscription subscription = subscriptionService.findById(id);
+
+            int cptYear = Math.abs(Years.yearsBetween(LocalDate.fromDateFields(subscription.getStudent().getBirthDay()), LocalDate.fromDateFields(date)).getYears());
+
+            if (cptYear > subscription.getCategories().getAge()) {
+                for (int i = 0; i <= categoriesList.size(); i++) {
+                    if ((i + 1) < categoriesList.size()) {
+                        if (cptYear > categoriesList.get(i).getAge() && cptYear < categoriesList.get(i + 1).getAge()) {
+                            subscription.setCategories(categoriesList.get(i));
+                        }
+                    }
+                    if (i == (categoriesList.size() - 1)) {
+                        subscription.setCategories(categoriesList.get(categoriesList.size() - 1));
+                    }
+                }
+
+            }
+            subscription.setValidation(false);
+            subscription.setSubscriptionStatus(SubscriptionStatus.INITIATED);
+
+            subscriptionService.save(subscription);
+
+            List<School> schools = schoolService.getAllSchool();
+            for (School school : schools) {
+                for (Categories cat : school.getCategoriesList()) {
+                    if (cat.getIdCategory().equals(subscription.getCategories().getIdCategory())) {
+                        schoolList.add(school);
+                    }
+                }
+            }
+
+            model.addAttribute("cat", subscription.getCategories());
+            model.addAttribute("subscription", subscription);
+            model.addAttribute("categoryList", categoriesService.getAllCategory());
+            model.addAttribute("schoolList", schoolList);
+            model.addAttribute("subscriptions", subscriptionService.getCart());
+
+            return "user/addSubscription1";
+        } else {
+            model.addAttribute("messageWarning", "Vous devez se connecter/s'inscrire pour pouvoir acheter/prolonger vos abonnements.");
+            return "login";
+        }
+
+    }
+//    @PostMapping(value = "/renewSubscription/{subscription}")
+//    public String addRenewSubscription(@PathVariable("subscription") Long id, School school, Model model) {
+//        try {
+//            Date date = new Date();
+//           Subscription subscription = subscriptionService.findById(id);
+//            subscription.setSchool(schoolService.findById(school.getIdSchool()));
+//            subscription.setValidation(false);
+//
+//
+//            subscriptionService.save(subscription);
+//
+//            model.addAttribute("subscription", subscription);
+//            model.addAttribute("subscriptions", subscriptionService.getCart());
+//            String url = "/user/addSubscriptionPart2/" + subscription.getIdSubscription();
+//
+//            return "redirect:" + url;
+//        } catch (Exception e) {
+//            model.addAttribute("messageError", "erreur, veuillez essayer");
+//            model.addAttribute("subscriptions", subscriptionService.getCart());
+//            return "redirect:/subscription";
+//        }
+//    }
 }

@@ -1,7 +1,6 @@
 package com.clubtaekwondo.club.controller.user;
 
-import com.clubtaekwondo.club.model.School;
-import com.clubtaekwondo.club.model.Tariff;
+import com.clubtaekwondo.club.model.*;
 import com.clubtaekwondo.club.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -15,9 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import javax.management.ListenerNotFoundException;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 
 @Controller
@@ -62,7 +63,13 @@ public class UserController {
 
     @GetMapping(value = "/tariff")
     public String getAllTariff(Model model) {
+        Map<Long, List> categoryByPeriod = new HashMap<>();
+
+        List<Categories> categoriesList = categoriesService.getAllCategory();
+        List<SubscriptionPeriod> subscriptionPeriodList = subscriptionPeriodService.getAllPeriod();
+        List<SubscriptionType> subscriptionTypeList = subscriptionTypeService.getAllSubscriptionType();
         List<Tariff> tariffs = tariffService.getAllTariff();
+
         model.addAttribute("tariffList", tariffs);
         model.addAttribute("categoryList", categoriesService.getAllCategory());
         model.addAttribute("periodList", subscriptionPeriodService.getAllPeriod());

@@ -2,7 +2,9 @@ package com.clubtaekwondo.club.controller.admin;
 
 import com.clubtaekwondo.club.model.Address;
 import com.clubtaekwondo.club.model.Categories;
+import com.clubtaekwondo.club.model.Subscription;
 import com.clubtaekwondo.club.service.CategoriesService;
+import com.clubtaekwondo.club.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,8 @@ public class CategoriesController {
     private static final String CATEGORY = "category";
     @Autowired
     private CategoriesService categoriesService;
+    @Autowired
+    private SubscriptionService subscriptionService;
 
     @GetMapping(value = "/categoryList")
     public String categoryList(Model model, WebRequest request) {
@@ -60,7 +64,7 @@ public class CategoriesController {
     @PostMapping(value = "/edit")
     public String editCategory(Categories categories, Model model) {
 
-        Optional<Categories> firstCategories = categoriesService.getAllCategory().stream().filter(c -> c.getCategoryName().equals(categories.getCategoryName())).findFirst();
+        Optional<Categories> firstCategories = categoriesService.getAllCategory().stream().filter(c -> c.getCategoryName().equals(categories.getCategoryName()) && !c.getIdCategory().equals(categories.getIdCategory())).findFirst();
         if (firstCategories.isPresent()) {
             model.addAttribute(CATEGORY, categories);
             model.addAttribute("messageError", "Cette catégorie existe déjà.");
@@ -80,9 +84,15 @@ public class CategoriesController {
     public String deletePeriod(@PathVariable("category") Long id, Model model) {
 
         Categories categories = categoriesService.findById(id);
-        categoriesService.deleteCategories(categories);
-        model.addAttribute("categoryList", categoriesService.getAllCategory());
+        Optional<Subscription> firstSubscription = subscriptionService.getAllSubscription().stream().filter(s -> s.getCategories().getIdCategory().equals(categories.getIdCategory()) && s.getValidation()).findFirst();
+        if (firstSubscription.isPresent()) {
+            model.addAttribute("messageError", "Vous ne pouvez pas supprimer cette catégorie ! Cette catégorie est liée à des abonnements en cours.");
 
+        } else {
+            categoriesService.deleteCategories(categories);
+        }
+
+        model.addAttribute("categoryList", categoriesService.getAllCategory());
         return "adminPart/category/categoryList";
     }
 }

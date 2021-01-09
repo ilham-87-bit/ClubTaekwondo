@@ -30,7 +30,7 @@
                                     <th:block th:if="${hasType}">
                                         <tr th:each="type, row : ${typeList}" class="js-row-link-alt">
                                             <td>
-                                                <span th:text="${type?.nbrHours}"></span>
+                                                <span th:text="${type?.nbrHours} + ' h'"></span>
                                             </td>
                                             <td>
                                                 <span th:text="${type?.description}"></span>

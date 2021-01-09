@@ -2,7 +2,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
-            <img src="../static/images/img1.jpg" class="float-left" th:src="@{images/img1.jpg}">
+            <img class="float-left" th:src="@{/images/img1.jpg}">
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
@@ -17,9 +17,9 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/subscription}">Abonnement</a>
                     </li>
-                    <li class="nav-item"
-                        th:if="${user != null} and ${T(com.clubtaekwondo.club.model.Role).COACH == user.userRole.role}">
-                        <a class="nav-link" th:href="@{/studentList}"> Liste des éleves </a>
+                    <li class="nav-item" sec:authorize="isAuthenticated()"
+                        th:if="${#authentication.getPrincipal() instanceof T(com.clubtaekwondo.club.model.Coach)}">
+                        <a class="nav-link" th:href="@{/user/studentList}"> Liste des éleves </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/contact}">Contact</a>
@@ -39,6 +39,7 @@
                                 <a class="dropdown-item" th:href="@{inscription}">S'inscrire</a>
                             </div>
                             <div class="navbar-header" sec:authorize="isAuthenticated()">
+                                <a class="dropdown-item" th:href="@{/user/mySubscription}"> Mes abonnement </a>
                                 <a class="dropdown-item" th:href="@{/logout}">Déconnexion</a>
                             </div>
                         </div>
@@ -54,15 +55,12 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="chartDropdown">
                             <div class="navbar-header">
-                                <a class="dropdown-item" th:href="@{/cart}">Voir le panier</a>
-                                <a class="dropdown-item" th:href="@{/cart}">Valider le panier</a>
+                                <a class="dropdown-item" th:href="@{/user/cart}">Voir le panier</a>
+                                <a class="dropdown-item" th:href="@{/user/cart}">Valider le panier</a>
                             </div>
                         </div>
                     </li>
                 </ul>
-                <!--                <div sec:authorize="isAuthenticated()" th:object="${user}">-->
-                <!--                    <span class="text-uppercase text-white" th:text="${user?.firstName} + ' ' + ${user?.lastName}"></span>-->
-                <!--                </div>-->
             </div>
         </div>
     </nav>

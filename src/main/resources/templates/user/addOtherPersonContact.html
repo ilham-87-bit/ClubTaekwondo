@@ -1,0 +1,77 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <div id="popup" class="modal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p> Ajouter une autre personne de contact </p>
+                </div>
+                <form id="idAddStudentRelationForm" class="form-horizontal mt-5 ml-5 mr-5 mb-5"
+                      th:action="@{(${'/user/addContactPerson/' + student.idStudent})}" method="post">
+                    <div class="modal-body">
+                        <div class="row form-group required">
+                            <label class="title control-label"> Lien de parenté : </label>
+                            <div class="col-3">
+                                <input id="father" name="relationship" type="radio" class="with-font required"
+                                       th:disabled="${T(com.clubtaekwondo.club.model.RelationType).FATHER == studentRelation.relationship}"
+                                       th:value="${T(com.clubtaekwondo.club.model.RelationType).FATHER}">
+                                <label for="father"> Pére </label>
+                            </div>
+                            <div class="col-3">
+                                <input id="mother" name="relationship" type="radio" class="with-font required"
+                                       th:disabled="${T(com.clubtaekwondo.club.model.RelationType).MOTHER == studentRelation.relationship}"
+                                       th:value="${T(com.clubtaekwondo.club.model.RelationType).MOTHER}">
+                                <label for="mother"> Mére </label>
+                            </div>
+                            <div class="col-3">
+                                <input id="others" name="relationship" type="radio" class="with-font required"
+                                       th:disabled="${T(com.clubtaekwondo.club.model.RelationType).OTHERS == studentRelation.relationship}"
+                                       th:value="${T(com.clubtaekwondo.club.model.RelationType).OTHERS}">
+                                <label for="mother"> Autre </label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-group required">
+                                    <label class="control-label mb-1" for="firstName">Prénom :</label>
+                                    <input class="form-control" id="firstName" type="text" required
+                                           name="personFirstName"
+                                           th:value="${contactPerson.personFirstName}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group required">
+                                    <label class="control-label mb-1" for="name">Nom :</label>
+                                    <input class="form-control" id="name" type="text" required name="personName"
+                                           th:value="${contactPerson.personName}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-group required">
+                                    <label class="control-label" for="inputEmailAddress">Email :</label>
+                                    <input class="form-control" id="inputEmailAddress" type="email" required
+                                           name="email"
+                                           th:value="${contactPerson.email}" aria-describedby="emailHelp"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label" for="gsm"> GSM :</label>
+                                    <input class="form-control" id="gsm" type="text" name="gsm"
+                                           th:value="${contactPerson.gsm}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="saveButton" type="submit" class="btn btn-dark"> Suivant</button>
+                        <button class="btn btn-danger pull-left"
+                                data-dismiss="modal"> Annuler
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

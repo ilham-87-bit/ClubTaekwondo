@@ -118,11 +118,14 @@
                         <div class="col-md-6">
                             <div class="form-group required">
                                 <label class="control-label"> Catégorie :</label>
-                                <div id="catSchool" th:each="parameter, row : ${parameters}"
+                                <div id="school" th:each="s,row : ${schoolList}"
                                      class="js-row-link-alt categoryBySchool">
-                                    <input type="hidden" th:id="${'catBySchool' + row.index}"
-                                           th:name="${parameter.school.idSchool}"
-                                           th:value="${parameter.cat.idCategory}"/>
+                                    <input th:id="${'school' + row.index}" type="hidden" th:value="${s.idSchool}"/>
+                                    <div th:each="c, row : ${s?.categoriesList}"
+                                         class="js-row-link-alt category">
+                                        <input type="hidden" th:id="${'catBySchool' + row.index}"
+                                               th:value="${c.idCategory}"/>
+                                    </div>
                                 </div>
                                 <div id="listCat" th:each="l, row : ${listCat}"
                                      class="js-row-link-alt listCat">
@@ -130,7 +133,7 @@
                                 </div>
                                 <div id="chekCo" th:each="category, row : ${categoryList}"
                                      class="js-row-link-alt rowCategory">
-                                    <input type="checkbox" th:id="${'checkbox' + row.index}" name="categoriesList[]"
+                                    <input type="checkbox" th:id="${'checkbox' + row.index}" name="categoryList[]"
                                            th:value="${category?.idCategory}"
                                            th:checked="${listCat != null and listCat.contains(category)}"
                                            class="checkboxGroup with-font hidden"/>

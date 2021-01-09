@@ -30,7 +30,7 @@ public class Student {
 
     @Column(name = "email")
     private String email;
-    @Column(name = "numero_national")
+    @Column(name = "registre_national")
     private String nationalRegistry;
     @OneToOne
     @JoinColumn(name = "id_adresse")

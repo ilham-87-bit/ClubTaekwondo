@@ -1,15 +1,13 @@
 $(document).ready(function () {
-    inputTime();
+    // inputTime();
     selectCoachBySchool();
     selectCategoryByCoach();
 });
 
-function inputTime() {
-    $('#inputStartTime').timepicker({
-        format: 'HH:mm',
-        step: '5'
-    });
-}
+// function inputTime() {
+//     // $('#inputStartTime').timepicker();
+//     // $('#inputStartTime').timepicker();
+// }
 
 function selectCoachBySchool() {
     $('.selectSchool').on('input', function () {
@@ -31,9 +29,11 @@ function selectedCoach() {
 
 function selectCategoryByCoach() {
     $('.selectCoach').on('input', function () {
-        for (var i = 0; i < $('.categoryByCoach').length; i++) {
-            for (var j = 0; j < $('.categoryList').length; j++) {
-                $('#cat' + j).addClass('hidden');
+        for (var y = 0; y < $('.coach').length; y++) {
+            for (var i = 0; i < $('.categoryByCoach').length; i++) {
+                for (var j = 0; j < $('.catList').length; j++) {
+                    $('#cat' + j).addClass('hidden');
+                }
             }
         }
         $('#idCategory').get(0).value = " ";
@@ -42,10 +42,12 @@ function selectCategoryByCoach() {
 }
 
 function selectedCategory() {
-    for (var i = 0; i < $('.categoryByCoach').length; i++) {
-        for (var j = 0; j < $('.categoryList').length; j++) {
-            if ($('#idCoach option:selected').val() === $('#catByCoach' + i).attr('name') && $('#catByCoach' + i).attr('value') === $('#cat' + j).val()) {
-                $('#cat' + j).removeClass('hidden');
+    for (var y = 0; y < $('.coach').length; y++) {
+        for (var i = 0; i < $('.categoryByCoach').length; i++) {
+            for (var j = 0; j < $('.catList').length; j++) {
+                if ($('#idCoach option:selected').val() === $('#catCoach' + y).attr('name') && $('#catByCoach' + i).attr('value') === $('#cat' + j).val()) {
+                    $('#cat' + j).removeClass('hidden');
+                }
             }
         }
     }

@@ -30,6 +30,9 @@
                                         <th class="cell--twenty">
                                             <span> Jour </span>
                                         </th>
+                                        <th class="cell--seven">
+                                            <span> Type d'abonnement </span>
+                                        </th>
                                         <th class="cell--twenty">
                                             <span> Heure </span>
                                         </th>
@@ -43,13 +46,16 @@
                                                 <span th:text="${t?.s?.name}"></span>
                                             </td>
                                             <td>
-                                                <span th:text="${t?.co?.nameCoach}"></span>
+                                                <span th:text="${t?.co.firstName} + ' ' + ${t.co.lastName}"></span>
                                             </td>
                                             <td>
                                                 <span th:text="${t?.c?.categoryName}"></span>
                                             </td>
                                             <td>
                                                 <span th:text="${t?.day?.day}"></span>
+                                            </td>
+                                            <td>
+                                                <span th:text="${t?.subscriptionType?.nbrHours}+ ' h'"></span>
                                             </td>
                                             <td>
                                                 <span th:text="${t?.startTime} + ' - '+ ${t?.endTime}"></span>

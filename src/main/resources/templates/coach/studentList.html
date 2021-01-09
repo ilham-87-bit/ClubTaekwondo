@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head">
+</head>
+<body>
+<header th:replace="header">
+</header>
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid">
+            <div class="card-body">
+                <th:block th:with="hasStudent=${!#lists.isEmpty(subscriptionStudentList)}">
+                    <th:block th:if="!${#lists.isEmpty(subscriptionStudentList)}">
+                        <div class="card-body card-border">
+                            <table id="studentListTable"
+                                   class="table table-fixed table-striped"
+                                   th:classappend="${hasStudent} ? 'table-hover'">
+                                <thead>
+                                <tr>
+                                    <th class="text-center cell--twenty">
+                                        <span> Eleve </span>
+                                    </th>
+                                    <th class="text-center cell--twenty">
+                                        <span> Registre national </span>
+                                    </th>
+                                    <th class="text-center cell--twenty">
+                                        <span> Catégorie </span>
+                                    </th>
+                                    <th class="text-center cell--twenty">
+                                        <span> Adresse </span>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody class="list" id="studentList">
+                                <th:block th:if="${hasStudent}">
+                                    <tr th:each="st, row : ${subscriptionStudentList}" class="js-row-link-alt">
+                                        <td align="center">
+                                        <span class="my-4 text-uppercase"
+                                              th:text="${st?.student?.firstName} + ' ' + ${st?.student?.name}"></span>
+                                        </td>
+                                        <td align="center">
+                                            <span th:text="${st?.student?.nationalRegistry}"></span>ju
+                                        </td>
+                                        <td align="center">
+                                            <span class="my-4 text-uppercase"
+                                                  th:text="${st?.categories?.categoryName}"></span>
+                                        </td>
+                                        <td align="center">
+                                            <span th:text="${st?.student?.address?.street}+ ' - '+ ${st?.student?.address?.number}"></span>
+                                            <span class="my-4 text-uppercase"
+                                                  th:text="${st?.student?.address?.city?.postalCode}+ '  '+ ${st?.student?.address?.city?.cityName}"></span>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </th:block>
+                    <th:block th:unless="!${#lists.isEmpty(subscriptionStudentList)}">
+                        <h5 class="align-content-center text-center">La liste des éleves est vide </h5>
+                    </th:block>
+                    <form>
+                        <div class="card-footer">
+                            <div class="row align-items-end justify-content-end">
+                                <div class="col-auto">
+                                    <input id="impression" name="impression" type="button" onclick="printPage()"
+                                           value="Imprimer"/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </th:block>
+            </div>
+        </div>
+    </main>
+</div>
+<footer th:replace="footer">
+</footer>
+</body>
+</html>

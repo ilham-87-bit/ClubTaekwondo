@@ -1,6 +1,7 @@
 package com.clubtaekwondo.club.service;
 
 import com.clubtaekwondo.club.model.Coach;
+import com.clubtaekwondo.club.model.User;
 
 import java.util.List;
 

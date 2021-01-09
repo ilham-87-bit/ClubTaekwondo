@@ -32,14 +32,18 @@ function selectCategory() {
 }
 
 function selectCategoryBySchool() {
-
-    for (var i = 0; i < $('.categoryBySchool').length; i++) {
-        for (var j = 0; j < $('.rowCategory').length; j++) {
-            if ($('#catBySchool' + i).attr('name') === $('#idSchool option:selected').val() && $('#catBySchool' + i).attr('value') === $('#checkbox' + j).val()) {
-                $('#checkbox' + j).removeClass("hidden");
-                $('#labelCat' + j).removeClass("hidden");
+    for (var y = 0; y < $('.categoryBySchool').length; y++) {
+        if ($('#school' + y).val() === $('#idSchool option:selected').val()) {
+            for (var i = 0; i < $('.category').length; i++) {
+                for (var j = 0; j < $('.rowCategory').length; j++) {
+                    if ($('#catBySchool' + i).val() === $('#checkbox' + j).val()) {
+                        $('#checkbox' + j).removeClass("hidden");
+                        $('#labelCat' + j).removeClass("hidden");
+                    }
+                }
             }
         }
+
     }
 }
 

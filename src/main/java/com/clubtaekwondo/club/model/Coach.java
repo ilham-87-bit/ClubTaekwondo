@@ -1,6 +1,7 @@
 package com.clubtaekwondo.club.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -15,17 +16,23 @@ public class Coach extends User {
     @JoinColumn(name = "id_adresse")
     private Address address;
 
-    @OneToMany(mappedBy = "coach")
-    private Set<CategoryByCoach> categoryByCoaches;
+//    @OneToMany(mappedBy = "coach")
+//    private Set<CategoryByCoach> categoryByCoaches;
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "donner",
+            joinColumns = {@JoinColumn(name = "id_entraineur")},
+            inverseJoinColumns = {@JoinColumn(name = "id_categorie")})
+    private List<Categories> categoriesList;
 
     @OneToMany(mappedBy = "co")
     private Set<TimeTable> timeTables;
 
-    public Coach(Long id, String lastName, String firstName, String password, String email, UserRole userRole, School school, Address address, Set<CategoryByCoach> categoryByCoaches, Set<TimeTable> timeTables) {
+    public Coach(Long id, String lastName, String firstName, String password, String email, UserRole userRole, School school, Address address, List<Categories> categoriesList, Set<TimeTable> timeTables) {
         super(id, lastName, firstName, password, email, userRole);
         this.school = school;
         this.address = address;
-        this.categoryByCoaches = categoryByCoaches;
+        this.categoriesList = categoriesList;
         this.timeTables = timeTables;
     }
 
@@ -49,14 +56,6 @@ public class Coach extends User {
         this.address = address;
     }
 
-    public Set<CategoryByCoach> getCategoryByCoaches() {
-        return categoryByCoaches;
-    }
-
-    public void setCategoryByCoaches(Set<CategoryByCoach> categoryByCoaches) {
-        this.categoryByCoaches = categoryByCoaches;
-    }
-
     public Set<TimeTable> getTimes() {
         return timeTables;
     }
@@ -71,5 +70,13 @@ public class Coach extends User {
 
     public void setTimeTables(Set<TimeTable> timeTables) {
         this.timeTables = timeTables;
+    }
+
+    public List<Categories> getCategoriesList() {
+        return categoriesList;
+    }
+
+    public void setCategoriesList(List<Categories> categoriesList) {
+        this.categoriesList = categoriesList;
     }
 }

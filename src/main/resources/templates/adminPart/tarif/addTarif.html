@@ -77,7 +77,7 @@
                                             <th:block th:if="!${#lists.isEmpty(typeList)}">
                                                 <option th:each="ty : ${typeList}"
                                                         th:value="${ty.idType}"
-                                                        th:text="${ty.nbrHours}"
+                                                        th:text="${ty.nbrHours} +' h'"
                                                         th:selected="${tarif?.type?.idType} == ${ty.idType}">
                                                 </option>
                                             </th:block>

@@ -96,7 +96,7 @@
                                                th:href="${'/addSubscription/'+ category?.idCategory}"
                                                class="btn btn-secondary"> Choisir </a>
                                             <a th:unless="${subscription.idSubscription == null}"
-                                               th:href="${'/editSubscription/'+ subscription.idSubscription +'/' + category?.idCategory}"
+                                               th:href="${'user/editSubscription/'+ subscription.idSubscription +'/' + category?.idCategory}"
                                                class="btn btn-secondary"> Choisir </a>
                                         </td>
                                     </tr>

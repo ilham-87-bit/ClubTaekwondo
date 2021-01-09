@@ -11,7 +11,7 @@ public class City {
     @Column(name = "id_ville")
     private Long idCity;
 
-    @Column(name = "nome_ville")
+    @Column(name = "ville")
     private String cityName;
 
     @Column(name = "code_postal")

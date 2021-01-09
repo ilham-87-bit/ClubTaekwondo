@@ -39,21 +39,20 @@
                                 <div class="select-awesome" data-placement="right" maxlength="50">
                                     <label>
                                         <select id="idCoach" class="form-control selectCoach" required
-                                                aria-invalid="false" name="idCoach">
+                                                aria-invalid="false" name="id">
                                             <option id="coachNull"></option>
                                             <th:block th:if="!${#lists.isEmpty(coachList)}">
                                                 <option th:each="coach, row : ${coachList}" th:id="${'co' + row.index}"
-                                                        th:value="${coach.idCoach}" class="hidden coachList"
-                                                        th:text="${coach.nameCoach}"
+                                                        th:value="${coach.id}" class="hidden coachList text-uppercase"
+                                                        th:text="${coach.firstName} + ' ' + ${coach.lastName}"
                                                         th:name="${coach.school.idSchool}"
-                                                        th:selected="${time?.co?.idCoach} == ${coach.idCoach}">
+                                                        th:selected="${time?.co?.id} == ${coach.id}">
                                                 </option>
                                             </th:block>
                                         </select>
                                     </label>
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
@@ -61,11 +60,15 @@
                         <div class="col-md-6">
                             <div class="form-group required">
                                 <label class="control-label" for="idCategory"> Categorie :</label>
-                                <div id="catCoach" th:each="parameter, row : ${parameters}"
-                                     class="js-row-link-alt categoryByCoach">
-                                    <input type="hidden" th:id="${'catByCoach' + row.index}"
-                                           th:name="${parameter.coach.idCoach}"
-                                           th:value="${parameter.categories.idCategory}"/>
+                                <div id="coach" th:each="c , row: ${coachList}"
+                                     class="js-row-link-alt coach">
+                                    <div th:id="${'catCoach' + row.index}" th:name="${c.id}">
+                                        <div th:each="cat, row : ${c.categoriesList}"
+                                             class="js-row-link-alt categoryByCoach">
+                                            <input type="hidden" th:id="${'catByCoach' + row.index}"
+                                                   th:value="${cat.idCategory}"/>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="select-awesome" data-placement="right" maxlength="50">
                                     <label>
@@ -77,7 +80,8 @@
                                             <th:block th:if="!${#lists.isEmpty(categoryList)}">
                                                 <option th:each="category, row : ${categoryList}"
                                                         th:id="${'cat' + row.index}"
-                                                        th:value="${category.idCategory}" class="categoryList hidden"
+                                                        th:value="${category.idCategory}"
+                                                        class="catList hidden"
                                                         th:text="${category.categoryName}"
                                                         th:selected="${time?.c?.idCategory} == ${category.idCategory}">
                                                 </option>
@@ -86,7 +90,6 @@
                                     </label>
                                 </div>
                             </div>
-
                         </div>
                         <div class="col-md-6">
                             <div class="form-group required">
@@ -113,14 +116,36 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col-md-6">
+                        <div class="col-lg-4 col-12">
+                            <div class="form-group required">
+                                <label class="control-label" for="idType"> Type d'abonnement :</label>
+                                <div class="select-awesome" data-placement="right" maxlength="50">
+                                    <label>
+                                        <select id="idType"
+                                                class="form-control" required
+                                                aria-invalid="false"
+                                                name="idType">
+                                            <option></option>
+                                            <th:block th:if="!${#lists.isEmpty(typeList)}">
+                                                <option th:each="ty : ${typeList}"
+                                                        th:value="${ty.idType}"
+                                                        th:text="${ty.nbrHours}+ ' h'"
+                                                        th:selected="${time?.subscriptionType?.idType} == ${ty.idType}">
+                                                </option>
+                                            </th:block>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-12">
                             <div class="form-group required">
                                 <label class="control-label" for="inputStartTime">Heure-début :</label>
                                 <input class="form-control" id="inputStartTime" type="time" required
                                        th:field="*{startTime}"/>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-4 col-12">
                             <div class="form-group required">
                                 <label class="control-label" for="inputEndTime">heure-fin :</label>
                                 <input class="form-control" id="inputEndTime" type="time" step="300" required
@@ -138,7 +163,8 @@
                             <a th:href="@{/admin/time/timeList}" class="btn btn-dark"> Précédent </a>
                         </div>
                         <div class="col-auto">
-                            <button th:if="${time.idTime == null}" id="saveButton" type="submit" class="btn btn-dark">
+                            <button th:if="${time.idTime == null}" id="saveButton" type="submit"
+                                    class="btn btn-dark">
                                 Ajouter
                             </button>
 

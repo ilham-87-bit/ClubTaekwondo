@@ -3,7 +3,7 @@ package com.clubtaekwondo.club.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "relation_eleve_personne")
+@Table(name = "avoir")
 public class StudentRelation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -10,32 +10,29 @@ public class Categories {
     @Column(name = "id_categorie")
     private Long idCategory;
 
-    @Column(name = "nom_categorie")
+    @Column(name = "categorie")
     private String categoryName;
 
-    @Column(name = "description_categorie")
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "age")
+    private Integer age;
 
     @OneToMany(mappedBy = "category")
     private Set<Tariff> tariffs;
 
-    @OneToMany(mappedBy = "categories")
-    private Set<CategoryByCoach> categoryByCoaches;
-
-    @OneToMany(mappedBy = "cat")
-    private Set<CategoryBySchool> categoryBySchools;
 
     @OneToMany(mappedBy = "c")
     private Set<TimeTable> timeTables;
 
 
-    public Categories(Long idCategory, String categoryName, String description, Set<Tariff> tariffs, Set<CategoryByCoach> categoryByCoaches, Set<CategoryBySchool> categoryBySchools, Set<TimeTable> timeTables) {
+    public Categories(Long idCategory, String categoryName, String description, Integer age, Set<Tariff> tariffs, Set<TimeTable> timeTables) {
         this.idCategory = idCategory;
         this.categoryName = categoryName;
         this.description = description;
+        this.age = age;
         this.tariffs = tariffs;
-        this.categoryByCoaches = categoryByCoaches;
-        this.categoryBySchools = categoryBySchools;
         this.timeTables = timeTables;
     }
 
@@ -57,23 +54,6 @@ public class Categories {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
-    }
-
-
-    public Set<CategoryByCoach> getCategoryByCoaches() {
-        return categoryByCoaches;
-    }
-
-    public void setCategoryByCoaches(Set<CategoryByCoach> categoryByCoaches) {
-        this.categoryByCoaches = categoryByCoaches;
-    }
-
-    public Set<CategoryBySchool> getCategoryBySchools() {
-        return categoryBySchools;
-    }
-
-    public void setCategoryBySchools(Set<CategoryBySchool> categoryBySchools) {
-        this.categoryBySchools = categoryBySchools;
     }
 
     public Set<TimeTable> getTimes() {
@@ -108,4 +88,11 @@ public class Categories {
         this.description = description;
     }
 
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
 }

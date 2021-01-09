@@ -25,18 +25,23 @@ public class TimeTable {
     @JoinColumn(name = "id_entraineur")
     private Coach co;
 
+    @ManyToOne
+    @JoinColumn(name = "id_type_abonnement")
+    private SubscriptionType subscriptionType;
+
     @Column(name = "heur_debut")
     private String startTime;
 
     @Column(name = "heur_fin")
     private String endTime;
 
-    public TimeTable(Long idTime, Categories c, School s, Day day, Coach co, String startTime, String endTime) {
+    public TimeTable(Long idTime, Categories c, School s, Day day, Coach co, SubscriptionType subscriptionType, String startTime, String endTime) {
         this.idTime = idTime;
         this.c = c;
         this.s = s;
         this.day = day;
         this.co = co;
+        this.subscriptionType = subscriptionType;
         this.startTime = startTime;
         this.endTime = endTime;
     }
@@ -99,5 +104,13 @@ public class TimeTable {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public SubscriptionType getSubscriptionType() {
+        return subscriptionType;
+    }
+
+    public void setSubscriptionType(SubscriptionType subscriptionType) {
+        this.subscriptionType = subscriptionType;
     }
 }

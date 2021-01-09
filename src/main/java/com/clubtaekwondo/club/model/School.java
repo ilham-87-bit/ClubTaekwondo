@@ -1,6 +1,7 @@
 package com.clubtaekwondo.club.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -12,15 +13,21 @@ public class School {
     @Column(name = "id_ecole")
     private Long idSchool;
 
-    @Column(name = "nome_ecole")
+    @Column(name = "nom_ecole")
     private String name;
 
     @OneToOne
     @JoinColumn(name = "id_adresse")
     private Address address;
 
-    @OneToMany(mappedBy = "school")
-    private Set<CategoryBySchool> categoryBySchools;
+//    @OneToMany(mappedBy = "school")
+//    private Set<CategoryBySchool> categoryBySchools;
+
+    @ManyToMany()
+    @JoinTable(name = "offrir",
+            joinColumns = {@JoinColumn(name = "id_ecole")},
+            inverseJoinColumns = {@JoinColumn(name = "id_categorie")})
+    private List<Categories> categoriesList;
 
     @OneToMany(mappedBy = "s")
     private Set<TimeTable> timeTables;
@@ -28,11 +35,11 @@ public class School {
     @Transient
     private String fullUrlImg;
 
-    public School(Long idSchool, String name, Address address, Set<CategoryBySchool> categoryBySchools, Set<TimeTable> timeTables) {
+    public School(Long idSchool, String name, Address address, List<Categories> categoriesList, Set<TimeTable> timeTables) {
         this.idSchool = idSchool;
         this.name = name;
         this.address = address;
-        this.categoryBySchools = categoryBySchools;
+        this.categoriesList = categoriesList;
         this.timeTables = timeTables;
     }
 
@@ -64,14 +71,6 @@ public class School {
         this.address = address;
     }
 
-    public Set<CategoryBySchool> getCategoryBySchools() {
-        return categoryBySchools;
-    }
-
-    public void setCategoryBySchools(Set<CategoryBySchool> categoryBySchools) {
-        this.categoryBySchools = categoryBySchools;
-    }
-
     public Set<TimeTable> getTimeTables() {
         return timeTables;
     }
@@ -86,5 +85,13 @@ public class School {
 
     public void setFullUrlImg(String fullUrlImg) {
         this.fullUrlImg = fullUrlImg;
+    }
+
+    public List<Categories> getCategoriesList() {
+        return categoriesList;
+    }
+
+    public void setCategoriesList(List<Categories> categoriesList) {
+        this.categoriesList = categoriesList;
     }
 }

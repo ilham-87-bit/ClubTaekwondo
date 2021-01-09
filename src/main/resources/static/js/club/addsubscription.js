@@ -16,8 +16,12 @@ function inputDate() {
 function calculateEndDateFormFunction() {
 
     $('.calculateDate').on('input', function () {
+        $('#endDate').val(null);
         calculateEndDate();
 
+    });
+    $('#startDate').on('change', function () {
+        calculateEndDate();
     });
 }
 

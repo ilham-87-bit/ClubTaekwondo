@@ -21,7 +21,7 @@
                     <div class="row justify-content-center">
                         <h5 class="font-weight-bold my-4"> Tranche d'âge : </h5>
                         <span class="font-weight-bold my-4 text-uppercase"
-                              th:text="${subscription.categories.categoryName}"></span>
+                              th:text="' ' + ${subscription.categories.categoryName}"></span>
                     </div>
                     <div th:if="${messageError}">
                         <p class="error" th:text="${messageError}"></p>
@@ -29,7 +29,7 @@
                     <div class="card shadow-lg border-0 rounded-lg mt-5">
                         <form id="idAddSubscriptionForm2" class="form-horizontal mt-5 ml-5 mr-5 mb-5"
                               th:object="${subscription}"
-                              th:action="@{(${'/addSubscriptionPart2/' + subscription.idSubscription})}"
+                              th:action="@{(${'/user/addSubscriptionPart2/' + subscription.idSubscription})}"
                               method="post">
                             <input type="hidden" th:field="*{idSubscription}">
                             <div class="card-body card-border">
@@ -65,7 +65,7 @@
                                                         th:if="!${#lists.isEmpty(typeList)}">
                                                     <option th:each="t : ${typeList}"
                                                             th:value="${t.idType}"
-                                                            th:text="${t.nbrHours} +' (' + ${t.description} +')'"
+                                                            th:text="${t.nbrHours} +' h - (' + ${t.description} +')'"
                                                             th:selected="${subscription?.subscriptionType?.idType} == ${t.idType}">
                                                     </option>
                                                 </th:block>

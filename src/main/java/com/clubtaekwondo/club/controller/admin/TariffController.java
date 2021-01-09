@@ -118,6 +118,15 @@ public class TariffController {
 
         tariffService.save(tariff);
 
+        Categories cat = categoriesService.findById(categories.getIdCategory());
+        cat.getTariffs().add(tariff);
+
+        SubscriptionType subsType = subscriptionTypeService.findById(subscriptionType.getIdType());
+        subsType.getTariffs().add(tariff);
+
+        SubscriptionPeriod subsPeriod = subscriptionPeriodService.findById(subscriptionPeriod.getId());
+        subsPeriod.getTariffs().add(tariff);
+
         model.addAttribute(TARIF, tariff);
         model.addAttribute("periodList", subscriptionPeriodService.getAllPeriod());
         model.addAttribute("typeList", subscriptionTypeService.getAllSubscriptionType());

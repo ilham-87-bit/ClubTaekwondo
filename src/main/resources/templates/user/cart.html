@@ -15,28 +15,6 @@
                             <table id="subscriptionTable"
                                    class="table table-fixed table-striped"
                                    th:classappend="${hasSubscription} ? 'table-hover'">
-                                <!--                                <thead>-->
-                                <!--                                <tr>-->
-                                <!--                                    <th class="text-center cell&#45;&#45;twenty">-->
-                                <!--                                        <span> Eleve </span>-->
-                                <!--                                    </th>-->
-                                <!--                                    <th class="text-center cell&#45;&#45;twenty">-->
-                                <!--                                        <span> Ecole </span>-->
-                                <!--                                    </th>-->
-                                <!--                                    <th class="text-center cell&#45;&#45;twenty">-->
-                                <!--                                        <span> Catégorie </span>-->
-                                <!--                                    </th>-->
-                                <!--                                    <th class="text-center cell&#45;&#45;twenty">-->
-                                <!--                                        <span> Durée d'abonnement </span>-->
-                                <!--                                    </th>-->
-                                <!--                                    <th class="text-center cell&#45;&#45;twenty">-->
-                                <!--                                        <span> Type d'abonnement </span>-->
-                                <!--                                    </th>-->
-                                <!--                                    <th class="text-center cell&#45;&#45;twenty">-->
-                                <!--                                        <span> Prix </span>-->
-                                <!--                                    </th>-->
-                                <!--                                </tr>-->
-                                <!--                                </thead>-->
                                 <tbody class="list" id="subscriptionsList">
                                 <th:block th:if="${hasSubscription}">
                                     <tr th:each="subsc, row : ${subscriptions}" class="js-row-link-alt">
@@ -54,13 +32,13 @@
                                                     th:text="${subsc.subscriptionPeriod.period}"/>
                                         </td>
                                         <td align="center" class="py-5">
-                                            <span th:text="${subsc.subscriptionType.nbrHours}"/>
+                                            <span th:text="${subsc.subscriptionType.nbrHours}+ ' h'"/>
                                         </td>
                                         <td align="center" class="py-5">
                                             <span th:text="${subsc.totalPrice}  + ' EURO'"/>
                                         </td>
                                         <td align="center" class="py-5">
-                                            <a th:href="${'edit/'+ subsc?.idSubscription}"
+                                            <a th:href="${'user/edit/'+ subsc?.idSubscription}"
                                                class="btn btn-link fa fa-edit"></a>
                                             <a class="btn btn-link fa fa-trash-alt"
                                                th:attr="data-target='#modal-delete'+${subsc?.idSubscription}"
@@ -81,7 +59,7 @@
                                                                     data-dismiss="modal"> Annuler
                                                             </button>
                                                             <a class="btn btn-danger pull-right" type="button"
-                                                               th:href="${'/deleteInCart/'+ subsc?.idSubscription}">
+                                                               th:href="${'user/deleteInCart/'+ subsc?.idSubscription}">
                                                                 Supprimer
                                                             </a>
                                                         </div>
@@ -100,17 +78,33 @@
                                         th:text="${subscriptions.size()} + ' Abonnement(s)'"></label>
                                 </div>
                                 <div class="col-auto">
-                                    <label class="content-block-text border-info" th:text="${total} + '  EURO'"></label>
+                                    <label class="border-info" th:text="${total} + '  EURO'"></label>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer">
                             <div class="row align-items-end justify-content-end">
                                 <div class="col-auto">
-                                    <!--                                    <button id="payerButton" type="submit" class="btn btn-dark"> Payer</button>-->
-                                    <a class="btn btn-dark"
-                                       href="https://serviweb.ca/projet/transaction.php?id=tr_133&prix=10.00">
-                                        Payer </a>
+                                    <a class="btn btn-dark" th:href="${'/user/transaction/'+ payment?.id}">Payer </a>
+                                    <!--                                    <form action="https://esqa.moneris.com/HPPDP/index.php" name="Ajouter">-->
+
+                                    <!--                                        <INPUT TYPE="HIDDEN" NAME="ps_store_id" VALUE="AZNUEtore3">-->
+
+                                    <!--                                        <INPUT TYPE="HIDDEN" NAME="hpp_key" VALUE="hpX9BVA12NAM">-->
+
+                                    <!--                                        <INPUT TYPE="HIDDEN" NAME="charge_total" VALUE="10.00">-->
+
+                                    <!--                                        &lt;!&ndash;MORE OPTIONAL VARIABLES CAN BE DEFINED HERE &ndash;&gt;-->
+
+                                    <!--                                        <INPUT TYPE="HIDDEN" NAME="order_id" th:value="${payment.code}">-->
+
+                                    <!--                                        <INPUT TYPE="HIDDEN" NAME="auth" th:value="${auth}">-->
+
+                                    <!--                                        <INPUT TYPE="HIDDEN" NAME="lang" VALUE="fr-FR">-->
+
+                                    <!--                                        <button type="submit" class="btn btn-dark" href="https://esqa.moneris.com/HPPDP/index.php"> Payer </button>-->
+                                    <!--                                    </form>-->
+                                    <!--                                    <a class="btn btn-dark" th:href="${paymentUrl}">Payer </a>-->
                                 </div>
                             </div>
                         </div>
@@ -125,5 +119,6 @@
 </div>
 <footer th:replace="footer">
 </footer>
+<script type="text/javascript" th:src="@{/js/club/transaction.js}"></script>
 </body>
 </html>
