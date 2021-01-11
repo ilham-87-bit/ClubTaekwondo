@@ -5,31 +5,16 @@ import javax.persistence.*;
 @Entity
 @Table(name = "avoir")
 public class StudentRelation {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_avoir")
-    private Long idStudentRelation;
 
-    @ManyToOne
-    @JoinColumn(name = "id_eleve")
-    private Student student;
-
-    @ManyToOne
-    @JoinColumn(name = "id_person_contact")
-    private ContactPerson contactPerson;
+    @EmbeddedId
+    private StudentRelationPK studentRelationPK;
 
     @Column(name = "lien_parenté")
     private String relationship;
 
-    public StudentRelation(Student student, ContactPerson contactPerson) {
-        this.student = student;
-        this.contactPerson = contactPerson;
-    }
 
-    public StudentRelation(Long idStudentRelation, Student student, ContactPerson contactPerson, String relationship) {
-        this.idStudentRelation = idStudentRelation;
-        this.student = student;
-        this.contactPerson = contactPerson;
+    public StudentRelation(StudentRelationPK studentRelationPK, String relationship) {
+        this.studentRelationPK = studentRelationPK;
         this.relationship = relationship;
     }
 
@@ -37,28 +22,17 @@ public class StudentRelation {
 
     }
 
-    public Long getIdStudentRelation() {
-        return idStudentRelation;
+    public StudentRelation(Long student, Long contactPerson) {
+        this.studentRelationPK = new StudentRelationPK(student, contactPerson);
+
     }
 
-    public void setIdStudentRelation(Long idStudentRelation) {
-        this.idStudentRelation = idStudentRelation;
+    public StudentRelationPK getStudentRelationPK() {
+        return studentRelationPK;
     }
 
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-    public ContactPerson getContactPerson() {
-        return contactPerson;
-    }
-
-    public void setContactPerson(ContactPerson contactPerson) {
-        this.contactPerson = contactPerson;
+    public void setStudentRelationPK(StudentRelationPK studentRelationPK) {
+        this.studentRelationPK = studentRelationPK;
     }
 
     public String getRelationship() {

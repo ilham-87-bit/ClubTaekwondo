@@ -12,9 +12,6 @@
                         </div>
                         <div class="card-body">
                             <form id="inscriptionForm" th:object="${user}" method="post" th:action="@{/inscription}">
-                                <!--                                <div class="form-row align-content-center text-center">-->
-                                <!--                                    <span  class="error" id="messageError" name="messageError" th:if="${#fields.hasErrors('messageError')}"></span>-->
-                                <!--                                </div>-->
                                 <div th:if="${messageError}">
                                     <p class="error" th:text="${messageError}"></p>
                                 </div>

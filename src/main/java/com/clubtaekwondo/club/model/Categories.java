@@ -19,20 +19,16 @@ public class Categories {
     @Column(name = "age")
     private Integer age;
 
-    @OneToMany(mappedBy = "category")
-    private Set<Tariff> tariffs;
-
 
     @OneToMany(mappedBy = "c")
     private Set<TimeTable> timeTables;
 
 
-    public Categories(Long idCategory, String categoryName, String description, Integer age, Set<Tariff> tariffs, Set<TimeTable> timeTables) {
+    public Categories(Long idCategory, String categoryName, String description, Integer age, Set<TimeTable> timeTables) {
         this.idCategory = idCategory;
         this.categoryName = categoryName;
         this.description = description;
         this.age = age;
-        this.tariffs = tariffs;
         this.timeTables = timeTables;
     }
 
@@ -72,13 +68,6 @@ public class Categories {
         this.timeTables = timeTables;
     }
 
-    public Set<Tariff> getTariffs() {
-        return tariffs;
-    }
-
-    public void setTariffs(Set<Tariff> tariffs) {
-        this.tariffs = tariffs;
-    }
 
     public String getDescription() {
         return description;

@@ -11,6 +11,10 @@ function inputDate() {
         clearBtn: true,
         dateFormat: "dd/mm/yy"
     });
+    $('#endDate').datepicker({
+        dateFormat: "dd/mm/yy",
+        readOnly: true
+    });
 }
 
 function calculateEndDateFormFunction() {
@@ -32,7 +36,7 @@ function calculateEndDate() {
     $('#endDate').val(null);
 
     list.each(function (indexPara, elem) {
-        if ($(elem).attr('name') === idPeriod) {
+        if ($(elem).attr('name') === idPeriod && $('#startDate').val() != "") {
             var cpt = $(elem).val();
             var arr = $('#startDate').val().split("/");
             var date = new Date(arr[2] + "-" + arr[1] + "-" + arr[0]);

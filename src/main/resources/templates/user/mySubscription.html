@@ -72,7 +72,7 @@
                                             <span th:text="${T(com.clubtaekwondo.club.controller.user.StudentController).formatDate(p?.key.startDate)} + '  -   ' + ${T(com.clubtaekwondo.club.controller.user.StudentController).formatDate(p?.key?.endDate)}"></span>
                                         </td>
                                         <td align="center">
-                                            <a th:if="!${p.key.validation}" class="btn btn-dark"
+                                            <a th:if="!${validDate}" class="btn btn-dark"
                                                th:href="@{(${'/user/renewSubscription/' + p.key.idSubscription})}">
                                                 Renouveler </a>
                                         </td>

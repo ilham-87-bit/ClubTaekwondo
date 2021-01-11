@@ -118,15 +118,15 @@
                         <div class="col-md-6">
                             <div class="form-group required">
                                 <label class="control-label"> Catégorie :</label>
-                                <div id="school" th:each="s,row : ${schoolList}"
-                                     class="js-row-link-alt categoryBySchool">
-                                    <input th:id="${'school' + row.index}" type="hidden" th:value="${s.idSchool}"/>
-                                    <div th:each="c, row : ${s?.categoriesList}"
-                                         class="js-row-link-alt category">
+                                <ul id="school" th:each="s, r : ${schoolList}"
+                                    class="categoryBySchool hidden">
+                                    <input type="hidden" th:id="${'school' + r.index}" th:value="${s?.idSchool}"/>
+                                    <li th:id="${'schoolCat' + r.index}" th:each="c, row : ${s?.categoriesList}"
+                                        class="js-row-link-alt hidden ">
                                         <input type="hidden" th:id="${'catBySchool' + row.index}"
                                                th:value="${c.idCategory}"/>
-                                    </div>
-                                </div>
+                                    </li>
+                                </ul>
                                 <div id="listCat" th:each="l, row : ${listCat}"
                                      class="js-row-link-alt listCat">
                                     <input type="hidden" th:id="${'cat' + row.index}" th:value="${l.idCategory}"/>

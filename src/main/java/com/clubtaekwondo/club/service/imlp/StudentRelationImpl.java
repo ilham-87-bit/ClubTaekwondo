@@ -30,8 +30,4 @@ public class StudentRelationImpl implements StudentRelationService {
         return studentRelationRepository.findAll();
     }
 
-    @Override
-    public StudentRelation findById(Long id) {
-        return studentRelationRepository.getOne(id);
-    }
 }

@@ -37,25 +37,35 @@
                                     <th:block th:if="${hasTarif}">
                                         <tr th:each="ta, row : ${tarifList}" class="js-row-link-alt">
                                             <td>
-                                                <span th:text="${ta?.category?.categoryName}"></span>
+                                                <th:block th:each="category : ${categoryList}">
+                                                    <span th:if="${ta?.tariffPK.idCategory == category.idCategory}"
+                                                          th:text="${category?.categoryName}"></span>
+                                                </th:block>
                                             </td>
                                             <td>
-                                                <span th:text="${ta?.period?.period}"></span>
+                                                <th:block th:each="p : ${periodList}">
+                                                    <span th:if="${ta?.tariffPK.idPeriod == p.id}"
+                                                          th:text="${p.period}"></span>
+                                                </th:block>
                                             </td>
                                             <td>
-                                                <span th:text="${ta?.type?.nbrHours}+ ' h'"></span>
+                                                <th:block th:each="t : ${typeList}">
+                                                    <span th:if="${ta?.tariffPK.idType == t.idType}"
+                                                          th:text="${t?.nbrHours}+ ' h'"></span>
+                                                </th:block>
                                             </td>
                                             <td>
                                                 <span th:text="${ta?.prix}"></span>
                                             </td>
                                             <td>
-                                                <a th:href="${'edit/'+ ta?.idTarif}"
+                                                <a th:href="${'edit/'+ ta?.tariffPK?.idCategory + '/' +ta?.tariffPK?.idPeriod +'/' + ta?.tariffPK?.idType}"
                                                    class="btn btn-link fa fa-edit"></a>
                                                 <a class="btn btn-link fa fa-trash-alt"
-                                                   th:attr="data-target='#modal-delete'+${ta?.idTarif}"
+                                                   th:attr="data-target='#modal-delete'+${ta?.tariffPK?.idCategory} + ${ta?.tariffPK?.idPeriod} + ${ta?.tariffPK?.idType}"
                                                    data-rel="tooltip" title="delete" data-toggle="modal"></a>
 
-                                                <div th:id="modal-delete+${ta?.idTarif}" class="modal fade"
+                                                <div th:id="modal-delete+${ta?.tariffPK?.idCategory} +${ta?.tariffPK?.idPeriod} + ${ta?.tariffPK?.idType}"
+                                                     class="modal fade"
                                                      tabindex="-1">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
@@ -70,7 +80,8 @@
                                                                         data-dismiss="modal"> Annuler
                                                                 </button>
                                                                 <a class="btn btn-danger pull-right" type="button"
-                                                                   th:href="${'delete/'+ ta?.idTarif}"> Supprimer
+                                                                   th:href="${'delete/'+ ta?.tariffPK?.idCategory + '/' + ta?.tariffPK?.idPeriod +'/' + ta?.tariffPK?.idType}">
+                                                                    Supprimer
                                                                 </a>
                                                             </div>
                                                         </div>

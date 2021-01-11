@@ -2,69 +2,35 @@ package com.clubtaekwondo.club.model;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "tarif")
-public class Tariff {
+public class Tariff implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_tarif")
-    private Long idTarif;
+    @EmbeddedId
+    private TariffPK tariffPK;
 
-    @ManyToOne
-    @JoinColumn(name="id_categorie")
-   private Categories category ;
-    @ManyToOne
-    @JoinColumn(name="id_type_abonnement")
-   private SubscriptionType type ;
-    @ManyToOne
-    @JoinColumn(name="id_dure_abonnement")
-   private SubscriptionPeriod period ;
+    private float prix;
 
-    private float prix ;
-
-    public Tariff(Long idTarif, Categories category, SubscriptionType type, SubscriptionPeriod period, float prix) {
-        this.idTarif = idTarif;
-        this.category = category;
-        this.type = type;
-        this.period = period;
+    public Tariff(TariffPK tariffPK, float prix) {
+        this.tariffPK = tariffPK;
         this.prix = prix;
     }
 
     public Tariff() {
     }
 
-    public Long getIdTarif() {
-        return idTarif;
+    public Tariff(Long idCategory, Long idPeriod, Long idType) {
+        this.tariffPK = new TariffPK(idCategory, idPeriod, idType);
     }
 
-    public void setIdTarif(Long idTarif) {
-        this.idTarif = idTarif;
+    public TariffPK getTariffPK() {
+        return tariffPK;
     }
 
-    public Categories getCategory() {
-        return category;
-    }
-
-    public void setCategory(Categories category) {
-        this.category = category;
-    }
-
-    public SubscriptionType getType() {
-        return type;
-    }
-
-    public void setType(SubscriptionType type) {
-        this.type = type;
-    }
-
-    public SubscriptionPeriod getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(SubscriptionPeriod period) {
-        this.period = period;
+    public void setTariffPK(TariffPK tariffPK) {
+        this.tariffPK = tariffPK;
     }
 
     public float getPrix() {
@@ -73,5 +39,11 @@ public class Tariff {
 
     public void setPrix(float prix) {
         this.prix = prix;
+    }
+
+
+    @Override
+    public String toString() {
+        return "model.Tarif[ id=" + this.getTariffPK() + " ]";
     }
 }

@@ -6,14 +6,13 @@
 </header>
 <div id="layoutSidenav_content">
     <main>
-        <div class="container-fluid" th:with="hasTarif = ${tarif.idTarif != null}">
+        <div class="container-fluid" th:with="hasTarif = ${tarif.tariffPK != null}">
             <form id="idAddTimeForm" class="form-horizontal" th:object="${tarif}"
                   th:action="@{(${hasTarif ? '/admin/tarif/edit' : '/admin/tarif/addTarif'})}" method="post">
                 <div class="card-body mt-5 ml-5 mr-5 mb-5">
                     <div th:if="${messageError}">
                         <p class="error" th:text="${messageError}"></p>
                     </div>
-                    <input type="hidden" th:field="*{idTarif}">
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group required">
@@ -29,7 +28,7 @@
                                                 <option th:each="category : ${categoryList}"
                                                         th:value="${category.idCategory}"
                                                         th:text="${category.categoryName}"
-                                                        th:selected="${tarif?.category?.idCategory} == ${category.idCategory}">
+                                                        th:selected="${tarif?.tariffPK?.idCategory} == ${category.idCategory}">
                                                 </option>
                                             </th:block>
                                         </select>
@@ -52,7 +51,7 @@
                                                 <option th:each="p : ${periodList}"
                                                         th:value="${p.id}"
                                                         th:text="${p.period}"
-                                                        th:selected="${tarif?.period?.id} == ${p.id}">
+                                                        th:selected="${tarif?.tariffPK?.idPeriod} == ${p.id}">
                                                 </option>
                                             </th:block>
                                         </select>
@@ -78,7 +77,7 @@
                                                 <option th:each="ty : ${typeList}"
                                                         th:value="${ty.idType}"
                                                         th:text="${ty.nbrHours} +' h'"
-                                                        th:selected="${tarif?.type?.idType} == ${ty.idType}">
+                                                        th:selected="${tarif?.tariffPK?.idType} == ${ty.idType}">
                                                 </option>
                                             </th:block>
                                         </select>
@@ -103,14 +102,15 @@
                             <p class="disclaimer red font-weight-bold m-0">(*)Ce champ est obligatoire</p>
                         </div>
                         <div class="col-auto">
-                            <a th:href="@{/admin/time/timeList}" class="btn btn-dark"> Précédent </a>
+                            <a th:href="@{/admin/tarif/tarifList}" class="btn btn-dark"> Précédent </a>
                         </div>
                         <div class="col-auto">
-                            <button th:if="${tarif.idTarif == null}" id="saveButton" type="submit" class="btn btn-dark">
+                            <button th:if="${tarif.tariffPK == null}" id="saveButton" type="submit"
+                                    class="btn btn-dark">
                                 Ajouter
                             </button>
 
-                            <button th:unless="${tarif.idTarif == null}" id="editButton" type="submit"
+                            <button th:unless="${tarif.tariffPK == null}" id="editButton" type="submit"
                                     class="btn btn-dark">
                                 Modifier
                             </button>

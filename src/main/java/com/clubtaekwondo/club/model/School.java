@@ -20,9 +20,6 @@ public class School {
     @JoinColumn(name = "id_adresse")
     private Address address;
 
-//    @OneToMany(mappedBy = "school")
-//    private Set<CategoryBySchool> categoryBySchools;
-
     @ManyToMany()
     @JoinTable(name = "offrir",
             joinColumns = {@JoinColumn(name = "id_ecole")},

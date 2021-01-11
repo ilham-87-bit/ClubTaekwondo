@@ -11,6 +11,4 @@ public interface StudentRelationService {
     void delete(StudentRelation studentRelation);
 
     List<StudentRelation> getAllStudentRelation();
-
-    StudentRelation findById(Long id);
 }

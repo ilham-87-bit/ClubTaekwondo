@@ -136,7 +136,7 @@ public class SubscriptionController {
     }
 
     @PostMapping(value = "user/addSubscriptionPart2/{subscription}")
-    public String addSubscriptionPart2(@PathVariable("subscription") Long id, SubscriptionDTO subscriptionDTO, SubscriptionType subscriptionT, SubscriptionPeriod subscriptionP, Model model, Locale locale) {
+    public String addSubscriptionPart2(@PathVariable("subscription") Long id, SubscriptionDTO subscriptionDTO, SubscriptionType subscriptionT, SubscriptionPeriod subscriptionP, Model model) {
         try {
             Date dateCurrent = new Date();
             Subscription subscription = subscriptionService.findById(id);
@@ -145,7 +145,7 @@ public class SubscriptionController {
                     subscription.setSubscriptionStatus(SubscriptionStatus.INITIATED);
                 }
             }
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy", locale);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
             String dateString = subscriptionDTO.getStartDate();
             Date date = sdf.parse(dateString);
             subscription.setStartDate(date);
@@ -155,7 +155,7 @@ public class SubscriptionController {
             subscription.setSubscriptionType(subscriptionTypeService.findById(subscriptionT.getIdType()));
             subscription.setSubscriptionPeriod(subscriptionPeriodService.findById(subscriptionP.getId()));
             subscriptionService.save(subscription);
-            Optional<Tariff> firstTariff = tariffService.getAllTariff().stream().filter(t -> t.getCategory().equals(subscription.getCategories()) && t.getPeriod().equals(subscription.getSubscriptionPeriod()) && t.getType().equals(subscription.getSubscriptionType()))
+            Optional<Tariff> firstTariff = tariffService.getAllTariff().stream().filter(t -> t.getTariffPK().getIdCategory().equals(subscription.getCategories().getIdCategory()) && t.getTariffPK().getIdPeriod().equals(subscription.getSubscriptionPeriod().getId()) && t.getTariffPK().getIdType().equals(subscription.getSubscriptionType().getIdType()))
                     .findFirst();
             if (firstTariff.isPresent()) {
                 Tariff tariff = firstTariff.get();
@@ -179,7 +179,27 @@ public class SubscriptionController {
     @GetMapping(value = "user/summary/{subscription}")
     public String getSummary(@PathVariable("subscription") Long id, Model model) {
 
+        Map<String, ContactPerson> listMap = new HashMap<>();
+        List<StudentRelation> relationList = new ArrayList<>();
         Subscription subscription = subscriptionService.findById(id);
+
+        List<StudentRelation> studentRelationList = studentRelationService.getAllStudentRelation();
+        for (StudentRelation studentRelation : studentRelationList) {
+            if (studentRelation.getStudentRelationPK().getIdStudent().equals(subscription.getStudent().getIdStudent())) {
+                relationList.add(studentRelation);
+                listMap.put(studentRelation.getRelationship(), contactPersonService.findById(studentRelation.getStudentRelationPK().getIdContactPerson()));
+            }
+        }
+
+        if (relationList.isEmpty()) {
+            if (subscription.getCategories().getAge() < 18) {
+                model.addAttribute("messageError", "Vous achetez un abonnement pour un mineur, veuillez ajouter une personne de contact SVP.");
+                model.addAttribute("student", subscription.getStudent());
+                model.addAttribute("subscription", subscription);
+                model.addAttribute("contactPersonList", listMap);
+                return "user/contactPersonList";
+            }
+        }
 
         model.addAttribute("subscription", subscription);
         model.addAttribute("subscriptions", subscriptionService.getCart());
@@ -204,7 +224,7 @@ public class SubscriptionController {
         Student student = subscription.getStudent();
         List<StudentRelation> studentRelations = studentRelationService.getAllStudentRelation();
         for (StudentRelation studentRelation : studentRelations) {
-            if (studentRelation.getStudent().equals(student)) {
+            if (studentRelation.getStudentRelationPK().getIdStudent().equals(student.getIdStudent())) {
                 studentRelationService.delete(studentRelation);
             }
         }
@@ -333,26 +353,4 @@ public class SubscriptionController {
         }
 
     }
-//    @PostMapping(value = "/renewSubscription/{subscription}")
-//    public String addRenewSubscription(@PathVariable("subscription") Long id, School school, Model model) {
-//        try {
-//            Date date = new Date();
-//           Subscription subscription = subscriptionService.findById(id);
-//            subscription.setSchool(schoolService.findById(school.getIdSchool()));
-//            subscription.setValidation(false);
-//
-//
-//            subscriptionService.save(subscription);
-//
-//            model.addAttribute("subscription", subscription);
-//            model.addAttribute("subscriptions", subscriptionService.getCart());
-//            String url = "/user/addSubscriptionPart2/" + subscription.getIdSubscription();
-//
-//            return "redirect:" + url;
-//        } catch (Exception e) {
-//            model.addAttribute("messageError", "erreur, veuillez essayer");
-//            model.addAttribute("subscriptions", subscriptionService.getCart());
-//            return "redirect:/subscription";
-//        }
-//    }
 }

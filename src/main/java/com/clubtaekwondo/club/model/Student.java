@@ -3,12 +3,13 @@ package com.clubtaekwondo.club.model;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
 @Entity
 @Table(name = "eleve")
-public class Student {
+public class Student implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,10 +37,8 @@ public class Student {
     @JoinColumn(name = "id_adresse")
     private Address address;
 
-    @OneToMany(mappedBy = "student")
-    private Set<StudentRelation> person;
 
-    public Student(Long idStudent, String name, String firstName, Date birthDay, Integer gsm, String email, String nationalRegistry, Address address, Set<StudentRelation> person) {
+    public Student(Long idStudent, String name, String firstName, Date birthDay, Integer gsm, String email, String nationalRegistry, Address address) {
         this.idStudent = idStudent;
         this.name = name;
         this.firstName = firstName;
@@ -48,15 +47,10 @@ public class Student {
         this.email = email;
         this.nationalRegistry = nationalRegistry;
         this.address = address;
-        this.person = person;
     }
 
     public Student() {
 
-    }
-
-    public Student(Set<StudentRelation> person) {
-        this.person = person;
     }
 
     public Long getIdStudent() {
@@ -113,14 +107,6 @@ public class Student {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public Set<StudentRelation> getPerson() {
-        return person;
-    }
-
-    public void setPerson(Set<StudentRelation> person) {
-        this.person = person;
     }
 
     public String getNationalRegistry() {

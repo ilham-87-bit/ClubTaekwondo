@@ -21,15 +21,12 @@ public class SubscriptionPeriod {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "period")
-    private Set<Tariff> tariffs;
 
-    public SubscriptionPeriod(Long id, String period, Integer nbrMonth, String description, Set<Tariff> tariffs) {
+    public SubscriptionPeriod(Long id, String period, Integer nbrMonth, String description) {
         this.id = id;
         this.period = period;
         this.nbrMonth = nbrMonth;
         this.description = description;
-        this.tariffs = tariffs;
     }
 
     public SubscriptionPeriod() {
@@ -58,14 +55,6 @@ public class SubscriptionPeriod {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Set<Tariff> getTariffs() {
-        return tariffs;
-    }
-
-    public void setTariffs(Set<Tariff> tariffs) {
-        this.tariffs = tariffs;
     }
 
     public Integer getNbrMonth() {

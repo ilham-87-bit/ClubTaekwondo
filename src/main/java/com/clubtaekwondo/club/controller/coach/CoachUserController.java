@@ -2,6 +2,7 @@ package com.clubtaekwondo.club.controller.coach;
 
 import com.clubtaekwondo.club.model.*;
 import com.clubtaekwondo.club.service.SubscriptionService;
+import com.clubtaekwondo.club.service.TimeTableService;
 import jdk.internal.dynalink.linker.LinkerServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,8 @@ public class CoachUserController {
 
     @Autowired
     private SubscriptionService subscriptionService;
+    @Autowired
+    private TimeTableService timeTableService;
 
     @GetMapping(value = "/studentList")
     public String getStudentsList(Model model) {
@@ -48,5 +51,26 @@ public class CoachUserController {
         model.addAttribute("subscriptionStudentList", subscriptionStudentList);
 
         return "coach/studentList";
+    }
+
+    @GetMapping(value = "/myTime")
+    public String getTimeCoach(Model model) {
+
+        List<TimeTable> timeTablesCoach = new ArrayList<>();
+        List<TimeTable> timeTableList = timeTableService.getAllTimeTable();
+        Object authentication = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (authentication instanceof Coach) {
+
+            Coach coach = (Coach) authentication;
+
+            for (TimeTable timeTable : timeTableList) {
+                if (timeTable.getCo().getId().equals(coach.getId())) {
+                    timeTablesCoach.add(timeTable);
+                }
+            }
+        }
+        model.addAttribute("timeList", timeTablesCoach);
+
+        return "coach/myTime";
     }
 }

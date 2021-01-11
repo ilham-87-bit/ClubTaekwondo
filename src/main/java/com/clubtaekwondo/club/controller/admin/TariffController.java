@@ -30,6 +30,9 @@ public class TariffController {
     public String tariffList(Model model) {
 
         model.addAttribute("tarifList", tariffService.getAllTariff());
+        model.addAttribute("periodList", subscriptionPeriodService.getAllPeriod());
+        model.addAttribute("typeList", subscriptionTypeService.getAllSubscriptionType());
+        model.addAttribute("categoryList", categoriesService.getAllCategory());
 
         return ("adminPart/tarif/tarifList");
     }
@@ -52,7 +55,7 @@ public class TariffController {
         SubscriptionPeriod period = subscriptionPeriodService.findById(subscriptionPeriod.getId());
         SubscriptionType type = subscriptionTypeService.findById(subscriptionType.getIdType());
 
-        Optional<Tariff> firstTariff = tariffService.getAllTariff().stream().filter(t -> t.getCategory().getIdCategory().equals(cat.getIdCategory()) && t.getPeriod().getId().equals(period.getId()) && t.getType().getIdType().equals(type.getIdType())).findFirst();
+        Optional<Tariff> firstTariff = tariffService.getAllTariff().stream().filter(t -> t.getTariffPK().getIdCategory().equals(cat.getIdCategory()) && t.getTariffPK().getIdPeriod().equals(period.getId()) && t.getTariffPK().getIdType().equals(type.getIdType())).findFirst();
         if (firstTariff.isPresent()) {
             model.addAttribute(TARIF, new Tariff());
             model.addAttribute("periodList", subscriptionPeriodService.getAllPeriod());
@@ -61,15 +64,19 @@ public class TariffController {
             model.addAttribute("messageError", "Ce tarif avec ces caractéristiques existe déjà.");
             return ("adminPart/tarif/addTarif");
         } else {
-            return getTariff(tariff, cat, period, type, model);
+            return getTariff(tariff, categories.getIdCategory(), subscriptionPeriod.getId(), subscriptionType.getIdType(), model);
         }
 
     }
 
-    @GetMapping(value = "/delete/{tarif}")
-    public String deleteTariff(@PathVariable("tarif") Long id, Model model) {
+    @GetMapping(value = "/delete/{category}/{period}/{type}")
+    public String deleteTariff(@PathVariable("category") Long idCategory, @PathVariable("period") Long idPeriod, @PathVariable("type") Long idType, Model model) {
 
-        Tariff tariff = tariffService.getTariffById(id);
+        TariffPK tariffPK = new TariffPK();
+        tariffPK.setIdType(idType);
+        tariffPK.setIdPeriod(idPeriod);
+        tariffPK.setIdCategory(idCategory);
+        Tariff tariff = tariffService.getOneTariff(tariffPK);
         tariffService.delete(tariff);
 
         model.addAttribute("tarifList", tariffService.getAllTariff());
@@ -77,10 +84,14 @@ public class TariffController {
         return "redirect:/admin/tarif/tarifList";
     }
 
-    @GetMapping(value = "/edit/{tarif}")
-    public String timeDetails(@PathVariable("tarif") Long id, Model model) {
+    @GetMapping(value = "/edit/{category}/{period}/{type}")
+    public String timeDetails(@PathVariable("category") Long idCategory, @PathVariable("period") Long idPeriod, @PathVariable("type") Long idType, Model model) {
 
-        Tariff tariff = tariffService.getTariffById(id);
+        TariffPK tariffPK = new TariffPK();
+        tariffPK.setIdType(idType);
+        tariffPK.setIdPeriod(idPeriod);
+        tariffPK.setIdCategory(idCategory);
+        Tariff tariff = tariffService.getOneTariff(tariffPK);
 
         model.addAttribute(TARIF, tariff);
         model.addAttribute("periodList", subscriptionPeriodService.getAllPeriod());
@@ -98,7 +109,7 @@ public class TariffController {
         SubscriptionPeriod period = subscriptionPeriodService.findById(subscriptionPeriod.getId());
         SubscriptionType type = subscriptionTypeService.findById(subscriptionType.getIdType());
 
-        Optional<Tariff> firstTariff = tariffService.getAllTariff().stream().filter(t -> t.getCategory().getIdCategory().equals(cat.getIdCategory()) && t.getPeriod().getId().equals(period.getId()) && t.getType().getIdType().equals(type.getIdType())).findFirst();
+        Optional<Tariff> firstTariff = tariffService.getAllTariff().stream().filter(t -> t.getTariffPK().getIdCategory().equals(categories.getIdCategory()) && t.getTariffPK().getIdPeriod().equals(subscriptionPeriod.getId()) && t.getTariffPK().getIdType().equals(subscriptionType.getIdType())).findFirst();
         if (firstTariff.isPresent()) {
             model.addAttribute(TARIF, tariff);
             model.addAttribute("periodList", subscriptionPeriodService.getAllPeriod());
@@ -107,25 +118,18 @@ public class TariffController {
             model.addAttribute("messageError", "Ce tarif avec ces caractéristiques existe déjà.");
             return ("adminPart/tarif/addTarif");
         } else {
-            return getTariff(tariff, cat, period, type, model);
+            return getTariff(tariff, categories.getIdCategory(), subscriptionPeriod.getId(), subscriptionType.getIdType(), model);
         }
     }
 
-    private String getTariff(Tariff tariff, Categories categories, SubscriptionPeriod subscriptionPeriod, SubscriptionType subscriptionType, Model model) {
-        tariff.setCategory(categories);
-        tariff.setPeriod(subscriptionPeriod);
-        tariff.setType(subscriptionType);
+    private String getTariff(Tariff tariff, Long idCategory, Long idPeriod, Long idType, Model model) {
+        TariffPK tariffPK = new TariffPK();
+        tariffPK.setIdCategory(idCategory);
+        tariffPK.setIdPeriod(idPeriod);
+        tariffPK.setIdType(idType);
+        tariff.setTariffPK(tariffPK);
 
         tariffService.save(tariff);
-
-        Categories cat = categoriesService.findById(categories.getIdCategory());
-        cat.getTariffs().add(tariff);
-
-        SubscriptionType subsType = subscriptionTypeService.findById(subscriptionType.getIdType());
-        subsType.getTariffs().add(tariff);
-
-        SubscriptionPeriod subsPeriod = subscriptionPeriodService.findById(subscriptionPeriod.getId());
-        subsPeriod.getTariffs().add(tariff);
 
         model.addAttribute(TARIF, tariff);
         model.addAttribute("periodList", subscriptionPeriodService.getAllPeriod());

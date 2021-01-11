@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head">
+</head>
+<body>
+<header th:replace="header">
+</header>
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid">
+            <div class="card-body">
+                <th:block th:with="hasTime=${!#lists.isEmpty(timeList)}">
+                    <th:block th:if="!${#lists.isEmpty(timeList)}">
+                        <div class="card-body card-border">
+                            <table id="schoolTable"
+                                   class="table table-fixed table-striped"
+                                   th:classappend="${hasTime} ? 'table-hover'">
+                                <thead>
+                                <tr>
+                                    <th class="text-center cell--twenty">
+                                        <span> Catégorie </span>
+                                    </th>
+                                    <th class="text-center cell--twenty">
+                                        <span> Jour </span>
+                                    </th>
+                                    <th class="text-center cell--twenty">
+                                        <span> Horaire </span>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody class="list" id="timeList">
+                                <th:block th:if="${hasTime}">
+                                    <tr th:each="time, row : ${timeList}" class="js-row-link-alt">
+                                        <td align="center" class="py-4">
+                                            <span th:text="${time?.c?.categoryName}"></span>
+                                        </td>
+                                        <td align="center" class="py-4">
+                                            <span th:text="${time?.day?.day}"></span>
+                                        </td>
+                                        <td align="center" class="py-4">
+                                            <span th:text="${time?.startTime} + ' - '+ ${time?.endTime}"></span>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </th:block>
+                </th:block>
+            </div>
+        </div>
+    </main>
+</div>
+<footer th:replace="footer">
+</footer>
+
+</body>
+</html>

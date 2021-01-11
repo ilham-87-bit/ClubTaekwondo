@@ -6,17 +6,14 @@ import com.clubtaekwondo.club.service.StudentRelationService;
 import com.clubtaekwondo.club.service.StudentService;
 import com.clubtaekwondo.club.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+
 import java.util.List;
 
-import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 
 @Controller
@@ -36,31 +33,29 @@ public class CartController {
     public String home(Model model, HttpServletRequest req) {
         List<Subscription> subscriptions = subscriptionService.getCart();
         float total = totalAmount(subscriptions);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("subscriptions", subscriptions);
         model.addAttribute("total", total);
 
         Payment payment = paymentService.createNewPayment(subscriptions);
         String url = "https://serviweb.ca/projet/transaction.php?id=" + payment.getCode() + "&prix=10.00";
-//        String url = "https://esqa.moneris.com/HPPDP/index.php?id=" + payment.getCode() + "&prix=10.00&ps_store_id=" + user.getId();
 
         model.addAttribute("paymentUrl", url);
         model.addAttribute("payment", payment);
-        model.addAttribute("auth", auth);
         return ("user/cart");
     }
 
     @GetMapping(value = "/transaction/{payment}")
-    private String getTransaction(@PathVariable("payment") Long id, Model model, HttpServletRequest request) {
+    private String getTransaction(@PathVariable("payment") Long id, Model model) {
 
+        User user = new User();
         Payment payment = paymentService.findById(id);
-        User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        HttpSession session = request.getSession(true);
-//        session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, auth);
+        for (Subscription subscription : payment.getSubscriptionList()) {
+            user = subscription.getUser();
+        }
+        String cust = "client : " + new Long(user.getId()).toString();
 
         model.addAttribute("payment", payment);
-        model.addAttribute("auth", auth);
+        model.addAttribute("cust", cust);
 
         return "user/transaction";
     }
@@ -72,7 +67,7 @@ public class CartController {
         Student student = subscription.getStudent();
         List<StudentRelation> studentRelations = studentRelationService.getAllStudentRelation();
         for (StudentRelation studentRelation : studentRelations) {
-            if (studentRelation.getStudent().equals(student)) {
+            if (studentRelation.getStudentRelationPK().getIdStudent().equals(student.getIdStudent())) {
                 studentRelationService.delete(studentRelation);
             }
         }

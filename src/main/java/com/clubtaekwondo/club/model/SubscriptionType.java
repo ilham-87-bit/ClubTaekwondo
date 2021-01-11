@@ -16,17 +16,14 @@ public class SubscriptionType {
 
     private String description;
 
-    @OneToMany(mappedBy = "type")
-    private Set<Tariff> tariffs;
 
     @OneToMany(mappedBy = "subscriptionType")
     private Set<TimeTable> timeTables;
 
-    public SubscriptionType(Long idType, Integer nbrHours, String description, Set<Tariff> tariffs, Set<TimeTable> timeTables) {
+    public SubscriptionType(Long idType, Integer nbrHours, String description, Set<TimeTable> timeTables) {
         this.idType = idType;
         this.nbrHours = nbrHours;
         this.description = description;
-        this.tariffs = tariffs;
         this.timeTables = timeTables;
     }
 
@@ -48,14 +45,6 @@ public class SubscriptionType {
 
     public void setNbrHours(Integer nbrHours) {
         this.nbrHours = nbrHours;
-    }
-
-    public Set<Tariff> getTariffs() {
-        return tariffs;
-    }
-
-    public void setTariffs(Set<Tariff> tariffs) {
-        this.tariffs = tariffs;
     }
 
     public String getDescription() {

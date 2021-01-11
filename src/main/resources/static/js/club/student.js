@@ -9,7 +9,7 @@ $(document).ready(function () {
 // }
 function inputDate() {
     $('#birthDay').datepicker({
-        endDate: new Date(),
+        maxDate: new Date(),
         clearBtn: true,
         format: "dd/mm/yyyy",
         todayHighlight: true

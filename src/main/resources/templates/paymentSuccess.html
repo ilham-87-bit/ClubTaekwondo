@@ -10,15 +10,29 @@
         <main>
             <th:block>
                 <div>
-                    <img th:src="@{/images/taekwondo.jpg}" class="img-card">
+                    <img th:src="@{/images/merci.jpg}" class="img-card">
                 </div>
             </th:block>
             <th:block>
-                <div class="card-body"><h1> MERCI </h1>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 pt-5">
+                        <div class="card shadow-lg border-0 rounded-lg mt-5 py-5">
+                            <div class="card-header"><h1 class="text-center font-weight-light my-4"> MERCI </h1></div>
+                            <div class="card-body text-center py-xl-5">
+                                <div class="row justify-content-center">
+                                    <label class="control-label html-editor-bold text-center"> Nous vous remercions pour
+                                        votre confiance. Vous pouvez consulter vos abonnements avec les horaires en tous
+                                        moments dans la rubrique "mes abonnements" </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </th:block>
         </main>
     </div>
 </div>
+<footer th:replace="footer">
+</footer>
 </body>
 </html>

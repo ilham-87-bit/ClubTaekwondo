@@ -123,14 +123,6 @@ public class CoachController {
             finalCoach.setCategoriesList(categoryList);
             finalCoach = coachService.saveCoach(finalCoach);
 
-//            for (Categories categories : categoriesList) {
-//                CategoryByCoach categoryByCoach = new CategoryByCoach();
-//                categoryByCoach.setCoach(finalCoach);
-//                categoryByCoach.setCategories(categories);
-//                categoryByCoachService.save(categoryByCoach);
-//                listAdd.add(categoryByCoach.getCategories());
-//            }
-
             model.addAttribute(COACH, finalCoach);
             model.addAttribute(ADDRESS, finalCoach.getAddress());
             model.addAttribute("cityList", cityService.getAllCity());
@@ -158,13 +150,6 @@ public class CoachController {
         Role role = Role.COACH;
         coach = (Coach) userService.save(coach, role);
 
-//        for (Categories categories : categoriesList) {
-//            CategoryByCoach categoryByCoach = new CategoryByCoach();
-//            categoryByCoach.setCoach(coach);
-//            categoryByCoach.setCategories(categories);
-//            categoryByCoachService.save(categoryByCoach);
-//            listAdd.add(categoryByCoach.getCategories());
-//        }
         Token token = new Token();
         String tokenString = LoginController.generateNewToken();
         // create a new Token in the database
@@ -173,8 +158,6 @@ public class CoachController {
         token.setUser(coach);
         token.setType(TokenType.NEW_ACCOUNT);
         token = tokenService.save(token);
-//        String s = MvcUriComponentsBuilder.fromMethodName(CoachController.class,
-//                "activateCoach", token.getToken(), coach.getEmail(), null, null).build().toString();
         String co = MvcUriComponentsBuilder.fromMethodName(LoginController.class,
                 "choosePassword", token.getToken(), coach.getEmail(), null).build().toString();
         SimpleMailMessage mailMessage = mailConstructor.constructResetTokenEmail(co, coach);
@@ -199,13 +182,6 @@ public class CoachController {
         User user = userService.findByLogin(coach.getEmail());
         user.setUserRole(userRoleService.findByRole(Role.USER));
 
-//        List<CategoryByCoach> categoryByCoachList = categoryByCoachService.getAllCategoryByCoach();
-//        for (CategoryByCoach categoryByCoach : categoryByCoachList) {
-//            if (categoryByCoach.getCoach().getId().equals(coach.getId())) {
-//                categoryByCoachService.delete(categoryByCoach);
-//            }
-//        }
-//        coachService.deleteCoach(coach);
         List<Coach> coachList = coachService.getAllCoach().stream().filter(coach1 -> Role.COACH.equals(coach1.getUserRole())).collect(Collectors.toList());
         model.addAttribute("coachList", coachList);
 
@@ -218,21 +194,13 @@ public class CoachController {
         List<Categories> list = new ArrayList<>();
         Coach coach = (Coach) coachService.findById(id);
 
-//        List<CategoryByCoach> categoryByCoachList = categoryByCoachService.getAllCategoryByCoach();
-//        for (CategoryByCoach categoryByCoach : categoryByCoachList) {
-//            if (categoryByCoach.getCoach().getId().equals(coach.getId())) {
-//                list.add(categoryByCoach.getCategories());
-//            }
-//        }
-//        List<CategoryBySchool> categoryBySchoolList = categoryBySchoolService.getAllCategoryBySchool();
-
         model.addAttribute(COACH, coach);
         model.addAttribute(ADDRESS, coach.getAddress());
         model.addAttribute("schoolList", schoolService.getAllSchool());
         model.addAttribute("listCat", coach.getCategoriesList());
         model.addAttribute("cityList", cityService.getAllCity());
         model.addAttribute("categoryList", categoriesService.getAllCategory());
-//        model.addAttribute("parameters", categoryBySchoolList);
+
 
         return "adminPart/coach/addCoach";
     }
@@ -247,19 +215,7 @@ public class CoachController {
         School s = schoolService.findById(school.getIdSchool());
         coach.setSchool(s);
         addressService.save(coach.getAddress());
-//        List<CategoryByCoach> categoryByCoachList = categoryByCoachService.getAllCategoryByCoach();
-//        for (CategoryByCoach categoryByCoach : categoryByCoachList) {
-//            if (categoryByCoach.getCoach().getId() == coach.getId()) {
-//                categoryByCoachService.delete(categoryByCoach);
-//            }
-//        }
-//        for (Categories categories : categoriesList) {
-//            CategoryByCoach categoryByCoach = new CategoryByCoach();
-//            categoryByCoach.setCoach(coach);
-//            categoryByCoach.setCategories(categories);
-//            categoryByCoachService.save(categoryByCoach);
-//            listCat.add(categoryByCoach.getCategories());
-//        }
+
         coach.setCategoriesList(categoryList);
         coachService.saveCoach(coach);
 

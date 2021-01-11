@@ -16,9 +16,6 @@ public class Coach extends User {
     @JoinColumn(name = "id_adresse")
     private Address address;
 
-//    @OneToMany(mappedBy = "coach")
-//    private Set<CategoryByCoach> categoryByCoaches;
-
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name = "donner",
             joinColumns = {@JoinColumn(name = "id_entraineur")},

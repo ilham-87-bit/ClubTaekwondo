@@ -1,11 +1,12 @@
 package com.clubtaekwondo.club.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "personne_contact")
-public class ContactPerson {
+public class ContactPerson implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,25 +25,19 @@ public class ContactPerson {
     @Column(name = "email")
     private String email;
 
-    @OneToMany(mappedBy = "contactPerson")
-    private Set<StudentRelation> persons;
 
-    public ContactPerson(Long idPerson, String personName, String personFirstName, Integer gsm, String email, Set<StudentRelation> persons) {
+    public ContactPerson(Long idPerson, String personName, String personFirstName, Integer gsm, String email) {
         this.idPerson = idPerson;
         this.personName = personName;
         this.personFirstName = personFirstName;
         this.gsm = gsm;
         this.email = email;
-        this.persons = persons;
     }
 
     public ContactPerson() {
 
     }
 
-    public ContactPerson(Set<StudentRelation> persons) {
-        this.persons = persons;
-    }
 
     public Long getIdPerson() {
         return idPerson;
@@ -76,14 +71,6 @@ public class ContactPerson {
         this.gsm = gsm;
     }
 
-    public Set<StudentRelation> getPersons() {
-
-        return persons;
-    }
-
-    public void setPersons(Set<StudentRelation> persons) {
-        this.persons = persons;
-    }
 
     public String getEmail() {
         return email;

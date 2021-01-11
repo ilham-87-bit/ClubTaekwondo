@@ -22,19 +22,16 @@
                                 <label class="title control-label"> Lien de parenté : </label>
                                 <div class="col-3">
                                     <input id="father" name="relationship" type="radio" class="with-font required"
-                                           th:checked="${T(com.clubtaekwondo.club.model.RelationType).FATHER == studentRelation.relationship} ? 'checked'"
                                            th:value="${T(com.clubtaekwondo.club.model.RelationType).FATHER}">
                                     <label for="father"> Pére </label>
                                 </div>
                                 <div class="col-3">
                                     <input id="mother" name="relationship" type="radio" class="with-font required"
-                                           th:checked="${T(com.clubtaekwondo.club.model.RelationType).MOTHER == studentRelation.relationship} ? 'checked'"
                                            th:value="${T(com.clubtaekwondo.club.model.RelationType).MOTHER}">
                                     <label for="mother"> Mére </label>
                                 </div>
                                 <div class="col-3">
                                     <input id="others" name="relationship" type="radio" class="with-font required"
-                                           th:checked="${T(com.clubtaekwondo.club.model.RelationType).OTHERS == studentRelation.relationship} ? 'checked'"
                                            th:value="${T(com.clubtaekwondo.club.model.RelationType).OTHERS}">
                                     <label for="mother"> Autre </label>
                                 </div>
@@ -45,14 +42,14 @@
                                         <label class="control-label mb-1" for="firstName">Prénom :</label>
                                         <input class="form-control" id="firstName" type="text" required
                                                name="personFirstName"
-                                               th:value="${contactPerson.personFirstName}"/>
+                                               th:value="${contactPerson?.personFirstName}"/>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group required">
                                         <label class="control-label mb-1" for="name">Nom :</label>
                                         <input class="form-control" id="name" type="text" required name="personName"
-                                               th:value="${contactPerson.personName}"/>
+                                               th:value="${contactPerson?.personName}"/>
                                     </div>
                                 </div>
                             </div>
@@ -62,22 +59,18 @@
                                         <label class="control-label" for="inputEmailAddress">Email :</label>
                                         <input class="form-control" id="inputEmailAddress" type="email" required
                                                name="email"
-                                               th:value="${contactPerson.email}" aria-describedby="emailHelp"/>
+                                               th:value="${contactPerson?.email}" aria-describedby="emailHelp"/>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label" for="gsm"> GSM :</label>
                                         <input class="form-control" id="gsm" type="text" name="gsm"
-                                               th:value="${contactPerson.gsm}"/>
+                                               th:value="${contactPerson?.gsm}"/>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <!--                                <div class="row align-items-start justify-content-start">-->
-                                <!--                                    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#popup">Ajouter une autre personne</button>-->
-                                <!--                                    <th:block th:replace="user/addOtherPersonContact"></th:block>-->
-                                <!--                                </div>-->
                                 <div class="row align-items-end justify-content-end">
                                     <div class="col-auto">
                                         <a th:href="@{(${'/addStudent/' + subscription.idSubscription})}"

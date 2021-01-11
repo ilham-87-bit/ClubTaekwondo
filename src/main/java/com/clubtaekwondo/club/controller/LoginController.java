@@ -59,7 +59,6 @@ public class LoginController {
     private AuthenticationManager authenticationManager;
 
     public final String MAIL_ADMIN = "clubtaekwondo.asbl@gmail.com";
-//    Map<String,String> map = new HashMap<>();
 
     @ModelAttribute("user")
     public User newUser() {
@@ -134,8 +133,6 @@ public class LoginController {
             Role role = user.getEmail().equals(MAIL_ADMIN) ? Role.ADMIN : Role.USER;
             user = userService.save(user, role);
 
-//            map.put(user.getEmail(), password);
-
             String tokenString = generateNewToken();
             // create a new Token in the database
 
@@ -143,7 +140,6 @@ public class LoginController {
             token.setUser(user);
             token.setType(TokenType.NEW_ACCOUNT);
             token = tokenService.save(token);
-//            String s = urlFromMethod(token.getToken(), user.getEmail(), "activate");
             String s = MvcUriComponentsBuilder.fromMethodName(LoginController.class,
                     "activate", token.getToken(), user.getEmail(), null, null).build().toString();
             SimpleMailMessage mailMessage = mailConstructor.constructResetTokenEmail(s, user);
@@ -261,9 +257,7 @@ public class LoginController {
             if (first.isPresent()) {
                 user.setActive(true);
                 userService.save(user);
-//                if(map.containsKey(user.getEmail())){
-//                    pass = map.get(user.getEmail());
-//                }
+
                 UsernamePasswordAuthenticationToken authReq
                         = new UsernamePasswordAuthenticationToken(user.getUsername(), first.get().getPass());
                 Authentication auth = authenticationManager.authenticate(authReq);

@@ -17,13 +17,6 @@
                                        th:classappend="${hasCategory} ? 'table-hover'">
                                     <thead>
                                     <tr>
-                                        <!--                                        <th class="cell&#45;&#45;five">-->
-                                        <!--                                            <input id="checkboxAll" type="checkbox"-->
-                                        <!--                                                   class="js-select-all checkboxAll with-font" name="check"-->
-                                        <!--                                                   data-substitute="deleteCategory"/>-->
-                                        <!--                                            <label for="checkboxAll"></label>-->
-                                        <!--                                        </th>-->
-                                        <!--                                        <th class="cell&#45;&#45;five"></th>-->
                                         <th class="cell--seven">
                                             <span> Catégorie </span>
                                         </th>
@@ -36,16 +29,6 @@
                                     <tbody class="list" id="categoryList">
                                     <th:block th:if="${hasCategory}">
                                         <tr th:each="category, row : ${categoryList}" class="js-row-link-alt">
-                                            <!--                                            <td class="js-no-link">-->
-                                            <!--                                                <input type="checkbox" th:id="${'checkbox' + row.index}"-->
-                                            <!--                                                       name="categoriesList[]" th:value="${'/'+ category?.id}"-->
-                                            <!--                                                       class="checkboxGroup with-font"/>-->
-                                            <!--                                                <label th:for="${'checkbox' + row.index}"></label>-->
-                                            <!--                                            </td>-->
-                                            <!--                                            <td>-->
-                                            <!--                                                <a th:href="${'/'+ category?.id}"-->
-                                            <!--                                                   class="js-row-target"></a>-->
-                                            <!--                                            </td>-->
                                             <td>
                                                 <span th:text="${category?.categoryName}"></span>
                                             </td>
@@ -92,23 +75,13 @@
                             <h5 class="align-content-center text-center">La liste des catégories est vide </h5>
                         </th:block>
                         <div class="row align-items-end justify-content-end">
-                            <!--                            <div th:if="!${#lists.isEmpty(categoryList)}">-->
-                            <!--                                <button id="deleteCategory" class="fa fa-trash"-->
-                            <!--                                        data-target="#categoryForm"> Supprimer-->
-                            <!--                                </button>-->
-                            <!--                            </div>-->
                             <a th:href="@{/admin/category/addCategory}" type="button" class="btn btn-dark"> Ajouter </a>
                         </div>
                     </form>
                 </th:block>
-                <!--                <th:block th:with="isOneCategory=${false}">-->
-                <!--                    <th:block th:replace="deleteCategoryConfirmation"></th:block>-->
-                <!--                </th:block>-->
             </div>
         </div>
     </main>
-    <!--    <span id="js-template-global" th:attr="data-delete-category-url=@{/admin/category/delete}"></span>-->
-    <!--    <script type="text/javascript" th:src="@{/js/club/category.js}"></script>-->
 </div>
 <div class="footer-admin">
     <footer th:replace="footerAdmin"></footer>

@@ -72,8 +72,4 @@ public class MailConstructor {
         return email;
     }
 
-    /*public MailConstructor(Environment env) {
-        this.env = env;
-    }*/
-
 }
