@@ -8,12 +8,12 @@
 <main>
     <div class="container-body">
         <div class="card-body">
-            <th:block th:with="hasMySubscription=${!#lists.isEmpty(infoList)}">
-                <th:block th:if="!${#lists.isEmpty(infoList)}">
+            <th:block th:with="hasMySubscription=${!#lists.isEmpty(list)}">
+                <th:block th:if="!${#lists.isEmpty(list)}">
                     <div class="card-body card-border">
                         <table id="subscriptionListTable"
                                class="table table-fixed table-striped"
-                               th:classappend="${infoList} ? 'table-hover'">
+                               th:classappend="${list} ? 'table-hover'">
                             <thead>
                             <tr>
                                 <th class="text-center cell--twenty">
@@ -23,7 +23,7 @@
                                     <span> Catégorie </span>
                                 </th>
                                 <th class="text-center cell--twenty">
-                                    Horaire
+                                    Périod d'abonnement
                                 </th>
                                 <th class="text-center cell--twenty">
                                 </th>
@@ -33,46 +33,51 @@
                             </thead>
                             <tbody class="list" id="studentList">
                             <th:block th:if="${hasMySubscription}">
-                                <tr th:each="p, row : ${infoList}" class="js-row-link-alt">
+                                <tr th:each="l, row : ${list}" class="js-row-link-alt">
                                     <td align="center">
                                         <span class="my-4 text-uppercase"
-                                              th:text="${p?.key.student?.firstName} + ' ' + ${p?.key.student?.name}"></span>
+                                              th:text="${l?.student?.firstName} + ' ' + ${l?.student?.name}"></span>
                                     </td>
                                     <td align="center">
                                             <span class="my-4 text-uppercase"
-                                                  th:text="${p?.key.categories?.categoryName}"></span>
+                                                  th:text="${l?.categories?.categoryName}"></span>
+                                    </td>
+                                    <!--                                    <td align="center">-->
+                                    <!--                                        <table id="timeTable"-->
+                                    <!--                                               class="table table-fixed table-striped">-->
+                                    <!--                                            <thead>-->
+                                    <!--                                            <tr>-->
+                                    <!--                                                <th class="text-center cell&#45;&#45;twenty">-->
+                                    <!--                                                    <span> Jour </span>-->
+                                    <!--                                                </th>-->
+                                    <!--                                                <th class="text-center cell&#45;&#45;twenty">-->
+                                    <!--                                                    <span> Horaire </span>-->
+                                    <!--                                                </th>-->
+                                    <!--                                            </tr>-->
+                                    <!--                                            </thead>-->
+                                    <!--                                            <tbody class="list" id="timeBySchool">-->
+                                    <!--                                            <tr th:each="t, row : ${p?.value}" class="js-row-link-alt">-->
+                                    <!--                                                <td align="center" class="py-2">-->
+                                    <!--                                                    <span th:text="${t?.day?.day}"></span>-->
+                                    <!--                                                </td>-->
+                                    <!--                                                <td align="center" class="py-2">-->
+                                    <!--                                                    <span th:text="${t?.startTime} + ' - '+ ${t?.endTime}"></span>-->
+                                    <!--                                                </td>-->
+                                    <!--                                            </tr>-->
+                                    <!--                                            </tbody>-->
+                                    <!--                                        </table>-->
+                                    <!--                                    </td>-->
+                                    <td align="center">
+                                        <span th:text="${T(com.clubtaekwondo.club.controller.user.StudentController).formatDate(l?.startDate)} + '  -   ' + ${T(com.clubtaekwondo.club.controller.user.StudentController).formatDate(l?.endDate)}"></span>
                                     </td>
                                     <td align="center">
-                                        <table id="timeTable"
-                                               class="table table-fixed table-striped">
-                                            <thead>
-                                            <tr>
-                                                <th class="text-center cell--twenty">
-                                                    <span> Jour </span>
-                                                </th>
-                                                <th class="text-center cell--twenty">
-                                                    <span> Horaire </span>
-                                                </th>
-                                            </tr>
-                                            </thead>
-                                            <tbody class="list" id="timeBySchool">
-                                            <tr th:each="t, row : ${p?.value}" class="js-row-link-alt">
-                                                <td align="center" class="py-2">
-                                                    <span th:text="${t?.day?.day}"></span>
-                                                </td>
-                                                <td align="center" class="py-2">
-                                                    <span th:text="${t?.startTime} + ' - '+ ${t?.endTime}"></span>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td align="center">
-                                        <span th:text="${T(com.clubtaekwondo.club.controller.user.StudentController).formatDate(p?.key.startDate)} + '  -   ' + ${T(com.clubtaekwondo.club.controller.user.StudentController).formatDate(p?.key?.endDate)}"></span>
+                                        <a th:if="${validDate}" class="btn btn-dark"
+                                           th:href="@{(${'/user/myTime/' + l.idSubscription})}">
+                                            Mes Horaires </a>
                                     </td>
                                     <td align="center">
                                         <a th:if="!${validDate}" class="btn btn-dark"
-                                           th:href="@{(${'/user/renewSubscription/' + p.key.idSubscription})}">
+                                           th:href="@{(${'/user/renewSubscription/' + l.idSubscription})}">
                                             Renouveler </a>
                                     </td>
                                 </tr>
@@ -81,14 +86,15 @@
                         </table>
                     </div>
                 </th:block>
-                <th:block th:unless="!${#lists.isEmpty(infoList)}">
+                <th:block th:unless="!${#lists.isEmpty(list)}">
                     <h5 class="align-content-center text-center">Vous n'avez pas d'abonnement </h5>
                 </th:block>
                 <form>
                     <div class="card-footer">
                         <div class="row align-items-end justify-content-end">
                             <div class="col-auto">
-                                <input id="impression" name="impression" type="button" onclick="printPage()"
+                                <input id="impression" name="impression" class="btn btn-dark" type="button"
+                                       onclick="printPage()"
                                        value="Imprimer"/>
                             </div>
                         </div>

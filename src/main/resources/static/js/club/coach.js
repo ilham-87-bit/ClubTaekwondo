@@ -34,11 +34,11 @@ function selectCategory() {
 function selectCategoryBySchool() {
 
     for (var y = 0; y < $('.categoryBySchool').length; y++) {
-        if ($('#school' + y).val() === $('#idSchool option:selected').val()) {
-            var list = $('#schoolCat' + y).attr('value').val();
-            for (var i = 0; i < list.length; i++) {
-                for (var j = 0; j < $('.rowCategory').length; j++) {
-                    if ($('#catBySchool' + i).val() === $('#checkbox' + j).val()) {
+        if ($('#school' + y).attr('value') === $('#idSchool option:selected').val()) {
+            // var list = $('#schoolCat' + y).val();
+            for (var i = 0; i <= $('.category').length; i++) {
+                for (var j = 0; j <= $('.rowCategory').length; j++) {
+                    if ($('#catBySchool' + i).attr('name') === $('#school' + y).val() && $('#catBySchool' + i).attr('value') === $('#checkbox' + j).attr('value')) {
                         $('#checkbox' + j).removeClass("hidden");
                         $('#labelCat' + j).removeClass("hidden");
                     }

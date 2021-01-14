@@ -118,15 +118,16 @@
                         <div class="col-md-6">
                             <div class="form-group required">
                                 <label class="control-label"> Catégorie :</label>
-                                <ul id="school" th:each="s, r : ${schoolList}"
-                                    class="categoryBySchool hidden">
-                                    <input type="hidden" th:id="${'school' + r.index}" th:value="${s?.idSchool}"/>
-                                    <li th:id="${'schoolCat' + r.index}" th:each="c, row : ${s?.categoriesList}"
-                                        class="js-row-link-alt hidden ">
-                                        <input type="hidden" th:id="${'catBySchool' + row.index}"
-                                               th:value="${c.idCategory}"/>
-                                    </li>
-                                </ul>
+                                <div id="school" th:each="s, r : ${schoolList}"
+                                     class="js-row-link-alt categoryBySchool">
+                                    <ul class="hidden" th:id="${'school' + r.index}" th:value="${s?.idSchool}">
+                                        <!--                                        <input type="hidden" th:id="${'school' + r.index}" th:value="${s?.idSchool}"/>-->
+                                        <li th:each="c, row : ${s?.categoriesList}" class="js-row-link-alt category">
+                                            <input type="hidden" th:id="${'catBySchool' + row.index}"
+                                                   th:value="${c.idCategory}" th:name="${s?.idSchool}"/>
+                                        </li>
+                                    </ul>
+                                </div>
                                 <div id="listCat" th:each="l, row : ${listCat}"
                                      class="js-row-link-alt listCat">
                                     <input type="hidden" th:id="${'cat' + row.index}" th:value="${l.idCategory}"/>

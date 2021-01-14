@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head">
+</head>
+<body>
+<header th:replace="header">
+</header>
+<main>
+    <div class="row justify-content-center">
+        <div class="col-lg-5 card-info">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <th:block th:with="hasMyTime=${!#lists.isEmpty(myTime)}">
+                    <th:block th:if="!${#lists.isEmpty(myTime)}">
+                        <div class="card-body card-border">
+                            <table id="subscriptionListTable"
+                                   class="table table-fixed table-striped"
+                                   th:classappend="${myTime} ? 'table-hover'">
+                                <thead>
+                                <tr>
+                                    <th class="text-center cell--twenty">
+                                        <span> Jour </span>
+                                    </th>
+                                    <th class="text-center cell--twenty">
+                                        <span> Horaire </span>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody class="list" id="myTimeList">
+                                <th:block th:if="${hasMyTime}">
+                                    <tr th:each="t, row : ${myTime}" class="js-row-link-alt">
+                                        <td align="center">
+                                        <span class="my-4 text-uppercase"
+                                              th:text="${t?.day?.day}"></span>
+                                        </td>
+                                        <td align="center">
+                                            <span th:text="${t?.startTime} + ' - '+ ${t?.endTime}"></span>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </th:block>
+                    <form>
+                        <div class="card-footer">
+                            <div class="row align-items-end justify-content-end">
+                                <div class="col-auto">
+                                    <a th:href="@{/user/mySubscription}" class="btn btn-dark"> Précédent </a>
+                                </div>
+                                <div class="col-auto">
+                                    <input id="impression" name="impression" type="button" class="btn btn-dark"
+                                           onclick="printPage()"
+                                           value="Imprimer"/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</main>
+<footer class="footer" th:replace="footer">
+</footer>
+</body>
+</html>

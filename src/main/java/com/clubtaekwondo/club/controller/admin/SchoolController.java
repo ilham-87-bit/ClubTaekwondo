@@ -131,7 +131,7 @@ public class SchoolController {
     public String editSchool(School school, City city, @RequestParam("categoryList[]") List<Categories> categoryList, Model model) {
 
         List<Categories> listCat = new ArrayList<>();
-        Optional<School> firstSchool = schoolService.getAllSchool().stream().filter(s -> s.getName().equals(school.getName())).findFirst();
+        Optional<School> firstSchool = schoolService.getAllSchool().stream().filter(s -> s.getName().equals(school.getName()) && !s.getIdSchool().equals(school.getIdSchool())).findFirst();
         if (firstSchool.isPresent()) {
             model.addAttribute(SCHOOL, school);
             model.addAttribute(ADDRESS, school.getAddress());

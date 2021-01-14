@@ -257,15 +257,13 @@ public class StudentController {
     @GetMapping(value = "/mySubscription")
     private String getMySubscription(Model model) {
 
-        Map<Subscription, List<TimeTable>> infoList = new HashMap<>();
         Date date = new Date();
         boolean validDate = true;
 
         List<Subscription> subscriptionByUser = new ArrayList<>();
-        List<TimeTable> timeTablesStudent = new ArrayList<>();
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Subscription> subscriptionList = subscriptionService.getAllSubscription();
-        List<TimeTable> timeTableList = timeTableService.getAllTimeTable();
+        List<Subscription> list = new ArrayList<>();
 
         for (Subscription subscription : subscriptionList) {
             if (subscription.getUser().getId().equals(user.getId())) {
@@ -280,22 +278,39 @@ public class StudentController {
                 } else {
                     validDate = true;
                 }
-                for (TimeTable timeTable : timeTableList) {
-                    if (subscription.getSchool().equals(timeTable.getS()) && subscription.getCategories().equals(timeTable.getC()) && subscription.getSubscriptionType().equals(timeTable.getSubscriptionType())) {
-                        timeTablesStudent.add(timeTable);
-                    }
-                }
                 if (subscription.getSubscriptionStatus().equals(SubscriptionStatus.CONFIRMED)) {
-                    infoList.put(subscription, timeTablesStudent);
+                    list.add(subscription);
                 }
             }
         }
         model.addAttribute("subscriptions", subscriptionService.getCart());
-        model.addAttribute("infoList", infoList);
+        model.addAttribute("list", list);
         model.addAttribute("validDate", validDate);
 
         return "user/mySubscription";
     }
+
+    @GetMapping(value = "/myTime/{subscription}")
+    private String getMyTime(@PathVariable("subscription") Long id, Model model) {
+
+        List<TimeTable> myTime = new ArrayList<>();
+        Subscription subscription = subscriptionService.findById(id);
+
+        List<TimeTable> timeTableList = timeTableService.getAllTimeTable();
+
+        for (TimeTable timeTable : timeTableList) {
+            if (timeTable.getS().getIdSchool().equals(subscription.getSchool().getIdSchool()) && timeTable.getC().getIdCategory().equals(subscription.getCategories().getIdCategory()) && timeTable.getSubscriptionType().getIdType().equals(subscription.getSubscriptionType().getIdType())) {
+                myTime.add(timeTable);
+            }
+        }
+
+        model.addAttribute("myTime", myTime);
+        model.addAttribute("subscription", subscription);
+        model.addAttribute("student", subscription.getStudent());
+
+        return "user/myTime";
+    }
+
 
     private Student initializeStudent(StudentDTO studentDTO, City c) throws ParseException {
         Student student = new Student();

@@ -214,6 +214,10 @@ hr {
     position: relative;
 }
 
+.card-info {
+    padding-top: 150px;
+}
+
 .footer {
     bottom: 0;
     width: 100%;
