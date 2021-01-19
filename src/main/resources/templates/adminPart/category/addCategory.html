@@ -24,7 +24,7 @@
                                maxlength="50"
                                th:field="*{categoryName}"/>
                     </div>
-                    <div class="form-group required col-6 col-lg-8">
+                    <div class="form-group col-6 col-lg-8">
                         <label class="control-label" for="descriptionCategory">Déscription de catégorie :</label>
                         <input id="descriptionCategory"
                                type="text"
@@ -38,7 +38,7 @@
                 <div class="card-footer">
                     <div class="row align-items-end justify-content-end">
                         <div class="col">
-                            <p class="disclaimer red font-weight-bold m-0"></p>
+                            <p class="disclaimer red font-weight-bold m-0">(*)Ce champ est obligatoire</p>
                         </div>
                         <div class="col-auto">
                             <a th:href="@{/admin/category/categoryList}" class="btn btn-dark"> Précédent </a>

@@ -55,7 +55,9 @@
                                                 <span th:text="${t?.day?.day}"></span>
                                             </td>
                                             <td>
-                                                <span th:text="${t?.subscriptionType?.nbrHours}+ ' h'"></span>
+                                                <div class="" th:each="ty,row :${t?.getSubscriptionTypeList()}">
+                                                    <span th:text="${ty?.nbrHours}+ ' h'"></span>
+                                                </div>
                                             </td>
                                             <td>
                                                 <span th:text="${t?.startTime} + ' - '+ ${t?.endTime}"></span>

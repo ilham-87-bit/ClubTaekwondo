@@ -116,40 +116,33 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col-lg-4 col-12">
-                            <div class="form-group required">
-                                <label class="control-label" for="idType"> Type d'abonnement :</label>
-                                <div class="select-awesome" data-placement="right" maxlength="50">
-                                    <label>
-                                        <select id="idType"
-                                                class="form-control" required
-                                                aria-invalid="false"
-                                                name="idType">
-                                            <option></option>
-                                            <th:block th:if="!${#lists.isEmpty(typeList)}">
-                                                <option th:each="ty : ${typeList}"
-                                                        th:value="${ty.idType}"
-                                                        th:text="${ty.nbrHours}+ ' h'"
-                                                        th:selected="${time?.subscriptionType?.idType} == ${ty.idType}">
-                                                </option>
-                                            </th:block>
-                                        </select>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-12">
+                        <div class="col-lg-6 col-12">
                             <div class="form-group required">
                                 <label class="control-label" for="inputStartTime">Heure-début :</label>
                                 <input class="form-control" id="inputStartTime" type="time" required
                                        th:field="*{startTime}"/>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-12">
+                        <div class="col-lg-6 col-12">
                             <div class="form-group required">
                                 <label class="control-label" for="inputEndTime">heure-fin :</label>
                                 <input class="form-control" id="inputEndTime" type="time" step="300" required
                                        th:field="*{endTime}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-12 col-lg-6">
+                            <div class="form-group required">
+                                <label class="control-label"> Type d'abonnement :</label>
+                                <div id="chek" th:each="t, row : ${typeList}" class="js-row-link-alt">
+                                    <input type="checkbox" th:id="${'checkbox' + row.index}" name="typeList[]"
+                                           th:value="${t?.idType}"
+                                           th:checked="${listType != null and listType.contains(t)}"
+                                           class="checkboxGroup with-font"/>
+                                    <label th:for="${'checkbox' + row.index}"
+                                           th:text="${t?.nbrHours} + ' h'"></label>
+                                </div>
                             </div>
                         </div>
                     </div>

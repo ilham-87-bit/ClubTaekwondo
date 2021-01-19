@@ -20,7 +20,7 @@
                                data-placement="right"
                                maxlength="50" th:field="*{nbrHours}"/>
                     </div>
-                    <div class="form-group required col-6 col-lg-8">
+                    <div class="form-group col-6 col-lg-8">
                         <label class="control-label" for="description">Déscription du type :</label>
                         <input id="description" type="text" class="form-control py-4" name="description"
                                data-placement="right"
@@ -31,7 +31,7 @@
                 <div class="card-footer">
                     <div class="row align-items-end justify-content-end">
                         <div class="col">
-                            <p class="disclaimer red font-weight-bold m-0"></p>
+                            <p class="disclaimer red font-weight-bold m-0">(*)Ce champ est obligatoire</p>
                         </div>
                         <div class="col-auto">
                             <a th:href="@{/admin/type/typeList}" class="btn btn-dark"> Précédent </a>

@@ -17,14 +17,14 @@ public class SubscriptionType {
     private String description;
 
 
-    @OneToMany(mappedBy = "subscriptionType")
-    private Set<TimeTable> timeTables;
+//    @OneToMany(mappedBy = "subscriptionType")
+//    private Set<TimeTable> timeTables;
 
-    public SubscriptionType(Long idType, Integer nbrHours, String description, Set<TimeTable> timeTables) {
+    public SubscriptionType(Long idType, Integer nbrHours, String description) {
         this.idType = idType;
         this.nbrHours = nbrHours;
         this.description = description;
-        this.timeTables = timeTables;
+//        this.timeTables = timeTables;
     }
 
     public SubscriptionType() {
@@ -55,11 +55,11 @@ public class SubscriptionType {
         this.description = description;
     }
 
-    public Set<TimeTable> getTimeTables() {
-        return timeTables;
-    }
-
-    public void setTimeTables(Set<TimeTable> timeTables) {
-        this.timeTables = timeTables;
-    }
+//    public Set<TimeTable> getTimeTables() {
+//        return timeTables;
+//    }
+//
+//    public void setTimeTables(Set<TimeTable> timeTables) {
+//        this.timeTables = timeTables;
+//    }
 }

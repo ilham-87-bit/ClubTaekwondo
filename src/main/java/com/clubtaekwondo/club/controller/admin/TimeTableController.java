@@ -5,10 +5,9 @@ import com.clubtaekwondo.club.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("admin/time")
@@ -53,9 +52,9 @@ public class TimeTableController {
     }
 
     @PostMapping(value = "/addTime")
-    public String addTime(TimeTable timeTable, Coach coach, Day day, School school, Categories categories, SubscriptionType subscriptionType, Model model) {
+    public String addTime(TimeTable timeTable, Coach coach, Day day, School school, Categories categories, @RequestParam("typeList[]") List<SubscriptionType> subscriptionTypeList, Model model) {
 
-        return getString(timeTable, coach, day, school, categories, subscriptionType, model);
+        return getString(timeTable, coach, day, school, categories, subscriptionTypeList, model);
     }
 
     @GetMapping(value = "/delete/{time}")
@@ -81,25 +80,26 @@ public class TimeTableController {
         model.addAttribute("categoryList", categoriesService.getAllCategory());
         model.addAttribute("dayList", dayService.getAllDay());
         model.addAttribute("typeList", subscriptionTypeService.getAllSubscriptionType());
+        model.addAttribute("listType", timeTable.getSubscriptionTypeList());
 
         return ("adminPart/time/addTime");
 
     }
 
     @PostMapping(value = "/edit")
-    public String editTime(TimeTable timeTable, Coach coach, Day day, School school, Categories categories, SubscriptionType subscriptionType, Model model) {
+    public String editTime(TimeTable timeTable, Coach coach, Day day, School school, Categories categories, @RequestParam("typeList[]") List<SubscriptionType> subscriptionTypeList, Model model) {
 
 
-        return getString(timeTable, coach, day, school, categories, subscriptionType, model);
+        return getString(timeTable, coach, day, school, categories, subscriptionTypeList, model);
     }
 
-    private String getString(TimeTable timeTable, Coach coach, Day day, School school, Categories categories, SubscriptionType subscriptionType, Model model) {
+    private String getString(TimeTable timeTable, Coach coach, Day day, School school, Categories categories, List<SubscriptionType> subscriptionTypeList, Model model) {
 
         timeTable.setC(categoriesService.findById(categories.getIdCategory()));
         timeTable.setCo(coachService.findById(coach.getId()));
         timeTable.setDay(dayService.getDayById(day.getIdDay()));
         timeTable.setS(schoolService.findById(school.getIdSchool()));
-        timeTable.setSubscriptionType(subscriptionTypeService.findById(subscriptionType.getIdType()));
+        timeTable.setSubscriptionTypeList(subscriptionTypeList);
 
         timeTableService.save(timeTable);
 
@@ -115,18 +115,19 @@ public class TimeTableController {
         Day d = dayService.getDayById(day.getIdDay());
         d.getTimes().add(timeTable);
 
-        SubscriptionType subsType = subscriptionTypeService.findById(subscriptionType.getIdType());
-        subsType.getTimeTables().add(timeTable);
+//        SubscriptionType subsType = subscriptionTypeService.findById(subscriptionType.getIdType());
+//        subsType.getTimeTables().add(timeTable);
 
         model.addAttribute(TIME, timeTable);
         model.addAttribute("timeList", timeTableService.getAllTimeTable());
+        model.addAttribute("listType", timeTable.getSubscriptionTypeList());
         model.addAttribute("schoolList", schoolService.getAllSchool());
         model.addAttribute("coachList", coachService.getAllCoach());
         model.addAttribute("categoryList", categoriesService.getAllCategory());
         model.addAttribute("dayList", dayService.getAllDay());
         model.addAttribute("typeList", subscriptionTypeService.getAllSubscriptionType());
 
+
         return "redirect:/admin/time/timeList";
     }
-
 }

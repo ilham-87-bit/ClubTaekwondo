@@ -2,6 +2,7 @@ package com.clubtaekwondo.club.model;
 
 import javax.persistence.*;
 import java.sql.Time;
+import java.util.List;
 
 @Entity
 @Table(name = "horaire")
@@ -25,9 +26,15 @@ public class TimeTable {
     @JoinColumn(name = "id_entraineur")
     private Coach co;
 
-    @ManyToOne
-    @JoinColumn(name = "id_type_abonnement")
-    private SubscriptionType subscriptionType;
+//    @ManyToOne
+//    @JoinColumn(name = "id_type_abonnement")
+//    private SubscriptionType subscriptionType;
+
+    @ManyToMany()
+    @JoinTable(name = "concerne",
+            joinColumns = {@JoinColumn(name = "id_horaire")},
+            inverseJoinColumns = {@JoinColumn(name = "id_type_abonnement")})
+    private List<SubscriptionType> subscriptionTypeList;
 
     @Column(name = "heur_debut")
     private String startTime;
@@ -35,13 +42,13 @@ public class TimeTable {
     @Column(name = "heur_fin")
     private String endTime;
 
-    public TimeTable(Long idTime, Categories c, School s, Day day, Coach co, SubscriptionType subscriptionType, String startTime, String endTime) {
+    public TimeTable(Long idTime, Categories c, School s, Day day, Coach co, List<SubscriptionType> subscriptionTypeList, String startTime, String endTime) {
         this.idTime = idTime;
         this.c = c;
         this.s = s;
         this.day = day;
         this.co = co;
-        this.subscriptionType = subscriptionType;
+        this.subscriptionTypeList = subscriptionTypeList;
         this.startTime = startTime;
         this.endTime = endTime;
     }
@@ -106,11 +113,11 @@ public class TimeTable {
         this.endTime = endTime;
     }
 
-    public SubscriptionType getSubscriptionType() {
-        return subscriptionType;
+    public List<SubscriptionType> getSubscriptionTypeList() {
+        return subscriptionTypeList;
     }
 
-    public void setSubscriptionType(SubscriptionType subscriptionType) {
-        this.subscriptionType = subscriptionType;
+    public void setSubscriptionTypeList(List<SubscriptionType> subscriptionTypeList) {
+        this.subscriptionTypeList = subscriptionTypeList;
     }
 }

@@ -299,7 +299,7 @@ public class StudentController {
         List<TimeTable> timeTableList = timeTableService.getAllTimeTable();
 
         for (TimeTable timeTable : timeTableList) {
-            if (timeTable.getS().getIdSchool().equals(subscription.getSchool().getIdSchool()) && timeTable.getC().getIdCategory().equals(subscription.getCategories().getIdCategory()) && timeTable.getSubscriptionType().getIdType().equals(subscription.getSubscriptionType().getIdType())) {
+            if (timeTable.getS().getIdSchool().equals(subscription.getSchool().getIdSchool()) && timeTable.getC().getIdCategory().equals(subscription.getCategories().getIdCategory()) && timeTable.getSubscriptionTypeList().contains(subscription.getSubscriptionType().getIdType())) {
                 myTime.add(timeTable);
             }
         }

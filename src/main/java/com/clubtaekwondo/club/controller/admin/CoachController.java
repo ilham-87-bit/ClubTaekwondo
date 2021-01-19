@@ -80,11 +80,23 @@ public class CoachController {
     @GetMapping(value = "/addCoach")
     public String getAddCoach(Model model) {
 
+        Map<Long, List<Long>> parameters = new HashMap<>();
+
+        List<School> schoolList = schoolService.getAllSchool();
+        for (School school : schoolList) {
+            List<Long> idCatList = new ArrayList<>();
+            for (Categories categories : school.getCategoriesList()) {
+                idCatList.add(categories.getIdCategory());
+            }
+            parameters.put(school.getIdSchool(), idCatList);
+        }
+
         model.addAttribute(COACH, new Coach());
         model.addAttribute(ADDRESS, new Address());
         model.addAttribute("cityList", cityService.getAllCity());
-        model.addAttribute("schoolList", schoolService.getAllSchool());
+        model.addAttribute("schoolList", schoolList);
         model.addAttribute("categoryList", categoriesService.getAllCategory());
+        model.addAttribute("parameters", parameters);
 
 
         return ("adminPart/coach/addCoach");
@@ -191,15 +203,25 @@ public class CoachController {
     @GetMapping(value = "/edit/{coach}")
     public String coachDetails(@PathVariable("coach") Long id, Model model) {
 
-        List<Categories> list = new ArrayList<>();
+        Map<Long, List<Long>> parameters = new HashMap<>();
         Coach coach = (Coach) coachService.findById(id);
+
+        List<School> schoolList = schoolService.getAllSchool();
+        for (School school : schoolList) {
+            List<Long> idCatList = new ArrayList<>();
+            for (Categories categories : school.getCategoriesList()) {
+                idCatList.add(categories.getIdCategory());
+            }
+            parameters.put(school.getIdSchool(), idCatList);
+        }
 
         model.addAttribute(COACH, coach);
         model.addAttribute(ADDRESS, coach.getAddress());
-        model.addAttribute("schoolList", schoolService.getAllSchool());
+        model.addAttribute("schoolList", schoolList);
         model.addAttribute("listCat", coach.getCategoriesList());
         model.addAttribute("cityList", cityService.getAllCity());
         model.addAttribute("categoryList", categoriesService.getAllCategory());
+        model.addAttribute("parameters", parameters);
 
 
         return "adminPart/coach/addCoach";
