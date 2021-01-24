@@ -20,6 +20,9 @@
                                     <span> Eleve </span>
                                 </th>
                                 <th class="text-center cell--twenty">
+                                    <span> Ecole </span>
+                                </th>
+                                <th class="text-center cell--twenty">
                                     <span> Catégorie </span>
                                 </th>
                                 <th class="text-center cell--twenty">
@@ -39,34 +42,13 @@
                                               th:text="${l?.student?.firstName} + ' ' + ${l?.student?.name}"></span>
                                     </td>
                                     <td align="center">
+                                        <span class="my-4 text-uppercase"
+                                              th:text="${l?.school?.name}"></span>
+                                    </td>
+                                    <td align="center">
                                             <span class="my-4 text-uppercase"
                                                   th:text="${l?.categories?.categoryName}"></span>
                                     </td>
-                                    <!--                                    <td align="center">-->
-                                    <!--                                        <table id="timeTable"-->
-                                    <!--                                               class="table table-fixed table-striped">-->
-                                    <!--                                            <thead>-->
-                                    <!--                                            <tr>-->
-                                    <!--                                                <th class="text-center cell&#45;&#45;twenty">-->
-                                    <!--                                                    <span> Jour </span>-->
-                                    <!--                                                </th>-->
-                                    <!--                                                <th class="text-center cell&#45;&#45;twenty">-->
-                                    <!--                                                    <span> Horaire </span>-->
-                                    <!--                                                </th>-->
-                                    <!--                                            </tr>-->
-                                    <!--                                            </thead>-->
-                                    <!--                                            <tbody class="list" id="timeBySchool">-->
-                                    <!--                                            <tr th:each="t, row : ${p?.value}" class="js-row-link-alt">-->
-                                    <!--                                                <td align="center" class="py-2">-->
-                                    <!--                                                    <span th:text="${t?.day?.day}"></span>-->
-                                    <!--                                                </td>-->
-                                    <!--                                                <td align="center" class="py-2">-->
-                                    <!--                                                    <span th:text="${t?.startTime} + ' - '+ ${t?.endTime}"></span>-->
-                                    <!--                                                </td>-->
-                                    <!--                                            </tr>-->
-                                    <!--                                            </tbody>-->
-                                    <!--                                        </table>-->
-                                    <!--                                    </td>-->
                                     <td align="center">
                                         <span th:text="${T(com.clubtaekwondo.club.controller.user.StudentController).formatDate(l?.startDate)} + '  -   ' + ${T(com.clubtaekwondo.club.controller.user.StudentController).formatDate(l?.endDate)}"></span>
                                     </td>
@@ -74,6 +56,9 @@
                                         <a th:if="${validDate}" class="btn btn-dark"
                                            th:href="@{(${'/user/myTime/' + l.idSubscription})}">
                                             Mes Horaires </a>
+                                        <a class="btn btn-dark"
+                                           th:href="@{(${'/user/personList/' + l.idSubscription})}">
+                                            Personne de contact </a>
                                     </td>
                                     <td align="center">
                                         <a th:if="!${validDate}" class="btn btn-dark"

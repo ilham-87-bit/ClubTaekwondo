@@ -1,8 +1,9 @@
 package com.clubtaekwondo.club.controller.admin;
 
-import com.clubtaekwondo.club.model.Categories;
-import com.clubtaekwondo.club.model.SubscriptionPeriod;
+import com.clubtaekwondo.club.model.*;
 import com.clubtaekwondo.club.service.SubscriptionPeriodService;
+import com.clubtaekwondo.club.service.SubscriptionService;
+import com.clubtaekwondo.club.service.TariffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -22,6 +24,10 @@ public class PeriodController {
 
     @Autowired
     private SubscriptionPeriodService subscriptionPeriodService;
+    @Autowired
+    private SubscriptionService subscriptionService;
+    @Autowired
+    private TariffService tariffService;
 
     @GetMapping(value = "/periodList")
     public String periodList(Model model, WebRequest request) {
@@ -45,6 +51,7 @@ public class PeriodController {
             return ("adminPart/period/addPeriod");
         } else {
             subscriptionPeriodService.save(period);
+            model.addAttribute("messageSuccess", " La période d'abonnement a bien été ajoutée.");
         }
 
         model.addAttribute(PERIOD, period);
@@ -72,6 +79,7 @@ public class PeriodController {
             return ("adminPart/period/addPeriod");
         } else {
             subscriptionPeriodService.save(period);
+            model.addAttribute("messageSuccess", " La durée d'abonnement a bien été ajoutée. ");
         }
 
         model.addAttribute(PERIOD, period);
@@ -84,7 +92,19 @@ public class PeriodController {
     public String deletePeriod(@PathVariable("period") Long id, Model model) {
 
         SubscriptionPeriod period = subscriptionPeriodService.findById(id);
-        subscriptionPeriodService.delete(period);
+
+        Optional<Subscription> firstSubscription = subscriptionService.getAllSubscription().stream().filter(s -> s.getSubscriptionPeriod().getId().equals(period.getId()) && s.getSubscriptionStatus().equals(SubscriptionStatus.CONFIRMED)).findFirst();
+        if (firstSubscription.isPresent()) {
+            model.addAttribute("messageError", "Vous ne pouvez pas supprimer cette durée d'abonnement ! Cette durée d'abonnement est liée à des abonnements en cours.");
+        } else {
+            List<Tariff> tariffList = tariffService.getAllTariff();
+            for (Tariff tariff : tariffList) {
+                if (tariff.getTariffPK().getIdPeriod().equals(period.getId())) {
+                    tariffService.delete(tariff);
+                }
+            }
+            subscriptionPeriodService.delete(period);
+        }
 
         model.addAttribute("periodList", subscriptionPeriodService.getAllPeriod());
 

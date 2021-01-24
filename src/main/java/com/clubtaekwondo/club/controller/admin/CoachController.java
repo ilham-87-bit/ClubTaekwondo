@@ -1,5 +1,6 @@
 package com.clubtaekwondo.club.controller.admin;
 
+import com.clubtaekwondo.club.controller.HomeController;
 import com.clubtaekwondo.club.controller.LoginController;
 import com.clubtaekwondo.club.mail.MailConstructor;
 import com.clubtaekwondo.club.model.*;
@@ -97,6 +98,7 @@ public class CoachController {
         model.addAttribute("schoolList", schoolList);
         model.addAttribute("categoryList", categoriesService.getAllCategory());
         model.addAttribute("parameters", parameters);
+        model.addAttribute("map", getAllPostalCodeByCity());
 
 
         return ("adminPart/coach/addCoach");
@@ -161,10 +163,10 @@ public class CoachController {
         coachService.saveCoach(coach);
         Role role = Role.COACH;
         coach = (Coach) userService.save(coach, role);
+        model.addAttribute("messageSuccess", " L'entraîneur a bien été ajouté. ");
 
         Token token = new Token();
         String tokenString = LoginController.generateNewToken();
-        // create a new Token in the database
 
         token.setToken(tokenString);
         token.setUser(coach);
@@ -190,9 +192,19 @@ public class CoachController {
     @GetMapping(value = "/delete/{coach}")
     public String deleteCoach(@PathVariable("coach") Long id, Model model) {
 
-        Coach coach = (Coach) coachService.findById(id);
-        User user = userService.findByLogin(coach.getEmail());
-        user.setUserRole(userRoleService.findByRole(Role.USER));
+        List<Coach> coachBySchool = new ArrayList<>();
+        Coach coach = coachService.findById(id);
+        for (Coach co : coachService.getAllCoach()) {
+            if (co.getSchool().getIdSchool().equals(coach.getId())) {
+                coachBySchool.add(co);
+            }
+        }
+        if (coachBySchool.size() > 1) {
+            User user = userService.findByLogin(coach.getEmail());
+            user.setUserRole(userRoleService.findByRole(Role.USER));
+        } else {
+            model.addAttribute("messageError", "Vous ne pouvez pas supprimer cet entraîneur ! Cet entraîneur est le dernier entraîneur de cette école.");
+        }
 
         List<Coach> coachList = coachService.getAllCoach().stream().filter(coach1 -> Role.COACH.equals(coach1.getUserRole())).collect(Collectors.toList());
         model.addAttribute("coachList", coachList);
@@ -204,7 +216,7 @@ public class CoachController {
     public String coachDetails(@PathVariable("coach") Long id, Model model) {
 
         Map<Long, List<Long>> parameters = new HashMap<>();
-        Coach coach = (Coach) coachService.findById(id);
+        Coach coach = coachService.findById(id);
 
         List<School> schoolList = schoolService.getAllSchool();
         for (School school : schoolList) {
@@ -222,6 +234,7 @@ public class CoachController {
         model.addAttribute("cityList", cityService.getAllCity());
         model.addAttribute("categoryList", categoriesService.getAllCategory());
         model.addAttribute("parameters", parameters);
+        model.addAttribute("map", getAllPostalCodeByCity());
 
 
         return "adminPart/coach/addCoach";
@@ -231,6 +244,11 @@ public class CoachController {
     public String editCoach(Coach coach, School school, City city, @RequestParam("categoryList[]") List<Categories> categoryList, Model model) {
 
         List<Categories> listCat = new ArrayList<>();
+        User user = userService.findById(coach.getId());
+        coach.setUserRole(user.getUserRole());
+        coach.setActive(user.isActive());
+        coach.setPassword(user.getPassword());
+        coach.setTokens(user.getTokens());
 
         City c = cityService.findById(city.getIdCity());
         coach.getAddress().setCity(c);
@@ -240,6 +258,7 @@ public class CoachController {
 
         coach.setCategoriesList(categoryList);
         coachService.saveCoach(coach);
+        userService.save(coach);
 
         model.addAttribute(COACH, coach);
         model.addAttribute(ADDRESS, coach.getAddress());
@@ -249,5 +268,15 @@ public class CoachController {
         model.addAttribute("listCat", listCat);
 
         return "redirect:/admin/coach/coachList";
+    }
+
+    public Map<Long, String> getAllPostalCodeByCity() {
+        Map<Long, String> map = new HashMap<>();
+
+        List<City> cityList = cityService.getAllCity();
+        for (City city : cityList) {
+            map.put(city.getIdCity(), city.getPostalCode());
+        }
+        return map;
     }
 }

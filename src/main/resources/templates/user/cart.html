@@ -6,7 +6,7 @@
 <header th:replace="header">
 </header>
 <main>
-    <div class="container-fluid">
+    <div class="container-body">
         <div class="card-body">
             <th:block th:with="hasSubscription=${!#lists.isEmpty(subscriptions)}">
                 <th:block th:if="!${#lists.isEmpty(subscriptions)}">

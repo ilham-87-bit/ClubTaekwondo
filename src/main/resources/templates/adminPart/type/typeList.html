@@ -8,6 +8,14 @@
     <main>
         <div class="container-fluid">
             <div class="card-body">
+                <div class="row justify-content-center">
+                    <div th:if="${messageError}">
+                        <span class="error text-center" th:text="${messageError}"></span>
+                    </div>
+                    <div th:if="${messageSuccess}">
+                        <span class="success text-center" th:text="${messageSuccess}"></span>
+                    </div>
+                </div>
                 <th:block th:with="hasType=${!#lists.isEmpty(typeList)}">
                     <form id="typeForm" method="post">
                         <th:block th:if="!${#lists.isEmpty(typeList)}">
@@ -36,7 +44,7 @@
                                                 <span th:text="${type?.description}"></span>
                                             </td>
                                             <td>
-                                                <a th:href="${'edit/'+ type?.idType}"
+                                                <a th:href="${'/admin/type/edit/'+ type?.idType}"
                                                    class="btn btn-link fa fa-edit"></a>
                                                 <a class="btn btn-link fa fa-trash-alt"
                                                    th:attr="data-target='#modal-delete'+${type?.idType}"
@@ -57,7 +65,8 @@
                                                                         data-dismiss="modal"> Annuler
                                                                 </button>
                                                                 <a class="btn btn-danger pull-right" type="button"
-                                                                   th:href="${'delete/'+ type?.idType}"> Supprimer
+                                                                   th:href="${'/admin/type/delete/'+ type?.idType}">
+                                                                    Supprimer
                                                                 </a>
                                                             </div>
                                                         </div>

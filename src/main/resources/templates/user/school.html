@@ -7,7 +7,7 @@
 </header>
 <div id="layoutSidenav_content">
     <main>
-        <div class="container-fluid">
+        <div class="container-body">
             <div class="card-body">
                 <th:block th:with="hasSchool=${!#lists.isEmpty(schoolList)}">
                     <th:block th:if="!${#lists.isEmpty(schoolList)}">
@@ -21,6 +21,9 @@
                                         <span> Ecole </span>
                                     </th>
                                     <th class="text-center cell--twenty">
+                                        <span> Adresse </span>
+                                    </th>
+                                    <th class="text-center cell--twenty">
                                         <span> Horaire </span>
                                     </th>
                                 </tr>
@@ -31,6 +34,9 @@
                                         <td align="center" class="py-5">
                                             <img class="rounded align-content-center"
                                                  th:src="@{${scho.fullUrlImg}}" width="170" height="113"/>
+                                        </td>
+                                        <td align="center" class="py-5">
+                                            <span th:text="${scho?.address?.street} + '  ' + ${scho?.address?.number} +  ' - ' +${scho?.address?.city?.postalCode} + '  ' + ${scho?.address?.city?.cityName}"></span>
                                         </td>
                                         <td>
                                             <table id="timeTable"

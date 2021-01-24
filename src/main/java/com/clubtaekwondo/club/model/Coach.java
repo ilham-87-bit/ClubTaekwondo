@@ -1,6 +1,7 @@
 package com.clubtaekwondo.club.model;
 
 import javax.persistence.*;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -16,21 +17,17 @@ public class Coach extends User {
     @JoinColumn(name = "id_adresse")
     private Address address;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinTable(name = "donner",
             joinColumns = {@JoinColumn(name = "id_entraineur")},
             inverseJoinColumns = {@JoinColumn(name = "id_categorie")})
     private List<Categories> categoriesList;
 
-    @OneToMany(mappedBy = "co")
-    private Set<TimeTable> timeTables;
-
-    public Coach(Long id, String lastName, String firstName, String password, String email, UserRole userRole, School school, Address address, List<Categories> categoriesList, Set<TimeTable> timeTables) {
+    public Coach(Long id, String lastName, String firstName, String password, String email, UserRole userRole, School school, Address address, List<Categories> categoriesList) {
         super(id, lastName, firstName, password, email, userRole);
         this.school = school;
         this.address = address;
         this.categoriesList = categoriesList;
-        this.timeTables = timeTables;
     }
 
     public Coach() {
@@ -51,22 +48,6 @@ public class Coach extends User {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public Set<TimeTable> getTimes() {
-        return timeTables;
-    }
-
-    public void setTimes(Set<TimeTable> timeTables) {
-        this.timeTables = timeTables;
-    }
-
-    public Set<TimeTable> getTimeTables() {
-        return timeTables;
-    }
-
-    public void setTimeTables(Set<TimeTable> timeTables) {
-        this.timeTables = timeTables;
     }
 
     public List<Categories> getCategoriesList() {

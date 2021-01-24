@@ -22,20 +22,24 @@
                                 <label class="title control-label"> Lien de parenté : </label>
                                 <div class="col-3">
                                     <input id="father" name="relationship" type="radio" class="with-font required"
-                                           th:value="${T(com.clubtaekwondo.club.model.RelationType).FATHER}">
+                                           th:value="${T(com.clubtaekwondo.club.model.RelationType).FATHER}"
+                                           th:checked="${T(com.clubtaekwondo.club.model.RelationType).FATHER.toString() == studentRelation.relationship} ? 'checked'">
                                     <label for="father"> Pére </label>
                                 </div>
                                 <div class="col-3">
                                     <input id="mother" name="relationship" type="radio" class="with-font required"
-                                           th:value="${T(com.clubtaekwondo.club.model.RelationType).MOTHER}">
+                                           th:value="${T(com.clubtaekwondo.club.model.RelationType).MOTHER}"
+                                           th:checked="${T(com.clubtaekwondo.club.model.RelationType).MOTHER.toString() == studentRelation.relationship} ? 'checked'">
                                     <label for="mother"> Mére </label>
                                 </div>
                                 <div class="col-3">
                                     <input id="others" name="relationship" type="radio" class="with-font required"
-                                           th:value="${T(com.clubtaekwondo.club.model.RelationType).OTHERS}">
+                                           th:value="${T(com.clubtaekwondo.club.model.RelationType).OTHERS}"
+                                           th:checked="${T(com.clubtaekwondo.club.model.RelationType).OTHERS.toString() == studentRelation.relationship} ? 'checked'">
                                     <label for="mother"> Autre </label>
                                 </div>
                             </div>
+                            <input type="hidden" th:value="${contactPerson?.idPerson}" name="idPerson"/>
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-group required">
@@ -63,17 +67,21 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-group">
+                                    <div class="form-group required">
                                         <label class="control-label" for="gsm"> GSM :</label>
-                                        <input class="form-control" id="gsm" type="text" name="gsm"
-                                               th:value="${contactPerson?.gsm}"/>
+                                        <input class="form-control" id="gsm" type="number" name="gsm" required
+                                               th:value="'0'+ ${contactPerson?.gsm}"/>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-footer">
                                 <div class="row align-items-end justify-content-end">
-                                    <div class="col-auto">
-                                        <a th:href="@{(${'/addStudent/' + subscription.idSubscription})}"
+                                    <div th:if="!${previous}" class="col-auto">
+                                        <a th:href="@{(${'/user/addStudent/' + subscription.idSubscription})}"
+                                           class="btn btn-dark"> Précédent </a>
+                                    </div>
+                                    <div th:unless="!${previous}" class="col-auto">
+                                        <a th:href="@{(${'/user/personList/' + subscription.idSubscription})}"
                                            class="btn btn-dark"> Précédent </a>
                                     </div>
                                     <div class="col-auto">

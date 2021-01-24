@@ -34,6 +34,16 @@
                                maxlength="50"
                                th:field="*{description}"/>
                     </div>
+                    <div class="form-group required col-6 col-lg-8">
+                        <label class="control-label" for="ageMax">l'àge maximale du catégories :</label>
+                        <input id="ageMax"
+                               type="number"
+                               class="form-control py-4"
+                               name="age" required
+                               data-placement="right"
+                               maxlength="10"
+                               th:field="*{age}"/>
+                    </div>
                 </div>
                 <div class="card-footer">
                     <div class="row align-items-end justify-content-end">

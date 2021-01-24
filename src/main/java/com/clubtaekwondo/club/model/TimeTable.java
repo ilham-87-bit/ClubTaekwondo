@@ -22,13 +22,12 @@ public class TimeTable {
     @ManyToOne
     @JoinColumn(name = "id_jour")
     private Day day;
-    @ManyToOne
-    @JoinColumn(name = "id_entraineur")
-    private Coach co;
 
-//    @ManyToOne
-//    @JoinColumn(name = "id_type_abonnement")
-//    private SubscriptionType subscriptionType;
+    @ManyToMany()
+    @JoinTable(name = "encadrer",
+            joinColumns = {@JoinColumn(name = "id_horaire")},
+            inverseJoinColumns = {@JoinColumn(name = "id_entraineur")})
+    private List<Coach> coachList;
 
     @ManyToMany()
     @JoinTable(name = "concerne",
@@ -42,12 +41,12 @@ public class TimeTable {
     @Column(name = "heur_fin")
     private String endTime;
 
-    public TimeTable(Long idTime, Categories c, School s, Day day, Coach co, List<SubscriptionType> subscriptionTypeList, String startTime, String endTime) {
+    public TimeTable(Long idTime, Categories c, School s, Day day, List<Coach> coachList, List<SubscriptionType> subscriptionTypeList, String startTime, String endTime) {
         this.idTime = idTime;
         this.c = c;
         this.s = s;
         this.day = day;
-        this.co = co;
+        this.coachList = coachList;
         this.subscriptionTypeList = subscriptionTypeList;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -89,14 +88,6 @@ public class TimeTable {
         this.day = day;
     }
 
-    public Coach getCo() {
-        return co;
-    }
-
-    public void setCo(Coach co) {
-        this.co = co;
-    }
-
     public String getStartTime() {
         return startTime;
     }
@@ -119,5 +110,13 @@ public class TimeTable {
 
     public void setSubscriptionTypeList(List<SubscriptionType> subscriptionTypeList) {
         this.subscriptionTypeList = subscriptionTypeList;
+    }
+
+    public List<Coach> getCoachList() {
+        return coachList;
+    }
+
+    public void setCoachList(List<Coach> coachList) {
+        this.coachList = coachList;
     }
 }

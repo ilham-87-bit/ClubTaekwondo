@@ -25,6 +25,8 @@ public class TariffController {
     private SubscriptionTypeService subscriptionTypeService;
     @Autowired
     private CategoriesService categoriesService;
+    @Autowired
+    private SubscriptionService subscriptionService;
 
     @GetMapping(value = "/tarifList")
     public String tariffList(Model model) {
@@ -69,20 +71,26 @@ public class TariffController {
 
     }
 
-    @GetMapping(value = "/delete/{category}/{period}/{type}")
-    public String deleteTariff(@PathVariable("category") Long idCategory, @PathVariable("period") Long idPeriod, @PathVariable("type") Long idType, Model model) {
-
-        TariffPK tariffPK = new TariffPK();
-        tariffPK.setIdType(idType);
-        tariffPK.setIdPeriod(idPeriod);
-        tariffPK.setIdCategory(idCategory);
-        Tariff tariff = tariffService.getOneTariff(tariffPK);
-        tariffService.delete(tariff);
-
-        model.addAttribute("tarifList", tariffService.getAllTariff());
-
-        return "redirect:/admin/tarif/tarifList";
-    }
+//    @GetMapping(value = "/delete/{category}/{period}/{type}")
+//    public String deleteTariff(@PathVariable("category") Long idCategory, @PathVariable("period") Long idPeriod, @PathVariable("type") Long idType, Model model) {
+//
+//        TariffPK tariffPK = new TariffPK();
+//        tariffPK.setIdType(idType);
+//        tariffPK.setIdPeriod(idPeriod);
+//        tariffPK.setIdCategory(idCategory);
+//        Tariff tariff = tariffService.getOneTariff(tariffPK);
+//        Optional<Subscription> firstSubscription = subscriptionService.getAllSubscription().stream().filter(s -> s.getCategories().getIdCategory().equals(tariff.getTariffPK().getIdCategory()) && s.getSubscriptionType().getIdType().equals(tariff.getTariffPK().getIdType()) && s.getSubscriptionPeriod().getId().equals(tariff.getTariffPK().getIdPeriod()) && s.getSubscriptionStatus().equals(SubscriptionStatus.CONFIRMED)).findFirst();
+//        if (firstSubscription.isPresent()) {
+//            model.addAttribute("messageError", "Vous ne pouvez pas supprimer cet horaire ! Cet horaire est lié à des abonnements en cours.");
+//
+//        } else {
+//            tariffService.delete(tariff);
+//        }
+//
+//        model.addAttribute("tarifList", tariffService.getAllTariff());
+//
+//        return "redirect:/admin/tarif/tarifList";
+//    }
 
     @GetMapping(value = "/edit/{category}/{period}/{type}")
     public String timeDetails(@PathVariable("category") Long idCategory, @PathVariable("period") Long idPeriod, @PathVariable("type") Long idType, Model model) {
@@ -92,6 +100,7 @@ public class TariffController {
         tariffPK.setIdPeriod(idPeriod);
         tariffPK.setIdCategory(idCategory);
         Tariff tariff = tariffService.getOneTariff(tariffPK);
+        tariff.setExist(false);
 
         model.addAttribute(TARIF, tariff);
         model.addAttribute("periodList", subscriptionPeriodService.getAllPeriod());
@@ -109,7 +118,7 @@ public class TariffController {
         SubscriptionPeriod period = subscriptionPeriodService.findById(subscriptionPeriod.getId());
         SubscriptionType type = subscriptionTypeService.findById(subscriptionType.getIdType());
 
-        Optional<Tariff> firstTariff = tariffService.getAllTariff().stream().filter(t -> t.getTariffPK().getIdCategory().equals(categories.getIdCategory()) && t.getTariffPK().getIdPeriod().equals(subscriptionPeriod.getId()) && t.getTariffPK().getIdType().equals(subscriptionType.getIdType())).findFirst();
+        Optional<Tariff> firstTariff = tariffService.getAllTariff().stream().filter(t -> t.getTariffPK().getIdCategory().equals(cat.getIdCategory()) && t.getTariffPK().getIdPeriod().equals(period.getId()) && t.getTariffPK().getIdType().equals(type.getIdType()) && t.isExist()).findFirst();
         if (firstTariff.isPresent()) {
             model.addAttribute(TARIF, tariff);
             model.addAttribute("periodList", subscriptionPeriodService.getAllPeriod());
@@ -128,6 +137,7 @@ public class TariffController {
         tariffPK.setIdPeriod(idPeriod);
         tariffPK.setIdType(idType);
         tariff.setTariffPK(tariffPK);
+        tariff.setExist(true);
 
         tariffService.save(tariff);
 

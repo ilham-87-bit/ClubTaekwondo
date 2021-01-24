@@ -1,16 +1,16 @@
 package com.clubtaekwondo.club.controller.admin;
 
-import com.clubtaekwondo.club.model.Address;
-import com.clubtaekwondo.club.model.Categories;
-import com.clubtaekwondo.club.model.Subscription;
+import com.clubtaekwondo.club.model.*;
 import com.clubtaekwondo.club.service.CategoriesService;
 import com.clubtaekwondo.club.service.SubscriptionService;
+import com.clubtaekwondo.club.service.TariffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -22,6 +22,8 @@ public class CategoriesController {
     private CategoriesService categoriesService;
     @Autowired
     private SubscriptionService subscriptionService;
+    @Autowired
+    private TariffService tariffService;
 
     @GetMapping(value = "/categoryList")
     public String categoryList(Model model, WebRequest request) {
@@ -45,6 +47,7 @@ public class CategoriesController {
             return "adminPart/category/addCategory";
         } else {
             categoriesService.saveCategories(categories);
+            model.addAttribute("messageSuccess", " La catégorie a bien été ajoutée.");
         }
         model.addAttribute("category", categories);
         model.addAttribute("categoryList", categoriesService.getAllCategory());
@@ -84,11 +87,17 @@ public class CategoriesController {
     public String deletePeriod(@PathVariable("category") Long id, Model model) {
 
         Categories categories = categoriesService.findById(id);
-        Optional<Subscription> firstSubscription = subscriptionService.getAllSubscription().stream().filter(s -> s.getCategories().getIdCategory().equals(categories.getIdCategory()) && s.getValidation()).findFirst();
+        Optional<Subscription> firstSubscription = subscriptionService.getAllSubscription().stream().filter(s -> s.getCategories().getIdCategory().equals(categories.getIdCategory()) && s.getSubscriptionStatus().equals(SubscriptionStatus.CONFIRMED)).findFirst();
         if (firstSubscription.isPresent()) {
             model.addAttribute("messageError", "Vous ne pouvez pas supprimer cette catégorie ! Cette catégorie est liée à des abonnements en cours.");
 
         } else {
+            List<Tariff> tariffList = tariffService.getAllTariff();
+            for (Tariff tariff : tariffList) {
+                if (tariff.getTariffPK().getIdCategory().equals(categories.getIdCategory())) {
+                    tariffService.delete(tariff);
+                }
+            }
             categoriesService.deleteCategories(categories);
         }
 

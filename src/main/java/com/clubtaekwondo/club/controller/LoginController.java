@@ -4,6 +4,7 @@ import com.clubtaekwondo.club.mail.MailConstructor;
 import com.clubtaekwondo.club.model.*;
 import com.clubtaekwondo.club.repository.UserRepository;
 import com.clubtaekwondo.club.repository.UserRoleRepository;
+import com.clubtaekwondo.club.service.SubscriptionService;
 import com.clubtaekwondo.club.service.TokenService;
 import com.clubtaekwondo.club.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,8 @@ public class LoginController {
     @Autowired
     private MailConstructor mailConstructor;
 
+    @Autowired
+    private SubscriptionService subscriptionService;
 
     @Autowired
     private TokenService tokenService;
@@ -81,6 +84,13 @@ public class LoginController {
                 User user = (User) authentication;
                 if (user.getUserRole().getRole().equals(Role.ADMIN.getAlea())) {
                     return "redirect:/admin/indexAdmin";
+                } else {
+                    List<Subscription> subscriptionList = subscriptionService.getAllSubscription();
+                    for (Subscription subscription : subscriptionList) {
+                        if (subscription.getUser().getId().equals(user.getId()) && subscription.getSubscriptionStatus().equals(SubscriptionStatus.INITIATED)) {
+                            subscriptionService.delete(subscription);
+                        }
+                    }
                 }
                 model.addAttribute("user", user);
             }

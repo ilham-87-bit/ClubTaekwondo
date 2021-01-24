@@ -11,10 +11,12 @@ function inputDate() {
         clearBtn: true,
         dateFormat: "dd/mm/yy"
     });
-    $('#endDate').datepicker({
-        dateFormat: "dd/mm/yy",
-        readOnly: true
-    });
+    // $('#endDate').datepicker({
+    //     dateFormat: "dd/mm/yy"
+    // });
+    // if ($('#endDate').attr('readonly')) {
+    //     $('#ui-datepicker-div').css({ 'visibility': 'hidden' })
+    // } else { $('#ui-datepicker-div').css({ 'visibility': 'visible' }) }
 }
 
 function calculateEndDateFormFunction() {

@@ -16,6 +16,9 @@ public class School {
     @Column(name = "nom_ecole")
     private String name;
 
+    @Column(name = "appartenir")
+    private boolean belongTo;
+
     @OneToOne
     @JoinColumn(name = "id_adresse")
     private Address address;
@@ -32,12 +35,14 @@ public class School {
     @Transient
     private String fullUrlImg;
 
-    public School(Long idSchool, String name, Address address, List<Categories> categoriesList, Set<TimeTable> timeTables) {
+    public School(Long idSchool, String name, boolean belongTo, Address address, List<Categories> categoriesList, Set<TimeTable> timeTables, String fullUrlImg) {
         this.idSchool = idSchool;
         this.name = name;
+        this.belongTo = belongTo;
         this.address = address;
         this.categoriesList = categoriesList;
         this.timeTables = timeTables;
+        this.fullUrlImg = fullUrlImg;
     }
 
     public School() {
@@ -90,5 +95,13 @@ public class School {
 
     public void setCategoriesList(List<Categories> categoriesList) {
         this.categoriesList = categoriesList;
+    }
+
+    public boolean isBelongTo() {
+        return belongTo;
+    }
+
+    public void setBelongTo(boolean belongTo) {
+        this.belongTo = belongTo;
     }
 }

@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -51,7 +52,7 @@ public class UserController {
 
     @GetMapping(value = "/school")
     public String getAllSchool(Model model) {
-        List<School> allSchool = schoolService.getAllSchool();
+        List<School> allSchool = schoolService.getAllSchool().stream().filter(school -> school.isBelongTo()).collect(Collectors.toList());
         allSchool.stream().forEach(school -> {
             String newImageName = String.format("schools/%s.jpeg", school.getIdSchool());
             school.setFullUrlImg(fileToPath(storageService.load(newImageName)));

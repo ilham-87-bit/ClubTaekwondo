@@ -13,7 +13,6 @@
     $("#sidebarToggle").on("click", function (e) {
         e.preventDefault();
         $("body").toggleClass("sb-sidenav-toggled");
-        // inputMaskEvents();
     });
 
 })(jQuery);
@@ -23,4 +22,19 @@ $(document).ready(function () {
 
 function printPage() {
     window.print();
+}
+
+function selectCity() {
+    $('.selectCity').on('input', function () {
+        $('#postalCode').val('');
+        selectPostalCodeByCity();
+    });
+}
+
+function selectPostalCodeByCity() {
+    for (var i = 0; i < $('.map').length; i++) {
+        if ($('#city' + i).attr('name') === $('#idCity option:selected').val()) {
+            $('#postalCode').val($('#city' + i).attr('value'));
+        }
+    }
 }

@@ -5,19 +5,11 @@
 <body>
 <header th:replace="header">
 </header>
-<div id="layoutSidenav_content">
-    <main>
-        <th:block>
-            <div>
-                <img th:src="@{/images/taek5.jpg}" class="img-card">
-            </div>
-        </th:block>
-        <th:block>
-            <div class="card-body  mt-5 mb-5 ml-5 mr-5">
-                <div th:if="${messageError}">
-                    <p class="error" th:text="${messageError}"></p>
-                </div>
-                <th:block th:with="hasContactPerson=${contactPersonList.size() != 0}">
+<main>
+    <div class="row justify-content-center">
+        <div class="col-lg-5 card-info">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <th:block th:with="hasContactPerson=${personList.size() != 0}">
                     <th:block th:if="${hasContactPerson}">
                         <div class="card-body card-border">
                             <table id="contactPersonTable"
@@ -42,28 +34,27 @@
                                 </thead>
                                 <tbody class="list" id="coachList">
                                 <th:block th:if="${hasContactPerson}">
-                                    <tr th:each="contactPerson, row : ${contactPersonList}" class="js-row-link-alt">
+                                    <tr th:each="person, row : ${personList}" class="js-row-link-alt">
                                         <td>
-                                            <span th:text="${contactPerson.value?.personFirstName} +'  ' + ${contactPerson.value?.personName}"></span>
+                                            <span th:text="${person.value?.personFirstName} +'  ' + ${person.value?.personName}"></span>
                                         </td>
                                         <td>
-                                            <span th:text="${contactPerson.value?.email}"></span>
+                                            <span th:text="${person.value?.email}"></span>
                                         </td>
                                         <td>
-                                            <span th:text="'0'+ ${contactPerson.value?.gsm}"></span>
-
+                                            <span th:text="'0'+ ${person.value?.gsm}"></span>
                                         </td>
                                         <td>
-                                            <span th:text="${contactPerson.key}"></span>
+                                            <span th:text="${person.key}"></span>
                                         </td>
                                         <td>
-                                            <a th:href="${'/user/editContactPerson/'+ contactPerson.value?.idPerson  + '/' + student.idStudent}"
+                                            <a th:href="${'/user/editContactPerson/'+ person.value?.idPerson  + '/' + subscription.student.idStudent}"
                                                class="btn btn-link fa fa-edit"></a>
                                             <a class="btn btn-link fa fa-trash-alt"
-                                               th:attr="data-target='#modal-delete'+${contactPerson.value?.idPerson}"
+                                               th:attr="data-target='#modal-delete'+${person.value?.idPerson}"
                                                data-rel="tooltip" title="delete" data-toggle="modal"></a>
 
-                                            <div th:id="modal-delete+${contactPerson.value?.idPerson}"
+                                            <div th:id="modal-delete+${person.value?.idPerson}"
                                                  class="modal fade"
                                                  tabindex="-1">
                                                 <div class="modal-dialog">
@@ -79,7 +70,7 @@
                                                                     data-dismiss="modal"> Annuler
                                                             </button>
                                                             <a class="btn btn-danger pull-right" type="button"
-                                                               th:href="${'/user/deleteContactPerson/'+ contactPerson?.value?.idPerson + '/' + student.idStudent}">
+                                                               th:href="${'/user/deleteContactPerson/'+ person?.value?.idPerson + '/' + subscription.student.idStudent}">
                                                                 Supprimer
                                                             </a>
                                                         </div>
@@ -95,30 +86,28 @@
                     </th:block>
                 </th:block>
 
-                <th:block th:if="${contactPersonList.size() == 0}">
-                    <h5 class="align-content-center text-center"> Vous n'avez aucune personne de contact. </h5>
+                <th:block th:if="${personList.size() == 0}">
+                    <h5 class="align-content-center text-center mt-5"> Vous n'avez aucune personne de contact. </h5>
                 </th:block>
                 <div class="card-footer">
                     <div class="row align-items-end justify-content-end">
                         <div class="col-auto">
-                            <a th:href="@{(${'/user/addStudent/' + subscription.idSubscription})}"
-                               class="btn btn-dark"> Précédent </a>
+                            <div class="col-auto">
+                                <a th:href="@{/user/mySubscription}" class="btn btn-dark"> Précédent </a>
+                            </div>
                         </div>
                         <div class="col-auto">
-                            <a th:href="@{(${'/user/addContactPerson/' + student.idStudent})}"
+                            <a th:href="@{(${'/user/addContactPerson/' + subscription.student.idStudent})}"
                                class="btn btn-dark"> Ajouter une autre personne </a>
-                        </div>
-                        <div class="col-auto">
-                            <a th:href="@{(${'/user/summary/' + subscription.idSubscription})}"
-                               class="btn btn-dark"> Suivant </a>
                         </div>
                     </div>
                 </div>
             </div>
-        </th:block>
-    </main>
-</div>
-<footer th:replace="footer">
+            </th:block>
+        </div>
+    </div>
+</main>
+<footer class="footer" th:replace="footer">
 </footer>
 </body>
 </html>

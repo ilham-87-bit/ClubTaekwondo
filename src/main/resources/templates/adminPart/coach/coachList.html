@@ -8,6 +8,11 @@
     <main>
         <div class="container-fluid">
             <div class="card-body">
+                <div class="row justify-content-center">
+                    <div th:if="${messageSuccess}">
+                        <span class="success text-center" th:text="${messageSuccess}"></span>
+                    </div>
+                </div>
                 <th:block th:with="hasCoach=${!#lists.isEmpty(coachList)}">
                     <form id="coachForm" method="post">
                         <th:block th:if="!${#lists.isEmpty(coachList)}">
@@ -42,7 +47,7 @@
                                                 <span th:text="${co?.school?.name}"></span>
                                             </td>
                                             <td>
-                                                <a th:href="${'edit/'+ co?.id}"
+                                                <a th:href="${'/admin/coach/edit/'+ co?.id}"
                                                    class="btn btn-link fa fa-edit"></a>
                                                 <a class="btn btn-link fa fa-trash-alt"
                                                    th:attr="data-target='#modal-delete'+${co?.id}"
@@ -63,7 +68,8 @@
                                                                         data-dismiss="modal"> Annuler
                                                                 </button>
                                                                 <a class="btn btn-danger pull-right" type="button"
-                                                                   th:href="${'delete/'+ co?.id}"> Supprimer
+                                                                   th:href="${'/admin/coach/delete/'+ co?.id}">
+                                                                    Supprimer
                                                                 </a>
                                                             </div>
                                                         </div>

@@ -10,22 +10,22 @@
         <main>
             <th:block>
                 <div>
-                    <img th:src="@{/images/t.jpg}" class="img-card">
+                    <img th:src="@{/images/taek1.jpg}" class="img-card">
                 </div>
             </th:block>
             <th:block>
                 <div class="card-body">
-                    <div class="card shadow-lg border-0 rounded-lg mt-5">
+                    <div class="card shadow-lg border-0 rounded-sm mt-5 py-5 mr-5 ml-5">
                         <form id="idGetSubscriptionForm" class="form-horizontal mt-5 ml-5 mr-5 mb-5"
                               th:action="@{(${'/user/confirmSubscription/' + subscription.idSubscription})}"
                               th:object="${subscription}" method="post">
-                            <div class="form-row py-4">
-                                <div class="col-lg-6 col-12">
+                            <div class="form-row justify-content-center mr-5 ml-5">
+                                <div class="col-4">
                                     <label class="control-label font-weight-bold my-4"> Ecole : </label>
                                     <span class="my-4 text-uppercase"
                                           th:text="${subscription.school.name}"></span>
                                 </div>
-                                <div class="col-lg-6 col-12">
+                                <div class="col-4">
                                     <label class="control-label font-weight-bold my-4"> Adresse de l'école : </label>
                                     <span class="my-4 text-uppercase"
                                           th:text="${subscription.school?.address?.street} + ', ' + ${subscription.school?.address?.number}"></span>
@@ -33,43 +33,43 @@
                                           th:text="${subscription.school?.address?.city?.postalCode} + ' - ' + ${subscription.school?.address?.city?.cityName}"></span>
                                 </div>
                             </div>
-                            <div class="form-row py-4">
-                                <div class="col-lg-6 col-12">
+                            <div class="form-row justify-content-center mr-5 ml-5">
+                                <div class="col-4">
                                     <label class="control-label font-weight-bold my-4"> Eleve : </label>
                                     <span class="my-4 text-uppercase"
                                           th:text="${subscription.student.firstName} +' ' + ${subscription.student.name}"></span>
                                 </div>
-                                <div class="col-lg-6 col-12">
+                                <div class="col-4">
                                     <label class="control-label font-weight-bold my-4"> catégorie : </label>
                                     <span class="my-4 text-uppercase"
                                           th:text="${subscription.categories.categoryName}"></span>
                                 </div>
                             </div>
-                            <div class="form-row py-4">
-                                <div class="col-lg-6 col-12">
+                            <div class="form-row justify-content-center mr-5 ml-5">
+                                <div class="col-4">
                                     <label class="control-label font-weight-bold my-4"> Durée d'abonnement : </label>
                                     <span class="my-4 text-uppercase"
                                           th:text="${subscription.subscriptionPeriod.period}"></span>
                                 </div>
-                                <div class="col-lg-6 col-12">
+                                <div class="col-4">
                                     <label class="control-label font-weight-bold my-4"> Nombre d'heur/semaine : </label>
                                     <span class="my-4 text-uppercase"
                                           th:text="${subscription.subscriptionType.nbrHours} +'h - ( ' + ${subscription.subscriptionType.description} + ' )'"></span>
                                 </div>
                             </div>
-                            <div class="form-row py-4">
-                                <div class="col-lg-4 col-12">
+                            <div class="form-row justify-content-center mr-5 ml-5">
+                                <div class="col-4">
                                     <label class="control-label font-weight-bold my-4"> prix d'abonnement : </label>
                                     <span class="my-4 text-uppercase"
                                           th:text="${subscription.price} + ' EURO'"></span>
                                 </div>
-                                <div class="col-lg-4 col-12">
+                                <div class="col-lg-4">
                                     <label class="control-label font-weight-bold my-4"> Frais d'inscription (assurance
                                         annuelle) : </label>
                                     <span class="my-4 text-uppercase"
                                           th:text="${subscription.expenses} + ' EURO'"></span>
                                 </div>
-                                <div class="col-lg-4 col-12">
+                                <div class="col-lg-4">
                                     <label class="control-label font-weight-bold my-4"> prix totale : </label>
                                     <span class="text-uppercase"
                                           th:text="${subscription.totalPrice}  + ' EURO'"></span>

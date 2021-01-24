@@ -9,6 +9,14 @@
     <main>
         <div class="container-fluid">
             <div class="card-body">
+                <div class="row justify-content-center">
+                    <div th:if="${messageError}">
+                        <span class="error text-center" th:text="${messageError}"></span>
+                    </div>
+                    <div th:if="${messageSuccess}">
+                        <span class="success text-center" th:text="${messageSuccess}"></span>
+                    </div>
+                </div>
                 <th:block th:with="hasTime=${!#lists.isEmpty(timeList)}">
                     <form id="timeForm" method="post">
                         <th:block th:if="!${#lists.isEmpty(timeList)}">
@@ -46,7 +54,9 @@
                                                 <span th:text="${t?.s?.name}"></span>
                                             </td>
                                             <td>
-                                                <span th:text="${t?.co.firstName} + ' ' + ${t.co.lastName}"></span>
+                                                <div class="" th:each="co,row :${t?.getCoachList()}">
+                                                    <span th:text="${co?.firstName} + ' ' + ${co?.lastName}"></span>
+                                                </div>
                                             </td>
                                             <td>
                                                 <span th:text="${t?.c?.categoryName}"></span>
@@ -63,7 +73,7 @@
                                                 <span th:text="${t?.startTime} + ' - '+ ${t?.endTime}"></span>
                                             </td>
                                             <td>
-                                                <a th:href="${'edit/'+ t?.idTime}"
+                                                <a th:href="${'/admin/time/edit/'+ t?.idTime}"
                                                    class="btn btn-link fa fa-edit"></a>
                                                 <a class="btn btn-link fa fa-trash-alt"
                                                    th:attr="data-target='#modal-delete'+${t?.idTime}"
@@ -84,7 +94,8 @@
                                                                         data-dismiss="modal"> Annuler
                                                                 </button>
                                                                 <a class="btn btn-danger pull-right" type="button"
-                                                                   th:href="${'delete/'+ t?.idTime}"> Supprimer
+                                                                   th:href="${'/admin/time/delete/'+ t?.idTime}">
+                                                                    Supprimer
                                                                 </a>
                                                             </div>
                                                         </div>

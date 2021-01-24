@@ -19,7 +19,7 @@
                         <h1 class="font-weight-bold my-4">Choisir votre Ecole</h1>
                     </div>
                     <div class="row justify-content-center">
-                        <h5 class="font-weight-bold my-4"> Tranche d'âge :</h5>
+                        <h5 class="font-weight-bold my-4"> Tranche d'âge : </h5>
                         <span class="font-weight-bold my-4" th:text="${cat.categoryName}"></span>
                     </div>
                     <div th:if="${messageError}">
@@ -53,8 +53,7 @@
                                                             th:text="${scho?.name}"></h3>
                                                     </td>
                                                     <td class="text-center py-5">
-                                                        <span th:text="${scho?.address?.street} + ', ' + ${scho?.address?.number} "></span>
-                                                        <span th:text="${scho?.address?.city?.postalCode} + ', ' + ${scho?.address?.city?.cityName}"></span>
+                                                        <span th:text="${scho?.address?.street} + '  ' + ${scho?.address?.number} +  ' - '+${scho?.address?.city?.postalCode} + '  ' + ${scho?.address?.city?.cityName}"></span>
                                                     </td>
                                                 </tr>
                                             </th:block>

@@ -1,6 +1,7 @@
 package com.clubtaekwondo.club.mail;
 
 import com.clubtaekwondo.club.controller.contact.Contact;
+import com.clubtaekwondo.club.model.School;
 import com.clubtaekwondo.club.model.Subscription;
 import com.clubtaekwondo.club.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -72,4 +74,14 @@ public class MailConstructor {
         return email;
     }
 
+    public SimpleMailMessage constructSchoolDelete(User user, School school) {
+
+        String message = "\n Bonjour  " + user.getFirstName().toLowerCase(Locale.ROOT) + ' ' + user.getLastName().toUpperCase(Locale.ROOT) + "," + "\n Nous vous informons que l'école : " + school.getName() + ' ' + school.getAddress().getStreet() + ' ' + school.getAddress().getNumber() + " - " + school.getAddress().getCity().getPostalCode() + ' ' + school.getAddress().getCity().getCityName() + "\n n'appartient plus au club, si vous voulez continuer vous avez la possibilité de choisir une autre école. Le cas échéant, vous serez remboursé pour le reste. \n  Cordialement,";
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(user.getEmail());
+        email.setSubject("Changement d'école");
+        email.setText(message);
+        email.setFrom(env.getProperty("support.email"));
+        return email;
+    }
 }

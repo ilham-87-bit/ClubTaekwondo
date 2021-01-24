@@ -7,15 +7,15 @@
 </header>
 <div id="layoutSidenav_content">
     <main>
-        <div class="container-fluid">
+        <div class="container-body">
             <div class="card-body">
                 <th:block th:with="hasTariff=${!#lists.isEmpty(tariffList)}">
                     <th:block th:if="!${#lists.isEmpty(tariffList)}">
                         <div class="card-body card-border">
                             <ul th:each="category, row : ${categoryList}" class="js-row-link-alt py-4">
                                 <li>
-                                    <label class="control-label text-uppercase font-weight-bold"
-                                           th:text="${category?.categoryName}"></label>
+                                    <h3 class="control-label text-uppercase font-weight-bold text-center"
+                                        th:text="${category?.categoryName}"></h3>
                                     <table id="tariffTable"
                                            class="table table-fixed table-striped"
                                            th:classappend="${hasTariff} ? 'table-hover'">

@@ -71,7 +71,7 @@ public class SubscriptionController {
             List<School> schools = schoolService.getAllSchool();
             for (School school : schools) {
                 for (Categories cat : school.getCategoriesList()) {
-                    if (cat.getIdCategory().equals(categories.getIdCategory())) {
+                    if (cat.getIdCategory().equals(categories.getIdCategory()) && school.isBelongTo()) {
                         schoolList.add(school);
                     }
                 }
@@ -85,7 +85,7 @@ public class SubscriptionController {
 
             return "user/addSubscription1";
         } else {
-            model.addAttribute("messageWarning", "Vous devez se connecter/s'inscrire pour pouvoir acheter/prolonger vos abonnements.");
+            model.addAttribute("messageWarning", "Il faut se connecter/s'inscrire pour pouvoir acheter/prolonger les abonnements.");
             return "login";
         }
 
@@ -137,9 +137,9 @@ public class SubscriptionController {
 
     @PostMapping(value = "user/addSubscriptionPart2/{subscription}")
     public String addSubscriptionPart2(@PathVariable("subscription") Long id, SubscriptionDTO subscriptionDTO, SubscriptionType subscriptionT, SubscriptionPeriod subscriptionP, Model model) {
+        Subscription subscription = subscriptionService.findById(id);
         try {
             Date dateCurrent = new Date();
-            Subscription subscription = subscriptionService.findById(id);
             if (subscription.getEndDate() != null) {
                 if (subscription.getEndDate().before(dateCurrent)) {
                     subscription.setSubscriptionStatus(SubscriptionStatus.INITIATED);
@@ -149,8 +149,9 @@ public class SubscriptionController {
             String dateString = subscriptionDTO.getStartDate();
             Date date = sdf.parse(dateString);
             subscription.setStartDate(date);
+            SimpleDateFormat sdfEnd = new SimpleDateFormat("ddMMyy");
             String dateStringEnd = subscriptionDTO.getEndDate();
-            Date d = sdf.parse(dateStringEnd);
+            Date d = sdfEnd.parse(dateStringEnd);
             subscription.setEndDate(d);
             subscription.setSubscriptionType(subscriptionTypeService.findById(subscriptionT.getIdType()));
             subscription.setSubscriptionPeriod(subscriptionPeriodService.findById(subscriptionP.getId()));
@@ -170,9 +171,19 @@ public class SubscriptionController {
 
             return "redirect:" + url;
         } catch (Exception e) {
-            model.addAttribute("messageError", "erreur, veuillez essayer");
+            Map<Long, Integer> parameters = new HashMap<>();
+            List<SubscriptionPeriod> periodList = subscriptionPeriodService.getAllPeriod();
+            for (SubscriptionPeriod subscriptionPeriod : periodList) {
+                parameters.put(subscriptionPeriod.getId(), subscriptionPeriod.getNbrMonth());
+            }
+            model.addAttribute("subscription", subscription);
+            model.addAttribute("periodList", periodList);
+            model.addAttribute("typeList", subscriptionTypeService.getAllSubscriptionType());
+            model.addAttribute("parameters", parameters);
+            model.addAttribute("messageError", "Une erreur s'est produite, veuillez ressayer.");
             model.addAttribute("subscriptions", subscriptionService.getCart());
-            return "redirect:/subscription";
+
+            return "user/addSubscriptionPart2";
         }
     }
 
@@ -214,7 +225,7 @@ public class SubscriptionController {
         subscription.setSubscriptionStatus(SubscriptionStatus.CHART);
         subscriptionService.save(subscription);
         model.addAttribute("subscriptions", subscriptionService.getCart());
-        return "redirect:/index";
+        return "redirect:/user/cart";
     }
 
     @GetMapping(value = "user/delete/{subscription}")

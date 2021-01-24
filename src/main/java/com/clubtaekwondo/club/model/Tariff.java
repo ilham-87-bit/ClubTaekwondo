@@ -13,6 +13,8 @@ public class Tariff implements Serializable {
 
     private float prix;
 
+    private boolean isExist = false;
+
     public Tariff(TariffPK tariffPK, float prix) {
         this.tariffPK = tariffPK;
         this.prix = prix;
@@ -21,8 +23,10 @@ public class Tariff implements Serializable {
     public Tariff() {
     }
 
-    public Tariff(Long idCategory, Long idPeriod, Long idType) {
-        this.tariffPK = new TariffPK(idCategory, idPeriod, idType);
+    public Tariff(TariffPK tariffPK, float prix, boolean isExist) {
+        this.tariffPK = tariffPK;
+        this.prix = prix;
+        this.isExist = isExist;
     }
 
     public TariffPK getTariffPK() {
@@ -41,6 +45,13 @@ public class Tariff implements Serializable {
         this.prix = prix;
     }
 
+    public boolean isExist() {
+        return isExist;
+    }
+
+    public void setExist(boolean exist) {
+        isExist = exist;
+    }
 
     @Override
     public String toString() {

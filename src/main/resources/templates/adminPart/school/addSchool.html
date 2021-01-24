@@ -37,18 +37,11 @@
                     </div>
 
                     <div class="form-group required col-6 col-lg-8">
-                        <label class="control-label" for="postalCode"> Code postal:</label>
-                        <input id="postalCode" type="text" class="form-control py-4" required name="postalCode"
-                               data-placement="right"
-                               maxlength="50" th:field="*{address.city.postalCode}"/>
-                    </div>
-
-                    <div class="form-group required col-6 col-lg-8">
                         <label class="control-label" for="idCity"> Ville :</label>
                         <div class="select-awesome" data-placement="right" maxlength="50">
                             <label>
                                 <select id="idCity"
-                                        class="form-control" required
+                                        class="form-control selectCity" required
                                         aria-invalid="false"
                                         name="idCity">
                                     <option></option>
@@ -62,7 +55,17 @@
                                 </select>
                             </label>
                         </div>
-
+                    </div>
+                    <div class="form-group required col-6 col-lg-8">
+                        <label class="control-label" for="postalCode"> Code postal:</label>
+                        <div id="city" th:each="m, r : ${map}"
+                             class="js-row-link-alt map">
+                            <input type="hidden" th:id="${'city' + r.index}" th:name="${m.key}"
+                                   th:value="${m.value}"/>
+                        </div>
+                        <input id="postalCode" type="text" class="form-control py-4" required name="postalCode"
+                               data-placement="right"
+                               maxlength="50" th:field="*{address.city.postalCode}"/>
                     </div>
                     <div class="form-group required col-6 col-lg-8 required">
                         <div class="input-group input-file" name="file">

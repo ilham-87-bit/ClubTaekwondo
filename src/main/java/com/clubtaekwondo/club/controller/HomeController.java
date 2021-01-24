@@ -3,6 +3,7 @@ package com.clubtaekwondo.club.controller;
 import com.clubtaekwondo.club.controller.contact.Contact;
 import com.clubtaekwondo.club.mail.MailConstructor;
 import com.clubtaekwondo.club.model.*;
+import com.clubtaekwondo.club.service.CityService;
 import com.clubtaekwondo.club.service.PaymentService;
 import com.clubtaekwondo.club.service.SubscriptionService;
 import com.clubtaekwondo.club.service.UserService;
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -48,8 +51,16 @@ public class HomeController {
     @GetMapping(value = "/index")
     public String home(Model model) {
         model.addAttribute("subscriptions", service.getCart());
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication.getPrincipal());
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Object authentication = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (authentication instanceof User) {
+
+            User user = (User) authentication;
+            if (user.getUserRole().getRole().equals(Role.ADMIN.getAlea())) {
+                return "redirect:/admin/indexAdmin";
+            }
+        }
         return ("index");
     }
 
@@ -102,5 +113,4 @@ public class HomeController {
         }
         return "paymentSuccess";
     }
-
 }

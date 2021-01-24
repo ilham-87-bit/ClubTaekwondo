@@ -3,6 +3,8 @@ package com.clubtaekwondo.club.controller.user;
 import com.clubtaekwondo.club.model.*;
 import com.clubtaekwondo.club.service.*;
 import org.dom4j.util.StringUtils;
+import org.joda.time.LocalDate;
+import org.joda.time.Years;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -34,6 +36,8 @@ public class StudentController {
     private StudentRelationService studentRelationService;
     @Autowired
     private TimeTableService timeTableService;
+    @Autowired
+    private CategoriesService categoriesService;
 
 
     @GetMapping(value = "/addStudent/{subscription}")
@@ -52,6 +56,7 @@ public class StudentController {
             model.addAttribute("student", student);
             model.addAttribute("cityList", cityService.getAllCity());
             model.addAttribute("subscriptions", subscriptionService.getCart());
+            model.addAttribute("map", getAllPostalCodeByCity());
 
             return "user/addStudent";
         } catch (Exception e) {
@@ -64,17 +69,19 @@ public class StudentController {
 
     @PostMapping(value = "/addStudent/{subscription}")
     public String addStudent(@PathVariable("subscription") Long id, StudentDTO studentDTO, City city, Model model) {
+
+        Date date = new Date();
         Subscription subscription = subscriptionService.findById(id);
         City c = cityService.findById(city.getIdCity());
         try {
             List<Student> studentList = studentService.getAllStudent();
-            Student student = new Student();
+            Student student = initializeStudent(studentDTO, c);
             if (subscription.getStudent() == null) {
                 for (Student student1 : studentList) {
                     if (student1.getNationalRegistry().equals(studentDTO.getNationalRegistry())) {
                         model.addAttribute("messageError", "cet éleve exciste déja!");
                         model.addAttribute("subscription", subscription);
-                        model.addAttribute("student", new Student());
+                        model.addAttribute("student", student);
                         model.addAttribute("cityList", cityService.getAllCity());
                         model.addAttribute("subscriptions", subscriptionService.getCart());
                         return "user/addStudent";
@@ -82,7 +89,17 @@ public class StudentController {
                 }
             }
 
-            student = initializeStudent(studentDTO, c);
+            int cptYear = Math.abs(Years.yearsBetween(LocalDate.fromDateFields(student.getBirthDay()), LocalDate.fromDateFields(date)).getYears());
+
+//            if (cptYear > subscription.getCategories().getAge()) {
+//                model.addAttribute("messageError", "La catégorie que vous avez choisie n'est pas compatible avec la date de naissance que vous avez introduite!");
+//                model.addAttribute("subscription", subscription);
+//                model.addAttribute("student", student);
+//                model.addAttribute("cityList", cityService.getAllCity());
+//                model.addAttribute("subscriptions", subscriptionService.getCart());
+//                return "user/addStudent";
+//            }
+
             if (subscription.getStudent() != null) {
                 student.setIdStudent(subscription.getStudent().getIdStudent());
             }
@@ -118,7 +135,7 @@ public class StudentController {
 
         for (StudentRelation studentRelation : studentRelationList) {
             if (studentRelation.getStudentRelationPK().getIdStudent().equals(student.getIdStudent())) {
-                listMap.put(studentRelation.getRelationship(), contactPersonService.findById(studentRelation.getStudentRelationPK().getIdContactPerson()));
+                listMap.put(getRelationShip(studentRelation), contactPersonService.findById(studentRelation.getStudentRelationPK().getIdContactPerson()));
             }
         }
         model.addAttribute("subscriptions", subscriptionService.getCart());
@@ -140,7 +157,11 @@ public class StudentController {
 
         model.addAttribute("subscription", s);
         model.addAttribute("student", student);
+        model.addAttribute("studentRelation", new StudentRelation());
         model.addAttribute("subscriptions", subscriptionService.getCart());
+        if (s.getSubscriptionStatus().equals(SubscriptionStatus.CONFIRMED)) {
+            model.addAttribute("previous", true);
+        }
 
         return "user/addContactPerson";
     }
@@ -172,14 +193,17 @@ public class StudentController {
         model.addAttribute("contactPerson", c);
         model.addAttribute("subscriptions", subscriptionService.getCart());
 
-        return "redirect:/user/contactPersonList/" + student.getIdStudent();
+        if (s.getSubscriptionStatus().equals(SubscriptionStatus.CONFIRMED)) {
+            return "redirect:/user/personList/" + s.getIdSubscription();
+        } else {
+            return "redirect:/user/contactPersonList/" + student.getIdStudent();
+        }
     }
 
     @GetMapping(value = "/editContactPerson/{person}/{student}")
     public String geteditContactPerson(@PathVariable("person") Long idPerson, @PathVariable("student") Long idStudent, Model model) {
 
         Subscription s = new Subscription();
-        Map<String, ContactPerson> map = new HashMap<>();
         ContactPerson contactPerson = contactPersonService.findById(idPerson);
 
         Student student = studentService.findById(idStudent);
@@ -192,26 +216,26 @@ public class StudentController {
         for (StudentRelation studentRelation : studentRelationList) {
             if (studentRelation.getStudentRelationPK().getIdStudent().equals(student.getIdStudent()) && studentRelation.getStudentRelationPK().getIdContactPerson().equals(contactPerson.getIdPerson())) {
 
-                map.put(studentRelation.getRelationship(), contactPerson);
+                model.addAttribute("studentRelation", studentRelation);
             }
         }
 
         model.addAttribute("subscription", s);
         model.addAttribute("student", student);
-        model.addAttribute("studentRelation", map);
         model.addAttribute("contactPerson", contactPerson);
         model.addAttribute("subscriptions", subscriptionService.getCart());
+        if (s.getSubscriptionStatus().equals(SubscriptionStatus.CONFIRMED)) {
+            model.addAttribute("previous", true);
+        }
 
         return "user/addContactPerson";
     }
 
-    @PostMapping(value = "/editContactPerson/{person}/{student}")
-    public String editContactPerson(@PathVariable("person") Long idPerson, @PathVariable("student") Long idStudent, StudentRelation studentRelation, ContactPerson contactPerson, Model model) {
+    @PostMapping(value = "/editContactPerson/{student}")
+    public String editContactPerson(@PathVariable("student") Long idStudent, StudentRelation studentRelation, ContactPerson contactPerson, Model model) {
         Subscription s = new Subscription();
 
         Student student = studentService.findById(idStudent);
-        ContactPerson c = contactPersonService.findById(idPerson);
-        contactPerson.setIdPerson(c.getIdPerson());
         contactPersonService.save(contactPerson);
 
         List<StudentRelation> studentRelationList = studentRelationService.getAllStudentRelation();
@@ -230,28 +254,58 @@ public class StudentController {
         }
         model.addAttribute("subscription", s);
         model.addAttribute("student", student);
-        model.addAttribute("contactPerson", c);
+        model.addAttribute("contactPerson", contactPerson);
         model.addAttribute("subscriptions", subscriptionService.getCart());
 
-        return "redirect:/user/contactPersonList/" + student.getIdStudent();
+        if (s.getSubscriptionStatus().equals(SubscriptionStatus.CONFIRMED)) {
+            return "redirect:/user/personList/" + s.getIdSubscription();
+        } else {
+            return "redirect:/user/contactPersonList/" + student.getIdStudent();
+        }
     }
 
     @GetMapping(value = "/deleteContactPerson/{person}/{student}")
     public String deleteContactPerson(@PathVariable("person") Long idPerson, @PathVariable("student") Long idStudent, Model model) {
 
-        Subscription s = new Subscription();
+        Date date = new Date();
+        Subscription subscription = new Subscription();
+        List<StudentRelation> relationList = new ArrayList<>();
         ContactPerson contactPerson = contactPersonService.findById(idPerson);
         Student student = studentService.findById(idStudent);
 
+        Optional<Subscription> firstSubscription = subscriptionService.getAllSubscription().stream().filter(su -> su.getStudent().getIdStudent().equals(student.getIdStudent()))
+                .findFirst();
+        if (firstSubscription.isPresent()) {
+            subscription = firstSubscription.get();
+            model.addAttribute("subscription", subscription);
+        }
+
         List<StudentRelation> studentRelationList = studentRelationService.getAllStudentRelation();
         for (StudentRelation studentRelation : studentRelationList) {
-            if (studentRelation.getStudentRelationPK().getIdContactPerson().equals(contactPerson.getIdPerson()) && studentRelation.getStudentRelationPK().getIdStudent().equals(student.getIdStudent())) {
-                studentRelationService.delete(studentRelation);
+            if (studentRelation.getStudentRelationPK().getIdStudent().equals(student.getIdStudent())) {
+                relationList.add(studentRelation);
+            }
+        }
+
+        int cptYear = Math.abs(Years.yearsBetween(LocalDate.fromDateFields(student.getBirthDay()), LocalDate.fromDateFields(date)).getYears());
+
+        if (cptYear < 18 && relationList.size() <= 1) {
+            model.addAttribute("messageError", " Cet abonnement est lié à un élève mineur, vous ne pouvez pas supprimer la seule personne de contact (vous devez ajouter une autre personne pour pouvoir supprimer celui-là)");
+
+        } else {
+            for (StudentRelation studentRelation : studentRelationList) {
+                if (studentRelation.getStudentRelationPK().getIdContactPerson().equals(contactPerson.getIdPerson()) && studentRelation.getStudentRelationPK().getIdStudent().equals(student.getIdStudent())) {
+                    studentRelationService.delete(studentRelation);
+                }
             }
         }
         model.addAttribute("subscriptions", subscriptionService.getCart());
 
-        return "redirect:/user/contactPersonList/" + student.getIdStudent();
+        if (subscription.getSubscriptionStatus().equals(SubscriptionStatus.CONFIRMED)) {
+            return "redirect:/user/personList/" + subscription.getIdSubscription();
+        } else {
+            return "redirect:/user/contactPersonList/" + student.getIdStudent();
+        }
     }
 
     @GetMapping(value = "/mySubscription")
@@ -299,7 +353,7 @@ public class StudentController {
         List<TimeTable> timeTableList = timeTableService.getAllTimeTable();
 
         for (TimeTable timeTable : timeTableList) {
-            if (timeTable.getS().getIdSchool().equals(subscription.getSchool().getIdSchool()) && timeTable.getC().getIdCategory().equals(subscription.getCategories().getIdCategory()) && timeTable.getSubscriptionTypeList().contains(subscription.getSubscriptionType().getIdType())) {
+            if (timeTable.getS().getIdSchool().equals(subscription.getSchool().getIdSchool()) && timeTable.getC().getIdCategory().equals(subscription.getCategories().getIdCategory()) && timeTable.getSubscriptionTypeList().contains(subscription.getSubscriptionType())) {
                 myTime.add(timeTable);
             }
         }
@@ -311,6 +365,40 @@ public class StudentController {
         return "user/myTime";
     }
 
+    @GetMapping(value = "/personList/{subscription}")
+    private String getPersonByStudent(@PathVariable("subscription") Long id, Model model) {
+
+        Subscription subscription = subscriptionService.findById(id);
+
+        List<StudentRelation> studentRelationList = studentRelationService.getAllStudentRelation();
+
+        Map<String, ContactPerson> map = new HashMap<>();
+        for (StudentRelation studentRelation : studentRelationList) {
+            if (studentRelation.getStudentRelationPK().getIdStudent().equals(subscription.getStudent().getIdStudent())) {
+                map.put(getRelationShip(studentRelation), contactPersonService.findById(studentRelation.getStudentRelationPK().getIdContactPerson()));
+            }
+        }
+        model.addAttribute("personList", map);
+        model.addAttribute("subscription", subscription);
+
+        return "user/personList";
+    }
+
+    private String getRelationShip(StudentRelation studentRelation) {
+        String lien = "";
+        if (studentRelation.getRelationship() != null) {
+            if (studentRelation.getRelationship().equals(RelationType.FATHER.toString())) {
+                lien = "Pére";
+            }
+            if (studentRelation.getRelationship().equals(RelationType.MOTHER.toString())) {
+                lien = "Mére";
+            }
+            if (studentRelation.getRelationship().equals(RelationType.OTHERS.toString())) {
+                lien = "Autre";
+            }
+        }
+        return lien;
+    }
 
     private Student initializeStudent(StudentDTO studentDTO, City c) throws ParseException {
         Student student = new Student();
@@ -319,7 +407,7 @@ public class StudentController {
             student.setEmail(studentDTO.getEmail());
         }
         if (studentDTO.getGsm() != "") {
-            student.setGsm(new Integer(studentDTO.getGsm()));
+            student.setGsm(Integer.parseInt(studentDTO.getGsm()));
         }
 
         studentDTO.getAddress().setCity(c);
@@ -348,5 +436,15 @@ public class StudentController {
         }
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(date.getTime());
+    }
+
+    public Map<Long, String> getAllPostalCodeByCity() {
+        Map<Long, String> map = new HashMap<>();
+
+        List<City> cityList = cityService.getAllCity();
+        for (City city : cityList) {
+            map.put(city.getIdCity(), city.getPostalCode());
+        }
+        return map;
     }
 }

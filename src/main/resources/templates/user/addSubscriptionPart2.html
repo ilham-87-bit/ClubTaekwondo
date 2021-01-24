@@ -10,15 +10,21 @@
         <main>
             <th:block>
                 <div>
-                    <img th:src="@{/images/taekwondo.jpg}" class="img-card">
+                    <img th:src="@{/images/taek2.jpg}" class="img-card">
                 </div>
             </th:block>
             <th:block>
                 <div class="card-body">
+                    <input type="hidden" th:value="${subscription?.idSubscription}">
                     <div class="row justify-content-center">
                         <h5 class="font-weight-bold my-4"> Tranche d'âge : </h5>
                         <span class="font-weight-bold my-4 text-uppercase"
-                              th:text="' ' + ${subscription.categories.categoryName}"></span>
+                              th:text="${subscription.categories.categoryName}"></span>
+                    </div>
+                    <div class="row justify-content-center">
+                        <h5 class="font-weight-bold my-4"> Ecole : </h5>
+                        <span class="font-weight-bold my-4 text-uppercase"
+                              th:text="${' ' + subscription.school.name}"></span>
                     </div>
                     <div th:if="${messageError}">
                         <p class="error" th:text="${messageError}"></p>
@@ -72,12 +78,11 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="col-4 form-group required">
-                                        <label class="control-label" for="startDate"> Date
-                                            de début: </label>
+                                        <label class="control-label" for="startDate"> Date de début: </label>
                                         <div class="input-group date">
                                             <input type="text" class="form-control calculateDate" name="startDate"
                                                    id="startDate" data-inputmask-alias="fh_date"
-                                                   th:value="${subscription.startDate}"/>
+                                                   th:value="${T(com.clubtaekwondo.club.controller.user.StudentController).formatDate(subscription.startDate)}"/>
                                             <div class="input-group-append">
                                                 <span class="input-group-text calculateDate"><i
                                                         class="far fa-calendar-alt"></i></span>
@@ -86,8 +91,7 @@
                                     </div>
                                     <div class="col-4 form-group required">
                                         <label class="control-label"
-                                               for="endDate"> Date
-                                            de fin: </label>
+                                               for="endDate"> Date de fin: </label>
                                         <div class="form-row">
                                             <ul class="hidden" id="nbrMonth">
                                                 <li th:each="parameter : ${parameters}"
@@ -99,7 +103,7 @@
                                                 <input type="text" class="form-control"
                                                        readonly
                                                        id="endDate" name="endDate" data-inputmask-alias="fh_date"
-                                                       th:value="${subscription?.endDate}"/>
+                                                       th:value="${T(com.clubtaekwondo.club.controller.user.StudentController).formatDate(subscription?.endDate)}"/>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i
                                                             class="far fa-calendar-alt"></i></span>

@@ -12,7 +12,7 @@
                 <div class="card-body mt-5 ml-5 mr-5 mb-5">
                     <input type="hidden" th:field="*{idTime}">
                     <div class="form-row">
-                        <div class="col-md-6">
+                        <div class="col-12">
                             <div class="form-group required">
                                 <label class="control-label" for="idSchool"> Ecole :</label>
                                 <div class="select-awesome" data-placement="right" maxlength="50">
@@ -33,65 +33,64 @@
                             </div>
 
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group required">
-                                <label class="control-label" for="idCoach"> Entraineur :</label>
-                                <div class="select-awesome" data-placement="right" maxlength="50">
-                                    <label>
-                                        <select id="idCoach" class="form-control selectCoach" required
-                                                aria-invalid="false" name="id">
-                                            <option id="coachNull"></option>
-                                            <th:block th:if="!${#lists.isEmpty(coachList)}">
-                                                <option th:each="coach, row : ${coachList}" th:id="${'co' + row.index}"
-                                                        th:value="${coach.id}" class="hidden coachList text-uppercase"
-                                                        th:text="${coach.firstName} + ' ' + ${coach.lastName}"
-                                                        th:name="${coach.school.idSchool}"
-                                                        th:selected="${time?.co?.id} == ${coach.id}">
-                                                </option>
-                                            </th:block>
-                                        </select>
-                                    </label>
+                    </div>
+                    <div class="card border">
+                        <div class="form-row mt-5 mb-5 mr-5 ml-5">
+                            <div class="col-lg-4 col-12">
+                                <div class="form-group required">
+                                    <label class="control-label"> Type d'abonnement :</label>
+                                    <div id="chek" th:each="t, row : ${typeList}" class="js-row-link-alt">
+                                        <input type="checkbox" th:id="${'checkType' + row.index}" name="typeList[]"
+                                               th:value="${t?.idType}"
+                                               th:checked="${listType != null and listType.contains(t)}"
+                                               class="checkboxGroup with-font"/>
+                                        <label th:for="${'checkType' + row.index}"
+                                               th:text="${t?.nbrHours} + ' h'"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-12">
+                                <div class="form-group required">
+                                    <label class="control-label"> Entraineur :</label>
+                                    <div th:each="p, r : ${parameter}"
+                                         class="js-row-link-alt coachBySchool hidden">
+                                        <input type="hidden" th:id="${'school' + r.index}" th:name="${p.key}"
+                                               th:value="${p.value}"/>
+                                    </div>
+                                    <div id="chekCoach" th:each="co, row : ${coList}" class="js-row-link-alt rowCoach">
+                                        <input type="checkbox" th:id="${'check' + row.index}" name="coaList[]"
+                                               th:value="${co?.id}"
+                                               th:checked="${listCoach != null and listCoach.contains(co)}"
+                                               class="checkboxGroup with-font hidden checkedCoach"/>
+                                        <label th:id="${'labelCo' + row.index}" th:for="${'check' + row.index}"
+                                               th:text="${co?.firstName} + '  ' + ${co?.lastName}"
+                                               class="hidden"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-12">
+                                <div class="form-group required">
+                                    <label class="control-label"> Categorie :</label>
+                                    <div th:each="pc, ro : ${parameterCoach}"
+                                         class="js-row-link-alt categoryByCoach">
+                                        <input type="hidden" th:id="${'coach' + ro.index}" th:name="${pc.key}"
+                                               th:value="${pc.value}"/>
+                                    </div>
+                                    <div th:each="category, row : ${categoryList}" class="js-row-link-alt rowCategory">
+                                        <input type="radio" th:id="${'checkCat' + row.index}" name="c"
+                                               th:value="${category?.idCategory}"
+                                               th:checked="${time?.getC()?.idCategory}"
+                                               class="checkboxGroup with-font hidden"/>
+                                        <label th:id="${'labelCat' + row.index}" th:for="${'checkCat' + row.index}"
+                                               class="hidden"
+                                               th:text="${category?.categoryName}"></label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <div class="form-row">
-                        <div class="col-md-6">
-                            <div class="form-group required">
-                                <label class="control-label" for="idCategory"> Categorie :</label>
-                                <div id="coach" th:each="c , row: ${coachList}"
-                                     class="js-row-link-alt coach">
-                                    <div th:id="${'catCoach' + row.index}" th:name="${c.id}">
-                                        <div th:each="cat, row : ${c.categoriesList}"
-                                             class="js-row-link-alt categoryByCoach">
-                                            <input type="hidden" th:id="${'catByCoach' + row.index}"
-                                                   th:value="${cat.idCategory}"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="select-awesome" data-placement="right" maxlength="50">
-                                    <label>
-                                        <select id="idCategory"
-                                                class="form-control" required
-                                                aria-invalid="false"
-                                                name="idCategory">
-                                            <option id="optionVide"></option>
-                                            <th:block th:if="!${#lists.isEmpty(categoryList)}">
-                                                <option th:each="category, row : ${categoryList}"
-                                                        th:id="${'cat' + row.index}"
-                                                        th:value="${category.idCategory}"
-                                                        class="catList hidden"
-                                                        th:text="${category.categoryName}"
-                                                        th:selected="${time?.c?.idCategory} == ${category.idCategory}">
-                                                </option>
-                                            </th:block>
-                                        </select>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
+                        <div class="col-12">
                             <div class="form-group required">
                                 <label class="control-label" for="idDay"> Jour :</label>
                                 <div class="select-awesome" data-placement="right" maxlength="50">
@@ -128,21 +127,6 @@
                                 <label class="control-label" for="inputEndTime">heure-fin :</label>
                                 <input class="form-control" id="inputEndTime" type="time" step="300" required
                                        th:field="*{endTime}"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-12 col-lg-6">
-                            <div class="form-group required">
-                                <label class="control-label"> Type d'abonnement :</label>
-                                <div id="chek" th:each="t, row : ${typeList}" class="js-row-link-alt">
-                                    <input type="checkbox" th:id="${'checkbox' + row.index}" name="typeList[]"
-                                           th:value="${t?.idType}"
-                                           th:checked="${listType != null and listType.contains(t)}"
-                                           class="checkboxGroup with-font"/>
-                                    <label th:for="${'checkbox' + row.index}"
-                                           th:text="${t?.nbrHours} + ' h'"></label>
-                                </div>
                             </div>
                         </div>
                     </div>

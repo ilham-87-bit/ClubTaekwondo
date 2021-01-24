@@ -1,6 +1,7 @@
 $(document).ready(function () {
     validCheckbox();
     initBrowse();
+    selectCity();
 });
 
 function validCheckbox() {

@@ -9,6 +9,14 @@
     <main>
         <div class="container-fluid">
             <div class="card-body">
+                <div class="row justify-content-center">
+                    <div th:if="${messageError}">
+                        <span class="error text-center" th:text="${messageError}"></span>
+                    </div>
+                    <div th:if="${messageSuccess}">
+                        <span class="success text-center" th:text="${messageSuccess}"></span>
+                    </div>
+                </div>
                 <th:block th:with="hasSchool=${!#lists.isEmpty(schoolList)}">
                     <form id="schoolForm" method="post">
                         <th:block th:if="!${#lists.isEmpty(schoolList)}">
@@ -37,29 +45,35 @@
                                                 <span th:text="${scho?.address?.street} + ', ' + ${scho?.address?.number} + ', ' + ${scho?.address?.city?.postalCode} + ', ' + ${scho?.address?.city?.cityName}"></span>
                                             </td>
                                             <td>
-                                                <a th:href="${'edit/'+ scho?.idSchool}"
-                                                   class="btn btn-link fa fa-edit"></a>
-                                                <a class="btn btn-link fa fa-trash-alt"
-                                                   th:attr="data-target='#modal-delete'+${scho?.idSchool}"
-                                                   data-rel="tooltip" title="delete" data-toggle="modal"></a>
+                                                <div th:if="${!scho.belongTo}">
+                                                    <span> Cette école est retirée du club </span>
+                                                </div>
+                                                <div th:unless="${!scho.belongTo}">
+                                                    <a th:href="${'/admin/school/edit/'+ scho?.idSchool}"
+                                                       class="btn btn-link fa fa-edit"></a>
+                                                    <a class="btn btn-link fa fa-trash-alt"
+                                                       th:attr="data-target='#modal-delete'+${scho?.idSchool}"
+                                                       data-rel="tooltip" title="delete" data-toggle="modal"></a>
 
-                                                <div th:id="modal-delete+${scho?.idSchool}" class="modal fade"
-                                                     tabindex="-1">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header no-padding">
-                                                                <div class="table-header">Suppression</div>
-                                                            </div>
-                                                            <div class="modal-body no-padding">Vous étes sur de
-                                                                supprimer ce école?
-                                                            </div>
-                                                            <div class="modal-footer no-margin-top">
-                                                                <button class="btn btn-danger pull-left"
-                                                                        data-dismiss="modal"> Annuler
-                                                                </button>
-                                                                <a class="btn btn-danger pull-right" type="button"
-                                                                   th:href="${'delete/'+ scho?.idSchool}"> Supprimer
-                                                                </a>
+                                                    <div th:id="modal-delete+${scho?.idSchool}" class="modal fade"
+                                                         tabindex="-1">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header no-padding">
+                                                                    <div class="table-header">Suppression</div>
+                                                                </div>
+                                                                <div class="modal-body no-padding">Vous étes sur de
+                                                                    supprimer ce école?
+                                                                </div>
+                                                                <div class="modal-footer no-margin-top">
+                                                                    <button class="btn btn-danger pull-left"
+                                                                            data-dismiss="modal"> Annuler
+                                                                    </button>
+                                                                    <a class="btn btn-danger pull-right" type="button"
+                                                                       th:href="${'/admin/school/delete/'+ scho?.idSchool}">
+                                                                        Supprimer
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

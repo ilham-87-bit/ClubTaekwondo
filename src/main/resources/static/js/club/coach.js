@@ -1,12 +1,13 @@
 var form = $('#idAddCoachForm');
 
 $(document).ready(function () {
-    validCheckbox();
+    validCheckboxCo();
     selectCategory();
     checkedListCategory();
+    selectCity();
 });
 
-function validCheckbox() {
+function validCheckboxCo() {
     var valid = false;
 
     $('#chekCo input[type=checkbox]').each(function () {

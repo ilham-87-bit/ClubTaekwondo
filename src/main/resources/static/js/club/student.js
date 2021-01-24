@@ -2,11 +2,8 @@ var form = $('#idAddStudentForm');
 $(document).ready(function () {
     inputDate();
     inputButton();
+    selectCity();
 });
-// function buttonSubmit(){
-//     checkModNationalNumber();
-//     inputButton();
-// }
 function inputDate() {
     $('#birthDay').datepicker({
         maxDate: new Date(),
@@ -34,7 +31,6 @@ function checkModNationalNumber() {
     }
     if ((97 - res % 97) != modRes) {
         $("#nationalRegistry").next(".error").show().text("Le numéro de registre national n'est pas valide, veuillez réessayer.");
-        // $('#nationalRegistry').setAttribute('data-inputmask-alias') ;
         valid = false;
     } else {
         $("#nationalRegistry").next(".error").hide();

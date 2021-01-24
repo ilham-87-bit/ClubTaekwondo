@@ -10,7 +10,7 @@
         <main>
             <th:block>
                 <div>
-                    <img th:src="@{/images/taekAdult.jpg}" class="img-card">
+                    <img th:src="@{/images/taek3.jpg}" class="img-card">
                 </div>
             </th:block>
             <th:block>
@@ -21,11 +21,12 @@
                     <div class="row justify-content-center">
                         <h5 class="font-weight-bold my-4"> Tranche d'âge : </h5>
                         <span class="font-weight-bold my-4 text-uppercase"
-                              th:text="${subscription.categories.categoryName}"></span>
+                              th:text="' ' +${subscription.categories.categoryName}"></span>
                     </div>
                     <div class="row justify-content-center">
                         <h5 class="font-weight-bold my-4"> Ecole : </h5>
-                        <span class="font-weight-bold my-4 text-uppercase" th:text="${subscription.school.name}"></span>
+                        <span class="font-weight-bold my-4 text-uppercase"
+                              th:text="' ' + ${subscription.school.name}"></span>
                     </div>
                     <div th:if="${messageError}" class="row justify-content-center py-5">
                         <p class="error" th:text="${messageError}"></p>
@@ -63,7 +64,7 @@
                                     <div class="form-group">
                                         <label class="control-label" for="gsm"> GSM :</label>
                                         <input class="form-control" id="gsm" type="text" name="gsm"
-                                               th:field="*{gsm}"/>
+                                               th:value="${student?.gsm != null ? '0'+student?.gsm : ''}"/>
                                     </div>
                                 </div>
                             </div>
@@ -73,9 +74,9 @@
                                     <div class="input-group date">
                                         <input type="text" class="form-control" name="birthDay" id="birthDay"
                                                data-inputmask-alias="fh_date"
-                                               th:field="*{birthDay}"/>
+                                               th:value="${T(com.clubtaekwondo.club.controller.user.StudentController).formatDate(student?.birthDay)}"/>
                                         <div class="input-group-append">
-                                            <span class="input-group-text calculateDate"><i
+                                            <span class="input-group-text"><i
                                                     class="far fa-calendar-alt"></i></span>
                                         </div>
                                     </div>
@@ -114,20 +115,11 @@
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-group required">
-                                        <label class="control-label" for="postalCode"> Code postal:</label>
-                                        <input id="postalCode" type="text" class="form-control" name="postalCode"
-                                               required
-                                               data-placement="right"
-                                               maxlength="50" th:field="*{address.city.postalCode}"/>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group required">
                                         <label class="control-label" for="idCity"> Ville :</label>
                                         <div class="select-awesome" data-placement="right" maxlength="50">
                                             <label>
                                                 <select id="idCity"
-                                                        class="form-control" required
+                                                        class="form-control  selectCity" required
                                                         aria-invalid="false"
                                                         name="idCity">
                                                     <option></option>
@@ -141,6 +133,20 @@
                                                 </select>
                                             </label>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label" for="postalCode"> Code postal:</label>
+                                        <div id="city" th:each="m, r : ${map}"
+                                             class="js-row-link-alt map">
+                                            <input type="hidden" th:id="${'city' + r.index}" th:name="${m.key}"
+                                                   th:value="${m.value}"/>
+                                        </div>
+                                        <input id="postalCode" type="text" class="form-control" name="postalCode"
+                                               required
+                                               data-placement="right"
+                                               maxlength="50" th:field="*{address.city.postalCode}"/>
                                     </div>
                                 </div>
                             </div>

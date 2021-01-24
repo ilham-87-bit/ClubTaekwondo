@@ -9,6 +9,11 @@
     <main>
         <div class="container-fluid">
             <div class="card-body">
+                <div class="row justify-content-center">
+                    <div th:if="${messageSuccess}">
+                        <span class="success text-center" th:text="${messageSuccess}"></span>
+                    </div>
+                </div>
                 <th:block th:with="hasTarif=${!#lists.isEmpty(tarifList)}">
                     <form id="tarifForm" method="post">
                         <th:block th:if="!${#lists.isEmpty(tarifList)}">
@@ -55,38 +60,38 @@
                                                 </th:block>
                                             </td>
                                             <td>
-                                                <span th:text="${ta?.prix}"></span>
+                                                <span th:text="${ta?.prix} + ' EURO'"></span>
                                             </td>
                                             <td>
-                                                <a th:href="${'edit/'+ ta?.tariffPK?.idCategory + '/' +ta?.tariffPK?.idPeriod +'/' + ta?.tariffPK?.idType}"
+                                                <a th:href="${'/admin/tarif/edit/'+ ta?.tariffPK?.idCategory + '/' +ta?.tariffPK?.idPeriod +'/' + ta?.tariffPK?.idType}"
                                                    class="btn btn-link fa fa-edit"></a>
-                                                <a class="btn btn-link fa fa-trash-alt"
-                                                   th:attr="data-target='#modal-delete'+${ta?.tariffPK?.idCategory} + ${ta?.tariffPK?.idPeriod} + ${ta?.tariffPK?.idType}"
-                                                   data-rel="tooltip" title="delete" data-toggle="modal"></a>
+                                                <!--                                                <a class="btn btn-link fa fa-trash-alt"-->
+                                                <!--                                                   th:attr="data-target='#modal-delete'+${ta?.tariffPK?.idCategory} + ${ta?.tariffPK?.idPeriod} + ${ta?.tariffPK?.idType}"-->
+                                                <!--                                                   data-rel="tooltip" title="delete" data-toggle="modal"></a>-->
 
-                                                <div th:id="modal-delete+${ta?.tariffPK?.idCategory} +${ta?.tariffPK?.idPeriod} + ${ta?.tariffPK?.idType}"
-                                                     class="modal fade"
-                                                     tabindex="-1">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header no-padding">
-                                                                <div class="table-header">Suppression</div>
-                                                            </div>
-                                                            <div class="modal-body no-padding">Vous étes sur de
-                                                                supprimer ce tarif?
-                                                            </div>
-                                                            <div class="modal-footer no-margin-top">
-                                                                <button class="btn btn-danger pull-left"
-                                                                        data-dismiss="modal"> Annuler
-                                                                </button>
-                                                                <a class="btn btn-danger pull-right" type="button"
-                                                                   th:href="${'delete/'+ ta?.tariffPK?.idCategory + '/' + ta?.tariffPK?.idPeriod +'/' + ta?.tariffPK?.idType}">
-                                                                    Supprimer
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <!--                                                <div th:id="modal-delete+${ta?.tariffPK?.idCategory} +${ta?.tariffPK?.idPeriod} + ${ta?.tariffPK?.idType}"-->
+                                                <!--                                                     class="modal fade"-->
+                                                <!--                                                     tabindex="-1">-->
+                                                <!--                                                    <div class="modal-dialog">-->
+                                                <!--                                                        <div class="modal-content">-->
+                                                <!--                                                            <div class="modal-header no-padding">-->
+                                                <!--                                                                <div class="table-header">Suppression</div>-->
+                                                <!--                                                            </div>-->
+                                                <!--                                                            <div class="modal-body no-padding">Vous étes sur de-->
+                                                <!--                                                                supprimer ce tarif?-->
+                                                <!--                                                            </div>-->
+                                                <!--                                                            <div class="modal-footer no-margin-top">-->
+                                                <!--                                                                <button class="btn btn-danger pull-left"-->
+                                                <!--                                                                        data-dismiss="modal"> Annuler-->
+                                                <!--                                                                </button>-->
+                                                <!--                                                                <a class="btn btn-danger pull-right" type="button"-->
+                                                <!--                                                                   th:href="${'delete/'+ ta?.tariffPK?.idCategory + '/' + ta?.tariffPK?.idPeriod +'/' + ta?.tariffPK?.idType}">-->
+                                                <!--                                                                    Supprimer-->
+                                                <!--                                                                </a>-->
+                                                <!--                                                            </div>-->
+                                                <!--                                                        </div>-->
+                                                <!--                                                    </div>-->
+                                                <!--                                                </div>-->
                                             </td>
                                         </tr>
                                     </th:block>

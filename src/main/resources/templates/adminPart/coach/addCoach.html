@@ -16,7 +16,7 @@
                             <div class="form-group required">
                                 <label class="control-label mb-1" for="inputFirstName">Prénom :</label>
                                 <input class="form-control" id="inputFirstName" type="text" required
-                                       th:disabled="${coach.id != null}"
+                                       th:readonly="${coach.id != null}" name="firstName"
                                        th:field="*{firstName}"/>
                             </div>
                         </div>
@@ -24,7 +24,7 @@
                             <div class="form-group required">
                                 <label class="control-label mb-1" for="inputLastName">Nom :</label>
                                 <input class="form-control" id="inputLastName" type="text" required
-                                       th:disabled="${coach.id != null}"
+                                       th:readonly="${coach.id != null}" name="lastName"
                                        th:field="*{lastName}"/>
                             </div>
                         </div>
@@ -34,7 +34,7 @@
                             <div class="form-group required">
                                 <label class="control-label" for="inputEmailAddress">Email :</label>
                                 <input class="form-control" id="inputEmailAddress" type="email" required
-                                       th:disabled="${coach.id != null}"
+                                       th:readonly="${coach.id != null}" name="email"
                                        th:field="*{email}" aria-describedby="emailHelp"/>
                             </div>
                         </div>
@@ -52,123 +52,126 @@
                                                         th:value="${scho.idSchool}"
                                                         th:text="${scho.name}"
                                                         th:selected="${coach?.school?.idSchool} == ${scho.idSchool}">
-                                                    <!--                                                    <div th:each="c, row : ${scho?.categoriesList}" class="js-row-link-alt cat">-->
-                                                    <!--                                                        <input type="hidden" th:id="${'catBySchool' + row.index}" th:value="${c.idCategory}"/>-->
+                                                </option>
+                                            </th:block>
+                                        </select>
+                                    </label>
                                 </div>
-                                </option>
-                                </th:block>
-                                </select>
-                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <input type="hidden" th:field="*{address.id}">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group required">
+                                <label class="control-label" for="street"> Rue :</label>
+                                <input id="street" type="text" class="form-control" name="street"
+                                       data-placement="right" required
+                                       maxlength="50" th:field="*{address.street}"/>
                             </div>
                         </div>
-
-                    </div>
-                </div>
-                <input type="hidden" th:field="*{address.id}">
-                <div class="form-row">
-                    <div class="col-md-6">
-                        <div class="form-group required">
-                            <label class="control-label" for="street"> Rue :</label>
-                            <input id="street" type="text" class="form-control" name="street"
-                                   data-placement="right" required
-                                   maxlength="50" th:field="*{address.street}"/>
+                        <div class="col-md-6">
+                            <div class="form-group required">
+                                <label class="control-label" for="number"> Numero :</label>
+                                <input id="number" type="text" class="form-control" name="number" required
+                                       data-placement="right"
+                                       maxlength="50" th:field="*{address.number}"/>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group required">
-                            <label class="control-label" for="number"> Numero :</label>
-                            <input id="number" type="text" class="form-control" name="number" required
-                                   data-placement="right"
-                                   maxlength="50" th:field="*{address.number}"/>
-                        </div>
-                    </div>
-                </div>
 
 
-                <div class="form-row">
-                    <div class="col-md-6">
-                        <div class="form-group required">
-                            <label class="control-label" for="postalCode"> Code postal:</label>
-                            <input id="postalCode" type="text" class="form-control" name="postalCode" required
-                                   data-placement="right"
-                                   maxlength="50" th:field="*{address.city.postalCode}"/>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group required">
+                                <label class="control-label" for="idCity"> Ville :</label>
+                                <div class="select-awesome" data-placement="right" maxlength="50">
+                                    <label>
+                                        <select id="idCity"
+                                                class="form-control selectCity" required
+                                                aria-invalid="false"
+                                                name="idCity">
+                                            <option></option>
+                                            <th:block th:if="!${#lists.isEmpty(cityList)}">
+                                                <option th:each="city : ${cityList}"
+                                                        th:value="${city.idCity}"
+                                                        th:text="${city.cityName}"
+                                                        th:selected="${coach?.address?.city?.idCity} == ${city.idCity}">
+                                                </option>
+                                            </th:block>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group required">
+                                <label class="control-label" for="postalCode"> Code postal:</label>
+                                <div id="city" th:each="m, r : ${map}"
+                                     class="js-row-link-alt map">
+                                    <input type="hidden" th:id="${'city' + r.index}" th:name="${m.key}"
+                                           th:value="${m.value}"/>
+                                </div>
+                                <input id="postalCode" type="text" class="form-control" name="postalCode" required
+                                       data-placement="right"
+                                       maxlength="50" th:field="*{address.city.postalCode}"/>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group required">
-                            <label class="control-label" for="idCity"> Ville :</label>
-                            <div class="select-awesome" data-placement="right" maxlength="50">
-                                <label>
-                                    <select id="idCity"
-                                            class="form-control" required
-                                            aria-invalid="false"
-                                            name="idCity">
-                                        <option></option>
-                                        <th:block th:if="!${#lists.isEmpty(cityList)}">
-                                            <option th:each="city : ${cityList}"
-                                                    th:value="${city.idCity}"
-                                                    th:text="${city.cityName}"
-                                                    th:selected="${coach?.address?.city?.idCity} == ${city.idCity}">
-                                            </option>
-                                        </th:block>
-                                    </select>
-                                </label>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group required">
+                                <label class="control-label"> Catégorie :</label>
+                                <div id="school" th:each="p, r : ${parameters}"
+                                     class="js-row-link-alt categoryBySchool">
+                                    <input type="hidden" th:id="${'school' + r.index}" th:name="${p.key}"
+                                           th:value="${p.value}"/>
+                                </div>
+                                <div id="listCat" th:each="l, row : ${listCat}"
+                                     class="js-row-link-alt listCat">
+                                    <input type="hidden" th:id="${'cat' + row.index}" th:value="${l.idCategory}"/>
+                                </div>
+                                <div id="chekCo" th:each="category, row : ${categoryList}"
+                                     class="js-row-link-alt rowCategory">
+                                    <input type="checkbox" th:id="${'checkbox' + row.index}" name="categoryList[]"
+                                           th:value="${category?.idCategory}"
+                                           th:checked="${listCat != null and listCat.contains(category)}"
+                                           class="checkboxGroup with-font hidden"/>
+                                    <label th:id="${'labelCat' + row.index}" th:for="${'checkbox' + row.index}"
+                                           class="hidden"
+                                           th:text="${category?.categoryName}"></label>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="col-md-6">
-                        <div class="form-group required">
-                            <label class="control-label"> Catégorie :</label>
-                            <div id="school" th:each="p, r : ${parameters}" class="js-row-link-alt categoryBySchool">
-                                <input type="hidden" th:id="${'school' + r.index}" th:name="${p.key}"
-                                       th:value="${p.value}"/>
-                            </div>
-                            <div id="listCat" th:each="l, row : ${listCat}"
-                                 class="js-row-link-alt listCat">
-                                <input type="hidden" th:id="${'cat' + row.index}" th:value="${l.idCategory}"/>
-                            </div>
-                            <div id="chekCo" th:each="category, row : ${categoryList}"
-                                 class="js-row-link-alt rowCategory">
-                                <input type="checkbox" th:id="${'checkbox' + row.index}" name="categoryList[]"
-                                       th:value="${category?.idCategory}"
-                                       th:checked="${listCat != null and listCat.contains(category)}"
-                                       class="checkboxGroup with-font hidden"/>
-                                <label th:id="${'labelCat' + row.index}" th:for="${'checkbox' + row.index}"
-                                       class="hidden"
-                                       th:text="${category?.categoryName}"></label>
-                            </div>
+                <div class="card-footer">
+                    <div class="row align-items-end justify-content-end">
+                        <div class="col">
+                            <p class="disclaimer red font-weight-bold m-0">(*)Ce champ est obligatoire</p>
+                        </div>
+                        <div class="col-auto">
+                            <a th:href="@{/admin/coach/coachList}" class="btn btn-dark"> Précédent </a>
+                        </div>
+                        <div class="col-auto">
+                            <button th:if="${coach.id == null}" id="saveButton" onclick="validCheckbox()"
+                                    type="submit" class="btn btn-dark">
+                                Ajouter
+                            </button>
+
+                            <button th:unless="${coach.id== null}" id="editButton" onclick="validCheckbox()"
+                                    type="submit"
+                                    class="btn btn-dark">
+                                Modifier
+                            </button>
                         </div>
                     </div>
                 </div>
+            </form>
         </div>
-        <div class="card-footer">
-            <div class="row align-items-end justify-content-end">
-                <div class="col">
-                    <p class="disclaimer red font-weight-bold m-0">(*)Ce champ est obligatoire</p>
-                </div>
-                <div class="col-auto">
-                    <a th:href="@{/admin/coach/coachList}" class="btn btn-dark"> Précédent </a>
-                </div>
-                <div class="col-auto">
-                    <button th:if="${coach.id == null}" id="saveButton" onclick="validCheckbox()"
-                            type="submit" class="btn btn-dark">
-                        Ajouter
-                    </button>
-
-                    <button th:unless="${coach.id== null}" id="editButton" onclick="validCheckbox()"
-                            type="submit"
-                            class="btn btn-dark">
-                        Modifier
-                    </button>
-                </div>
-            </div>
-        </div>
-        </form>
-</div>
-</main>
-<script type="text/javascript" th:src="@{/js/club/coach.js}"></script>
+    </main>
+    <script type="text/javascript" th:src="@{/js/club/coach.js}"></script>
 </div>
 <footer th:replace="footerAdmin"></footer>
 </body>

@@ -8,6 +8,14 @@
     <main>
         <div class="container-fluid">
             <div class="card-body">
+                <div class="row justify-content-center">
+                    <div th:if="${messageError}">
+                        <span class="error text-center" th:text="${messageError}"></span>
+                    </div>
+                    <div th:if="${messageSuccess}">
+                        <span class="success text-center" th:text="${messageSuccess}"></span>
+                    </div>
+                </div>
                 <th:block th:with="hasPeriod=${!#lists.isEmpty(periodList)}">
                     <form id="periodForm" method="post">
                         <th:block th:if="!${#lists.isEmpty(periodList)}">
@@ -36,7 +44,7 @@
                                                 <span th:text="${per?.description}"></span>
                                             </td>
                                             <td>
-                                                <a th:href="${'edit/'+ per?.id}"
+                                                <a th:href="${'/admin/period/edit/'+ per?.id}"
                                                    class="btn btn-link fa fa-edit"></a>
                                                 <a class="btn btn-link fa fa-trash-alt"
                                                    th:attr="data-target='#modal-delete'+${per?.id}"
@@ -57,7 +65,8 @@
                                                                         data-dismiss="modal"> Annuler
                                                                 </button>
                                                                 <a class="btn btn-danger pull-right" type="button"
-                                                                   th:href="${'delete/'+ per?.id}"> Supprimer
+                                                                   th:href="${'/admin/period/delete/'+ per?.id}">
+                                                                    Supprimer
                                                                 </a>
                                                             </div>
                                                         </div>
