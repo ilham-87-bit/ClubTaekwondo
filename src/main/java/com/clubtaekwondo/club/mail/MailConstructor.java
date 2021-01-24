@@ -73,7 +73,6 @@ public class MailConstructor {
         email.setFrom(env.getProperty(contact.getEmail()));
         return email;
     }
-
     public SimpleMailMessage constructSchoolDelete(User user, School school) {
 
         String message = "\n Bonjour  " + user.getFirstName().toLowerCase(Locale.ROOT) + ' ' + user.getLastName().toUpperCase(Locale.ROOT) + "," + "\n Nous vous informons que l'école : " + school.getName() + ' ' + school.getAddress().getStreet() + ' ' + school.getAddress().getNumber() + " - " + school.getAddress().getCity().getPostalCode() + ' ' + school.getAddress().getCity().getCityName() + "\n n'appartient plus au club, si vous voulez continuer vous avez la possibilité de choisir une autre école. Le cas échéant, vous serez remboursé pour le reste. \n  Cordialement,";

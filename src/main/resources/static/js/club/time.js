@@ -69,7 +69,6 @@ function validChekCoach() {
         $('#chekCoach input[type=checkbox]').attr("required", true);
     }
 }
-
 // function validCheckbox() {
 //     var valid = false;
 //

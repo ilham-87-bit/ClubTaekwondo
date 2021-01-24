@@ -1854,7 +1854,6 @@ input[type=button].btn-block {
 .custom-select {
     transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
-
 @media (prefers-reduced-motion: reduce) {
     .custom-control-label::before,
     .custom-file-label,
@@ -1938,11 +1937,9 @@ input[type=button].btn-block {
 .tab-content > .tab-pane {
     display: none;
 }
-
 .tab-content > .active {
     display: block;
 }
-
 .card {
     position: relative;
     display: flex;
@@ -7314,16 +7311,13 @@ body {
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav .sb-sidenav .sb-sidenav-menu {
     overflow-y: auto;
 }
-
 .sb-nav-fixed #layoutSidenav #layoutSidenav_content {
     padding-left: 225px;
     top: 95px;
 }
-
 #navBar .nav-item li.active > a {
     color: #fff;
 }
-
 #layoutError {
     display: flex;
     flex-direction: column;
@@ -7894,7 +7888,6 @@ textarea.input1 + .shadow-input1 {
 .green {
     color: green;
 }
-
 /*.footer-user{*/
 /*    position: relative;*/
 /*    bottom: 0;*/

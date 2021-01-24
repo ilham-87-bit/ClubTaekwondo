@@ -23,7 +23,6 @@ $(document).ready(function () {
 function printPage() {
     window.print();
 }
-
 function selectCity() {
     $('.selectCity').on('input', function () {
         $('#postalCode').val('');
