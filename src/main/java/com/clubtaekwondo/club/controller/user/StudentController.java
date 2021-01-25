@@ -328,9 +328,7 @@ public class StudentController {
             for (Subscription subscription : subscriptionByUser) {
                 if (subscription.getEndDate().before(date)) {
                     subscription.setValidation(false);
-                    validDate = false;
-                } else {
-                    validDate = true;
+                    subscription.setNewSubscription(true);
                 }
                 if (subscription.getSubscriptionStatus().equals(SubscriptionStatus.CONFIRMED)) {
                     list.add(subscription);

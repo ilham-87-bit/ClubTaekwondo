@@ -23,6 +23,7 @@ public class Subscription {
     private Date endDate;
 
     private Boolean validation;
+    private boolean newSubscription;
 
     @Column(name = "frais")
     private Float expenses;
@@ -192,5 +193,13 @@ public class Subscription {
 
     public void setPrice(Float price) {
         this.price = price;
+    }
+
+    public boolean isNewSubscription() {
+        return newSubscription;
+    }
+
+    public void setNewSubscription(boolean newSubscription) {
+        this.newSubscription = newSubscription;
     }
 }

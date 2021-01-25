@@ -100,6 +100,7 @@ public class SubscriptionController {
             subscription.setCategories(c);
             subscription.setSchool(schoolService.findById(school.getIdSchool()));
             subscription.setValidation(false);
+            subscription.setNewSubscription(false);
             subscription.setExpenses(expenses);
 
 

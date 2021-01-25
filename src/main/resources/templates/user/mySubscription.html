@@ -52,16 +52,16 @@
                                     <td align="center">
                                         <span th:text="${T(com.clubtaekwondo.club.controller.user.StudentController).formatDate(l?.startDate)} + '  -   ' + ${T(com.clubtaekwondo.club.controller.user.StudentController).formatDate(l?.endDate)}"></span>
                                     </td>
-                                    <td align="center">
-                                        <a th:if="${validDate}" class="btn btn-dark"
+                                    <td th:unless="${l?.newSubscription}" align="center">
+                                        <a class="btn btn-dark"
                                            th:href="@{(${'/user/myTime/' + l.idSubscription})}">
                                             Mes Horaires </a>
                                         <a class="btn btn-dark"
                                            th:href="@{(${'/user/personList/' + l.idSubscription})}">
                                             Personne de contact </a>
                                     </td>
-                                    <td align="center">
-                                        <a th:if="!${validDate}" class="btn btn-dark"
+                                    <td th:if="${l?.newSubscription}" align="center">
+                                        <a class="btn btn-dark"
                                            th:href="@{(${'/user/renewSubscription/' + l.idSubscription})}">
                                             Renouveler </a>
                                     </td>
